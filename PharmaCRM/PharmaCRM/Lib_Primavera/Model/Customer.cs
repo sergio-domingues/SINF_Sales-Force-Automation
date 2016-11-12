@@ -5,7 +5,7 @@ using System.Web;
 
 namespace PharmaCRM.Lib_Primavera.Model
 {
-    public class Cliente
+    public class Customer
     {
         public string Morada;
 
@@ -23,19 +23,19 @@ namespace PharmaCRM.Lib_Primavera.Model
         }
     
 */       
-        public string CodCliente
+        public string CodCustomer
         {
             get;
             set;
         }
 
-        public string NomeCliente
+        public string NomeCustomer
         {
             get;
             set;
         }
 
-        public string NumContribuinte
+        public string NumCustomer
         {
             get;
             set;
