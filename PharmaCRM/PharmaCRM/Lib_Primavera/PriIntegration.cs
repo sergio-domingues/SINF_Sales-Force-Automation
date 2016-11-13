@@ -16,13 +16,13 @@ namespace PharmaCRM.Lib_Primavera
 
         # region Cliente
 
-        public static List<Model.Customer> ListaClientes()
+        public static List<Model.Cliente> ListaClientes()
         {
             
             
             StdBELista objList;
 
-            List<Model.Customer> listClientes = new List<Model.Customer>();
+            List<Model.Cliente> listClientes = new List<Model.Cliente>();
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
@@ -34,7 +34,7 @@ namespace PharmaCRM.Lib_Primavera
                 
                 while (!objList.NoFim())
                 {
-                    listClientes.Add(new Model.Customer
+                    listClientes.Add(new Model.Cliente
                     {
                         CodCliente = objList.Valor("Cliente"),
                         NomeCliente = objList.Valor("Nome"),
@@ -52,14 +52,14 @@ namespace PharmaCRM.Lib_Primavera
                 return null;
         }
 
-        public static Lib_Primavera.Model.Customer GetCliente(string codCliente)
+        public static Lib_Primavera.Model.Cliente GetCliente(string codCliente)
         {
             
 
             GcpBECliente objCli = new GcpBECliente();
 
 
-            Model.Customer myCli = new Model.Customer();
+            Model.Cliente myCli = new Model.Cliente();
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
@@ -83,7 +83,7 @@ namespace PharmaCRM.Lib_Primavera
                 return null;
         }
 
-        public static Lib_Primavera.Model.RespostaErro UpdCliente(Lib_Primavera.Model.Customer cliente)
+        public static Lib_Primavera.Model.RespostaErro UpdCliente(Lib_Primavera.Model.Cliente cliente)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
            
@@ -187,7 +187,7 @@ namespace PharmaCRM.Lib_Primavera
 
 
 
-        public static Lib_Primavera.Model.RespostaErro InsereClienteObj(Model.Customer cli)
+        public static Lib_Primavera.Model.RespostaErro InsereClienteObj(Model.Cliente cli)
         {
 
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
