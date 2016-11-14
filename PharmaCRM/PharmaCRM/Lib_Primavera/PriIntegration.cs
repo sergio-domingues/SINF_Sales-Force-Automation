@@ -6,6 +6,7 @@ using Interop.ErpBS900;
 using Interop.StdPlatBS900;
 using Interop.StdBE900;
 using Interop.GcpBE900;
+using Interop.CrmBE900;
 using ADODB;
 
 namespace PharmaCRM.Lib_Primavera
@@ -13,7 +14,6 @@ namespace PharmaCRM.Lib_Primavera
     public class PriIntegration
     {
         
-
         # region Cliente
 
         public static List<Model.Cliente> ListaClientes()
@@ -592,5 +592,22 @@ namespace PharmaCRM.Lib_Primavera
         }
 
         #endregion DocsVenda
+
+        # region Actividade
+
+        public static Models.Actividade GetActividade(string codCliente){
+
+            CrmBEActividade actividade = new CrmBEActividade();
+            Models.Actividade = 
+
+
+
+            return null;
+        }
+
+
+        #endregion Actividade;   // -----------------------------  END   Actividade    -----------------------
+
+
     }
 }
