@@ -11,6 +11,12 @@ namespace PharmaCRM.Models
     {
         //todo ENUM for attr type
 
+        public DateTime data_inicio
+        {
+            get;
+            set;
+        }
+
         public string descricao
         {
             get;
