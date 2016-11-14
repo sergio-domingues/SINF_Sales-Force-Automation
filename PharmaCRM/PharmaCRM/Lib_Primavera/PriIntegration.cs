@@ -599,6 +599,7 @@ namespace PharmaCRM.Lib_Primavera
         {
 
             CrmBEActividade actividade = new CrmBEActividade();
+            Models.Actividade model_actividade;
 
             /*  if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
               {*/
@@ -609,19 +610,22 @@ namespace PharmaCRM.Lib_Primavera
             }
             else
             {
-                string nome, tipo, comercial, descricao, morada, cliente;
+                string tipo, comercial, descricao, morada, cliente;
                 bool terminada;
+                DateTime data_inicio, data_fim;
 
-                actividade = PriEngine.Engine.CRM.Actividades.Edita(id);      
+                actividade = PriEngine.Engine.CRM.Actividades.Edita(id);
+                model_actividade = new Models.Actividade();
 
-                nome = actividade.();
-                descricao = actividade.get_Descricao();
-                tipo = actividade.get_IDTipoActividade();
-                comercial = actividade.get_CriadoPor();
-                morada = actividade.get_LocalRealizacao();
-                terminada = actividade.();    
+                model_actividade.descricao = actividade.get_Descricao();
+                model_actividade.tipo = actividade.get_IDTipoActividade();
+                model_actividade.comercial = actividade.get_CriadoPor();
+                model_actividade.morada = actividade.get_LocalRealizacao();
+                //model_actividade.terminada = actividade.();    
+               // model_actividade.data_inicio = actividade.get_DataInicio();
+               // model_actividade.data_fim = actividade.get_DataFim();
 
-                return new Models.Actividade(nome, descricao, tipo, comercial, morada, terminada);
+                return model_actividade;
             }
 
             //}
