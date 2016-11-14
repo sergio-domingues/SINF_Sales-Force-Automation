@@ -13,7 +13,7 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
-        public string Cod
+        public string CodCliente
         {
             get;
             set;

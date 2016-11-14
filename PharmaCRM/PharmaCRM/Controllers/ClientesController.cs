@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace PharmaCRM.Controllers
 {
-    public class ClientesController : Controller
+    public class ClientesController : ApiController
     {
         //
         // GET: /Clientes/
