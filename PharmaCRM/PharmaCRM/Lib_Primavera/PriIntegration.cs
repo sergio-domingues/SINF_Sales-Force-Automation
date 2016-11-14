@@ -591,11 +591,11 @@ namespace PharmaCRM.Lib_Primavera
 
         # region Actividade
 
-        public static Models.Actividade GetActividade(string id)
+        public static Model.Actividade GetActividade(string id)
         {
 
             CrmBEActividade actividade = new CrmBEActividade();
-            Models.Actividade model_actividade;
+            Model.Actividade model_actividade;
 
             /*  if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
               {*/
@@ -611,7 +611,7 @@ namespace PharmaCRM.Lib_Primavera
                 DateTime data_inicio, data_fim;
 
                 actividade = PriEngine.Engine.CRM.Actividades.Edita(id);
-                model_actividade = new Models.Actividade();
+                model_actividade = new Model.Actividade();
 
                 model_actividade.descricao = actividade.get_Descricao();
                 model_actividade.tipo = actividade.get_IDTipoActividade();

@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace PharmaCRM.Models
+namespace PharmaCRM.Lib_Primavera.Model
 {
     public class Actividade
     {

@@ -1,5 +1,4 @@
-﻿using PharmaCRM.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,9 +9,9 @@ namespace PharmaCRM.Controllers
 {
     public class ActividadesController : ApiController
     {
-        public Lib_Primavera.Models.Atividade Get(string id)
+        public Lib_Primavera.Model.Actividade Get(string id)
         {
-            return PharmaCRM.Lib_Primavera.PriIntegration.GetActividade(string id);
+            return PharmaCRM.Lib_Primavera.PriIntegration.GetActividade(id);
         }
     }
 }
