@@ -13,13 +13,13 @@ namespace PharmaCRM.Lib_Primavera
 {
     public class PriIntegration
     {
-        
+
         # region Cliente
 
         public static List<Model.Cliente> ListaClientes()
         {
-            
-            
+
+
             StdBELista objList;
 
             List<Model.Cliente> listClientes = new List<Model.Cliente>();
@@ -31,7 +31,7 @@ namespace PharmaCRM.Lib_Primavera
 
                 objList = PriEngine.Engine.Consulta("SELECT Cliente, Nome, Moeda, NumContrib as NumContribuinte, Fac_Mor AS campo_exemplo FROM  CLIENTES");
 
-                
+
                 while (!objList.NoFim())
                 {
                     listClientes.Add(new Model.Cliente
@@ -54,7 +54,7 @@ namespace PharmaCRM.Lib_Primavera
 
         public static Lib_Primavera.Model.Cliente GetCliente(string codCliente)
         {
-            
+
 
             GcpBECliente objCli = new GcpBECliente();
 
@@ -86,7 +86,7 @@ namespace PharmaCRM.Lib_Primavera
         public static Lib_Primavera.Model.RespostaErro UpdCliente(Lib_Primavera.Model.Cliente cliente)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
-           
+
 
             GcpBECliente objCli = new GcpBECliente();
 
@@ -191,7 +191,7 @@ namespace PharmaCRM.Lib_Primavera
         {
 
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
-            
+
 
             GcpBECliente myCli = new GcpBECliente();
 
@@ -230,7 +230,7 @@ namespace PharmaCRM.Lib_Primavera
 
         }
 
-       
+
 
         #endregion Cliente;   // -----------------------------  END   CLIENTE    -----------------------
 
@@ -239,7 +239,7 @@ namespace PharmaCRM.Lib_Primavera
 
         public static Lib_Primavera.Model.Artigo GetArtigo(string codArtigo)
         {
-            
+
             GcpBEArtigo objArtigo = new GcpBEArtigo();
             Model.Artigo myArt = new Model.Artigo();
 
@@ -258,7 +258,7 @@ namespace PharmaCRM.Lib_Primavera
 
                     return myArt;
                 }
-                
+
             }
             else
             {
@@ -269,7 +269,7 @@ namespace PharmaCRM.Lib_Primavera
 
         public static List<Model.Artigo> ListaArtigos()
         {
-                        
+
             StdBELista objList;
 
             Model.Artigo art = new Model.Artigo();
@@ -303,14 +303,14 @@ namespace PharmaCRM.Lib_Primavera
 
         #endregion Artigo
 
-   
+
 
         #region DocCompra
-        
+
 
         public static List<Model.DocCompra> VGR_List()
         {
-                
+
             StdBELista objListCab;
             StdBELista objListLin;
             Model.DocCompra dc = new Model.DocCompra();
@@ -354,7 +354,7 @@ namespace PharmaCRM.Lib_Primavera
                     }
 
                     dc.LinhasDoc = listlindc;
-                    
+
                     listdc.Add(dc);
                     objListCab.Seguinte();
                 }
@@ -362,11 +362,11 @@ namespace PharmaCRM.Lib_Primavera
             return listdc;
         }
 
-                
+
         public static Model.RespostaErro VGR_New(Model.DocCompra dc)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
-            
+
 
             GcpBEDocumentoCompra myGR = new GcpBEDocumentoCompra();
             GcpBELinhaDocumentoCompra myLin = new GcpBELinhaDocumentoCompra();
@@ -431,14 +431,14 @@ namespace PharmaCRM.Lib_Primavera
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             GcpBEDocumentoVenda myEnc = new GcpBEDocumentoVenda();
-             
+
             GcpBELinhaDocumentoVenda myLin = new GcpBELinhaDocumentoVenda();
 
             GcpBELinhasDocumentoVenda myLinhas = new GcpBELinhasDocumentoVenda();
-             
+
             PreencheRelacaoVendas rl = new PreencheRelacaoVendas();
             List<Model.LinhaDocVenda> lstlindv = new List<Model.LinhaDocVenda>();
-            
+
             try
             {
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
@@ -459,7 +459,7 @@ namespace PharmaCRM.Lib_Primavera
                     }
 
 
-                   // PriEngine.Engine.Comercial.Compras.TransformaDocumento(
+                    // PriEngine.Engine.Comercial.Compras.TransformaDocumento(
 
                     PriEngine.Engine.IniciaTransaccao();
                     //PriEngine.Engine.Comercial.Vendas.Edita Actualiza(myEnc, "Teste");
@@ -487,11 +487,11 @@ namespace PharmaCRM.Lib_Primavera
             }
         }
 
-     
+
 
         public static List<Model.DocVenda> Encomendas_List()
         {
-            
+
             StdBELista objListCab;
             StdBELista objListLin;
             Model.DocVenda dv = new Model.DocVenda();
@@ -541,12 +541,12 @@ namespace PharmaCRM.Lib_Primavera
         }
 
 
-       
+
 
         public static Model.DocVenda Encomenda_Get(string numdoc)
         {
-            
-            
+
+
             StdBELista objListCab;
             StdBELista objListLin;
             Model.DocVenda dv = new Model.DocVenda();
@@ -555,7 +555,7 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                
+
 
                 string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
                 objListCab = PriEngine.Engine.Consulta(st);
@@ -595,11 +595,36 @@ namespace PharmaCRM.Lib_Primavera
 
         # region Actividade
 
-        public static Models.Actividade GetActividade(string codActividade){
+        public static Models.Actividade GetActividade(string id)
+        {
 
             CrmBEActividade actividade = new CrmBEActividade();
-            Models.Actividade = 
 
+            /*  if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+              {*/
+
+            if (PriEngine.Engine.Comercial.Artigos.Existe(id) == false)
+            {
+                return null;
+            }
+            else
+            {
+                string nome, tipo, comercial, descricao, morada, cliente;
+                bool terminada;
+
+                actividade = PriEngine.Engine.CRM.Actividades.Edita(id);      
+
+                nome = actividade.();
+                descricao = actividade.get_Descricao();
+                tipo = actividade.get_IDTipoActividade();
+                comercial = actividade.get_CriadoPor();
+                morada = actividade.get_LocalRealizacao();
+                terminada = actividade.();    
+
+                return new Models.Actividade(nome, descricao, tipo, comercial, morada, terminada);
+            }
+
+            //}
 
 
             return null;

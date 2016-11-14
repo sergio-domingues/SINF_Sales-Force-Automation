@@ -11,34 +11,41 @@ namespace PharmaCRM.Models
     {
         //todo ENUM for attr type
 
-        public string name
+        public string nome
         {
             get;
             set;
         }
 
-        public string type
+        public string descricao
         {
             get;
             set;
         }
 
-        public bool finished
+        public string tipo
         {
             get;
             set;
         }
 
-        public string sales_rep 
+        public bool terminada
         {
             get;
             set;
         }
 
-        public string address
+        public string comercial 
         {
             get;
             set;
         }
+
+        public string morada
+        {
+            get;
+            set;
+        }
+
     }
 }
