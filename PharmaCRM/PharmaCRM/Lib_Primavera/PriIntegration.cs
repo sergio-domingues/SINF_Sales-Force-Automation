@@ -36,9 +36,8 @@ namespace PharmaCRM.Lib_Primavera
                 {
                     listClientes.Add(new Model.Cliente
                     {
-                        CodConsumidor = objList.Valor("Cliente"),
-                        NomeConsumidor = objList.Valor("Nome"),
-                        Moeda = objList.Valor("Moeda"),
+                        CodCliente = objList.Valor("Cliente"),
+                        Nome = objList.Valor("Nome"),
                         NumContribuinte = objList.Valor("NumContribuinte"),
                         Morada = objList.Valor("campo_exemplo")
                     });
@@ -67,9 +66,8 @@ namespace PharmaCRM.Lib_Primavera
                 if (PriEngine.Engine.Comercial.Clientes.Existe(codCliente) == true)
                 {
                     objCli = PriEngine.Engine.Comercial.Clientes.Edita(codCliente);
-                    myCli.CodConsumidor = objCli.get_Cliente();
-                    myCli.NomeConsumidor = objCli.get_Nome();
-                    myCli.Moeda = objCli.get_Moeda();
+                    myCli.CodCliente = objCli.get_Cliente();
+                    myCli.Nome = objCli.get_Nome();
                     myCli.NumContribuinte = objCli.get_NumContribuinte();
                     myCli.Morada = objCli.get_Morada();
                     return myCli;
@@ -96,7 +94,7 @@ namespace PharmaCRM.Lib_Primavera
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
 
-                    if (PriEngine.Engine.Comercial.Clientes.Existe(cliente.CodConsumidor) == false)
+                    if (PriEngine.Engine.Comercial.Clientes.Existe(cliente.CodCliente) == false)
                     {
                         erro.Erro = 1;
                         erro.Descricao = "O cliente não existe";
@@ -105,12 +103,11 @@ namespace PharmaCRM.Lib_Primavera
                     else
                     {
 
-                        objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente.CodConsumidor);
+                        objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente.CodCliente);
                         objCli.set_EmModoEdicao(true);
 
-                        objCli.set_Nome(cliente.NomeConsumidor);
+                        objCli.set_Nome(cliente.Nome);
                         objCli.set_NumContribuinte(cliente.NumContribuinte);
-                        objCli.set_Moeda(cliente.Moeda);
                         objCli.set_Morada(cliente.Morada);
 
                         PriEngine.Engine.Comercial.Clientes.Actualiza(objCli);
@@ -200,10 +197,9 @@ namespace PharmaCRM.Lib_Primavera
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
 
-                    myCli.set_Cliente(cli.CodConsumidor);
-                    myCli.set_Nome(cli.NomeConsumidor);
+                    myCli.set_Cliente(cli.CodCliente);
+                    myCli.set_Nome(cli.Nome);
                     myCli.set_NumContribuinte(cli.NumContribuinte);
-                    myCli.set_Moeda(cli.Moeda);
                     myCli.set_Morada(cli.Morada);
 
                     PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
@@ -372,7 +368,7 @@ namespace PharmaCRM.Lib_Primavera
             GcpBELinhaDocumentoCompra myLin = new GcpBELinhaDocumentoCompra();
             GcpBELinhasDocumentoCompra myLinhas = new GcpBELinhasDocumentoCompra();
 
-            PreencheRelacaoCompras rl = new PreencheRelacaoCompras();
+            Interop.GcpBE900.PreencheRelacaoCompras rl = new Interop.GcpBE900.PreencheRelacaoCompras();
             List<Model.LinhaDocCompra> lstlindv = new List<Model.LinhaDocCompra>();
 
             try
@@ -436,7 +432,7 @@ namespace PharmaCRM.Lib_Primavera
 
             GcpBELinhasDocumentoVenda myLinhas = new GcpBELinhasDocumentoVenda();
 
-            PreencheRelacaoVendas rl = new PreencheRelacaoVendas();
+            Interop.GcpBE900.PreencheRelacaoVendas rl = new Interop.GcpBE900.PreencheRelacaoVendas();
             List<Model.LinhaDocVenda> lstlindv = new List<Model.LinhaDocVenda>();
 
             try
