@@ -10,7 +10,7 @@ namespace PharmaCRM.Controllers
 {
     public class ActividadesController : ApiController
     {
-        public IEnumerable<Actividade> GetActividade(string id)
+        public Lib_Primavera.Models.Atividade Get(string id)
         {
             return PharmaCRM.Lib_Primavera.PriIntegration.GetActividade(string id);
         }
