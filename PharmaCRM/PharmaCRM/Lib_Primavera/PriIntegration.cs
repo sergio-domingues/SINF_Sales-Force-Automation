@@ -606,10 +606,6 @@ namespace PharmaCRM.Lib_Primavera
             }
             else
             {
-                string tipo, comercial, descricao, morada, cliente;
-                bool terminada;
-                DateTime data_inicio, data_fim;
-
                 actividade = PriEngine.Engine.CRM.Actividades.Edita(id);
                 model_actividade = new Models.Actividade();
 
