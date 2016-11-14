@@ -36,8 +36,8 @@ namespace PharmaCRM.Lib_Primavera
                 {
                     listClientes.Add(new Model.Cliente
                     {
-                        CodCliente = objList.Valor("Cliente"),
-                        NomeCliente = objList.Valor("Nome"),
+                        CodConsumidor = objList.Valor("Cliente"),
+                        NomeConsumidor = objList.Valor("Nome"),
                         Moeda = objList.Valor("Moeda"),
                         NumContribuinte = objList.Valor("NumContribuinte"),
                         Morada = objList.Valor("campo_exemplo")
@@ -67,8 +67,8 @@ namespace PharmaCRM.Lib_Primavera
                 if (PriEngine.Engine.Comercial.Clientes.Existe(codCliente) == true)
                 {
                     objCli = PriEngine.Engine.Comercial.Clientes.Edita(codCliente);
-                    myCli.CodCliente = objCli.get_Cliente();
-                    myCli.NomeCliente = objCli.get_Nome();
+                    myCli.CodConsumidor = objCli.get_Cliente();
+                    myCli.NomeConsumidor = objCli.get_Nome();
                     myCli.Moeda = objCli.get_Moeda();
                     myCli.NumContribuinte = objCli.get_NumContribuinte();
                     myCli.Morada = objCli.get_Morada();
@@ -96,7 +96,7 @@ namespace PharmaCRM.Lib_Primavera
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
 
-                    if (PriEngine.Engine.Comercial.Clientes.Existe(cliente.CodCliente) == false)
+                    if (PriEngine.Engine.Comercial.Clientes.Existe(cliente.CodConsumidor) == false)
                     {
                         erro.Erro = 1;
                         erro.Descricao = "O cliente não existe";
@@ -105,10 +105,10 @@ namespace PharmaCRM.Lib_Primavera
                     else
                     {
 
-                        objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente.CodCliente);
+                        objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente.CodConsumidor);
                         objCli.set_EmModoEdicao(true);
 
-                        objCli.set_Nome(cliente.NomeCliente);
+                        objCli.set_Nome(cliente.NomeConsumidor);
                         objCli.set_NumContribuinte(cliente.NumContribuinte);
                         objCli.set_Moeda(cliente.Moeda);
                         objCli.set_Morada(cliente.Morada);
@@ -200,8 +200,8 @@ namespace PharmaCRM.Lib_Primavera
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
 
-                    myCli.set_Cliente(cli.CodCliente);
-                    myCli.set_Nome(cli.NomeCliente);
+                    myCli.set_Cliente(cli.CodConsumidor);
+                    myCli.set_Nome(cli.NomeConsumidor);
                     myCli.set_NumContribuinte(cli.NumContribuinte);
                     myCli.set_Moeda(cli.Moeda);
                     myCli.set_Morada(cli.Morada);
