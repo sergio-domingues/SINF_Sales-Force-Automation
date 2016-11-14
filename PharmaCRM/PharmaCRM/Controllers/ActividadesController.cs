@@ -8,7 +8,7 @@ using System.Web.Http;
 
 namespace PharmaCRM.Controllers
 {
-    public class ActivitiesController : ApiController
+    public class ActividadesController : ApiController
     {
         public IEnumerable<Actividade> GetActividade()
         {

@@ -595,7 +595,7 @@ namespace PharmaCRM.Lib_Primavera
 
         # region Actividade
 
-        public static Models.Actividade GetActividade(string codCliente){
+        public static Models.Actividade GetActividade(string codActividade){
 
             CrmBEActividade actividade = new CrmBEActividade();
             Models.Actividade = 
