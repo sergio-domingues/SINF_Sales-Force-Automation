@@ -7,29 +7,19 @@ namespace PharmaCRM.Lib_Primavera.Model
 {
     public class Cliente
     {
-        public string Morada;
-
-        /* Exemplo para POST e GET com valores específicos
-         public string Morada
-        {
-            get
-            {
-                return "MORADA: " + _morada;
-            }
-            set
-            {
-                _morada = value;
-            }
-        }
-    
-*/       
-        public string CodCliente
+        public string Morada
         {
             get;
             set;
         }
 
-        public string NomeCliente
+        public string Cod
+        {
+            get;
+            set;
+        }
+
+        public string Nome
         {
             get;
             set;
@@ -40,12 +30,5 @@ namespace PharmaCRM.Lib_Primavera.Model
             get;
             set;
         }
-
-        public string Moeda
-        {
-            get;
-            set;
-        }
-
     }
 }
