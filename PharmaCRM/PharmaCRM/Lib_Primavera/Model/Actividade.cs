@@ -17,6 +17,12 @@ namespace PharmaCRM.Models
             set;
         }
 
+        public DateTime data_fim
+        {
+            get;
+            set;
+        }
+
         public string descricao
         {
             get;

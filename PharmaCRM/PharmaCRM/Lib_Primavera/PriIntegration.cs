@@ -621,9 +621,9 @@ namespace PharmaCRM.Lib_Primavera
                 model_actividade.tipo = actividade.get_IDTipoActividade();
                 model_actividade.comercial = actividade.get_CriadoPor();
                 model_actividade.morada = actividade.get_LocalRealizacao();
-                //model_actividade.terminada = actividade.();    
-               // model_actividade.data_inicio = actividade.get_DataInicio();
-               // model_actividade.data_fim = actividade.get_DataFim();
+               // model_actividade.terminada = actividade.();    
+                model_actividade.data_inicio = actividade.get_DataInicio();
+                model_actividade.data_fim = actividade.get_DataFim();
 
                 return model_actividade;
             }
