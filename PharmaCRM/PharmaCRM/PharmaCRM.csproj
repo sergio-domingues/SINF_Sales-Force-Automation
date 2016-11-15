@@ -257,9 +257,11 @@
     <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\VendedoresController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Lib_Primavera\Model\Vendedor.cs" />
     <Compile Include="Lib_Primavera\Model\Artigo.cs" />
     <Compile Include="Lib_Primavera\Model\Cliente.cs" />
     <Compile Include="Lib_Primavera\Model\DocCompra.cs" />

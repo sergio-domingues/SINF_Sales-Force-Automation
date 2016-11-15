@@ -13,6 +13,42 @@ namespace PharmaCRM.Lib_Primavera
 {
     public class PriIntegration
     {
+        #region Vendedor
+
+
+        public static List<Model.Vendedor> ListaVendedores()
+        {
+
+            StdBELista objList;
+
+            List<Model.Vendedor> listVendedores = new List<Model.Vendedor>();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
+
+                objList = PriEngine.Engine.Consulta("SELECT Vendedor, Nome FROM vendedores");
+
+
+                while (!objList.NoFim())
+                {
+                    listVendedores.Add(new Model.Vendedor
+                    {
+                        cod = objList.Valor("Vendedor"),
+                        nome = objList.Valor("Nome")
+                    });
+                    objList.Seguinte();
+
+                }
+
+                return listVendedores;
+            }
+            else
+                return null;
+        }
+
+        #endregion Vendedor;
 
         # region Cliente
 
