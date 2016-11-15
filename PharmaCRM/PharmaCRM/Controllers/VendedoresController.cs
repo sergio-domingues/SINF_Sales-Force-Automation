@@ -27,7 +27,12 @@ namespace PharmaCRM.Controllers
             }
         }
 
-        public IEnumerable<Lib_Primavera.Model.Atividade> GetVendedorAtividades(string id, string dataInicio, string dataFim)
+
+        // http://localhost:49559/api/vendedores/1/atividades?dataInicio=2010-11-15&dataFim=2016-11-15
+
+        [Route("api/vendedores/{id}/atividades")]
+        [HttpGet]
+        public IEnumerable<Lib_Primavera.Model.Atividade> GetVendedorAtividades(string id, [FromUri] string dataInicio, [FromUri] string dataFim)
         {
             return Lib_Primavera.PriIntegration.GetVendedorAtividades(id, dataInicio, dataFim);
         }
