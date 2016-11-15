@@ -7,17 +7,35 @@ using System.Web.Http;
 
 namespace PharmaCRM.Lib_Primavera.Model
 {
-    public class Actividade
+    public class Atividade
     {
         //todo ENUM for attr type
 
-        public DateTime data_inicio
+        public String id
         {
             get;
             set;
         }
 
-        public DateTime data_fim
+        public String idTipoAtividade
+        {
+            get;
+            set;
+        }
+
+        public int estado
+        {
+            get;
+            set;
+        }
+
+        public DateTime dataInicio
+        {
+            get;
+            set;
+        }
+
+        public DateTime dataFim
         {
             get;
             set;
@@ -29,25 +47,25 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
-        public string tipo
+        public string idContactoPrincipal
         {
             get;
             set;
         }
 
-        public bool terminada
+        public string idCabecalhoOportunidadeVenda
         {
             get;
             set;
         }
 
-        public string comercial 
+        public string vendedor
         {
             get;
             set;
         }
 
-        public string morada
+        public string local
         {
             get;
             set;

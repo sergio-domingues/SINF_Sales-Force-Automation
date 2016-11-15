@@ -14,9 +14,8 @@ namespace PharmaCRM.Controllers
             return PharmaCRM.Lib_Primavera.PriIntegration.ListaVendedores();
         }
 
-        public Lib_Primavera.Model.Vendedor GetVendedor(String id)
+        public Lib_Primavera.Model.Vendedor Get(String id)
         {
-
             Lib_Primavera.Model.Vendedor vendedor = PharmaCRM.Lib_Primavera.PriIntegration.GetVendedor(id);
             if (vendedor == null)
             {
@@ -26,6 +25,11 @@ namespace PharmaCRM.Controllers
             {
                 return vendedor;
             }
+        }
+
+        public IEnumerable<Lib_Primavera.Model.Atividade> GetVendedorAtividades(string id, string dataInicio, string dataFim)
+        {
+            return Lib_Primavera.PriIntegration.GetVendedorAtividades(id, dataInicio, dataFim);
         }
     }
 }

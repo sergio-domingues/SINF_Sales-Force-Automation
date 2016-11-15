@@ -7,11 +7,11 @@ using System.Web.Http;
 
 namespace PharmaCRM.Controllers
 {
-    public class ActividadesController : ApiController
+    public class AtividadesController : ApiController
     {
-        public Lib_Primavera.Model.Actividade Get(string id)
+        public Lib_Primavera.Model.Atividade Get(string id)
         {
-            return PharmaCRM.Lib_Primavera.PriIntegration.GetActividade(id);
+            return PharmaCRM.Lib_Primavera.PriIntegration.GetAtividade(id);
         }
     }
 }
