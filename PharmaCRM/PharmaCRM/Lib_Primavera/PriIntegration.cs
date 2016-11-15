@@ -345,8 +345,13 @@ namespace PharmaCRM.Lib_Primavera
                 else
                 {
                     objArtigo = PriEngine.Engine.Comercial.Artigos.Edita(codArtigo);
-                    myArt.CodArtigo = objArtigo.get_Artigo();
-                    myArt.DescArtigo = objArtigo.get_Descricao();
+                    myArt.Codigo = objArtigo.get_Artigo();
+                    myArt.Descricao = objArtigo.get_Descricao();
+                    myArt.StockAtual = objArtigo.get_StkActual();
+                    myArt.PrecoUltimo = objArtigo.get_PCUltimo();
+                    myArt.PrecoMedio = objArtigo.get_PCMedio();
+                    myArt.Iva = objArtigo.get_IVA();
+                    myArt.PrazoEntrega = objArtigo.get_PrazoEntrega();
 
                     return myArt;
                 }
@@ -361,11 +366,78 @@ namespace PharmaCRM.Lib_Primavera
 
         public static List<Model.Artigo> ListaArtigos()
         {
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StdBELista objListCab;
+                Model.Artigo art;
+                List<Model.Artigo> listArts = new List<Model.Artigo>();
+
+                objListCab = PriEngine.Engine.Consulta("SELECT Artigo, Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega From Artigo");
+
+                while (!objListCab.NoFim())
+                {
+                    art = new Model.Artigo();
+                    art.Codigo = objListCab.Valor("Artigo");
+                    art.Descricao = objListCab.Valor("Descricao");
+                    art.StockAtual = objListCab.Valor("STKActual");
+                    art.PrecoUltimo = objListCab.Valor("PCUltimo");
+                    art.PrecoMedio = objListCab.Valor("PCMedio");
+                    art.Iva = objListCab.Valor("Iva");
+                    art.PrazoEntrega = objListCab.Valor("PrazoEntrega");
+
+                    listArts.Add(art);
+
+                    objListCab.Seguinte();
+                }
+
+                return listArts;
+
+            }
+            else
+            {
+                return null;
+
+            }
+
+        }
+
+        public static Lib_Primavera.Model.ArtigoResumo GetArtigoResumo(string codArtigo)
+        {
+
+            GcpBEArtigo objArtigo = new GcpBEArtigo();
+            Model.ArtigoResumo myArt = new Model.ArtigoResumo();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                if (PriEngine.Engine.Comercial.Artigos.Existe(codArtigo) == false)
+                {
+                    return null;
+                }
+                else
+                {
+                    objArtigo = PriEngine.Engine.Comercial.Artigos.Edita(codArtigo);
+                    myArt.Codigo = objArtigo.get_Artigo();
+                    myArt.Descricao = objArtigo.get_Descricao();
+
+                    return myArt;
+                }
+
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        public static List<Model.ArtigoResumo> ListaArtigosResumo()
+        {
 
             StdBELista objList;
 
-            Model.Artigo art = new Model.Artigo();
-            List<Model.Artigo> listArts = new List<Model.Artigo>();
+            Model.ArtigoResumo art = new Model.ArtigoResumo();
+            List<Model.ArtigoResumo> listArts = new List<Model.ArtigoResumo>();
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
@@ -374,9 +446,9 @@ namespace PharmaCRM.Lib_Primavera
 
                 while (!objList.NoFim())
                 {
-                    art = new Model.Artigo();
-                    art.CodArtigo = objList.Valor("artigo");
-                    art.DescArtigo = objList.Valor("descricao");
+                    art = new Model.ArtigoResumo();
+                    art.Codigo = objList.Valor("artigo");
+                    art.Descricao = objList.Valor("descricao");
 
                     listArts.Add(art);
                     objList.Seguinte();

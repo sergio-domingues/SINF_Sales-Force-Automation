@@ -10,12 +10,14 @@ namespace PharmaCRM.Controllers
     public class ArtigosController : ApiController
     {
         // GET api/artigos
+        // Lista com detalhes completos dos Artigos
         public IEnumerable<Lib_Primavera.Model.Artigo> Get()
         {
             return Lib_Primavera.PriIntegration.ListaArtigos();
         }
 
         // GET api/artigos/5
+        // Detalhes completos do Artigo
         public Lib_Primavera.Model.Artigo Get(string id)
         {
             Lib_Primavera.Model.Artigo artigo = Lib_Primavera.PriIntegration.GetArtigo(id);
