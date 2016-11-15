@@ -13,5 +13,19 @@ namespace PharmaCRM.Controllers
         {
             return PharmaCRM.Lib_Primavera.PriIntegration.ListaVendedores();
         }
+
+        public Lib_Primavera.Model.Vendedor GetVendedor(String id)
+        {
+
+            Lib_Primavera.Model.Vendedor vendedor = PharmaCRM.Lib_Primavera.PriIntegration.GetVendedor(id);
+            if (vendedor == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+            else
+            {
+                return vendedor;
+            }
+        }
     }
 }

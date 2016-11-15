@@ -20,32 +20,52 @@ namespace PharmaCRM.Lib_Primavera
         {
 
             StdBELista objList;
-
             List<Model.Vendedor> listVendedores = new List<Model.Vendedor>();
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objList = PriEngine.Engine.Consulta("SELECT Vendedor, Nome FROM vendedores");
+                while (!objList.NoFim())
+                {
+                    Model.Vendedor vendedor = new Model.Vendedor();
+                    vendedor.cod = objList.Valor("Vendedor");
+                    vendedor.nome = objList.Valor("Nome");
+                    listVendedores.Add(vendedor);
+
+                    objList.Seguinte();
+                }
+                return listVendedores;
+            }
+            else
+                return null; // Erro
+        }
+
+        public static Lib_Primavera.Model.Vendedor GetVendedor(string id)
+        {
+            StdBELista objVen = new StdBELista();
+
+
+            Model.Vendedor myVend = new Model.Vendedor();
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
 
-                //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
-
-                objList = PriEngine.Engine.Consulta("SELECT Vendedor, Nome FROM vendedores");
-
-
-                while (!objList.NoFim())
+                if (PriEngine.Engine.Comercial.Vendedores.Existe(id) == true)
                 {
-                    listVendedores.Add(new Model.Vendedor
-                    {
-                        cod = objList.Valor("Vendedor"),
-                        nome = objList.Valor("Nome")
-                    });
-                    objList.Seguinte();
+                    objVen = PriEngine.Engine.Consulta("SELECT Vendedor, Nome FROM vendedores WHERE Vendedor = " + "\'" + id + "\'");
+                    Model.Vendedor vendedor = new Model.Vendedor();
+                    vendedor.cod = objVen.Valor("Vendedor");
+                    vendedor.nome = objVen.Valor("Nome");
 
+                    return vendedor;
                 }
-
-                return listVendedores;
+                else
+                {
+                    return null;
+                }
             }
             else
-                return null;
+                return null; // Erro
+
         }
 
         #endregion Vendedor;
