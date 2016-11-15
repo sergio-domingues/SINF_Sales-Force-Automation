@@ -305,8 +305,13 @@ namespace PharmaCRM.Lib_Primavera
                 else
                 {
                     objArtigo = PriEngine.Engine.Comercial.Artigos.Edita(codArtigo);
-                    myArt.CodArtigo = objArtigo.get_Artigo();
-                    myArt.DescArtigo = objArtigo.get_Descricao();
+                    myArt.Codigo = objArtigo.get_Artigo();
+                    myArt.Descricao = objArtigo.get_Descricao();
+                    myArt.StockAtual = objArtigo.get_StkActual();
+                    myArt.PrecoUltimo = objArtigo.get_PCUltimo();
+                    myArt.PrecoMedio = objArtigo.get_PCMedio();
+                    myArt.Iva = objArtigo.get_IVA();
+                    myArt.PrazoEntrega = objArtigo.get_PrazoEntrega();
 
                     return myArt;
                 }
@@ -335,8 +340,79 @@ namespace PharmaCRM.Lib_Primavera
                 while (!objList.NoFim())
                 {
                     art = new Model.Artigo();
-                    art.CodArtigo = objList.Valor("artigo");
-                    art.DescArtigo = objList.Valor("descricao");
+                    art.Codigo = objList.Valor("artigo");
+
+                    GcpBEArtigo objArtigo = PriEngine.Engine.Comercial.Artigos.Edita(art.Codigo);
+                    art.Descricao = objArtigo.get_Descricao();
+                    art.StockAtual = objArtigo.get_StkActual();
+                    art.PrecoUltimo = objArtigo.get_PCUltimo();
+                    art.PrecoMedio = objArtigo.get_PCMedio();
+                    art.Iva = objArtigo.get_IVA();
+                    art.PrazoEntrega = objArtigo.get_PrazoEntrega();
+
+                    listArts.Add(art);
+                    objList.Seguinte();
+                }
+
+                return listArts;
+
+            }
+            else
+            {
+                return null;
+
+            }
+
+        }
+
+        public static Lib_Primavera.Model.ArtigoResumo GetArtigoResumo(string codArtigo)
+        {
+
+            GcpBEArtigo objArtigo = new GcpBEArtigo();
+            Model.ArtigoResumo myArt = new Model.ArtigoResumo();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                if (PriEngine.Engine.Comercial.Artigos.Existe(codArtigo) == false)
+                {
+                    return null;
+                }
+                else
+                {
+                    objArtigo = PriEngine.Engine.Comercial.Artigos.Edita(codArtigo);
+                    myArt.Codigo = objArtigo.get_Artigo();
+                    myArt.Descricao = objArtigo.get_Descricao();
+
+                    return myArt;
+                }
+
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        public static List<Model.ArtigoResumo> ListaArtigosResumo()
+        {
+
+            StdBELista objList;
+
+            Model.ArtigoResumo art = new Model.ArtigoResumo();
+            List<Model.ArtigoResumo> listArts = new List<Model.ArtigoResumo>();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                objList = PriEngine.Engine.Comercial.Artigos.LstArtigos();
+
+                while (!objList.NoFim())
+                {
+                    art = new Model.ArtigoResumo();
+                    art.Codigo = objList.Valor("artigo");
+                    art.Descricao = objList.Valor("descricao");
 
                     listArts.Add(art);
                     objList.Seguinte();
