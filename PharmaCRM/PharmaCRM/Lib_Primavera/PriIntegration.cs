@@ -326,32 +326,28 @@ namespace PharmaCRM.Lib_Primavera
 
         public static List<Model.Artigo> ListaArtigos()
         {
-
-            StdBELista objList;
-
-            Model.Artigo art = new Model.Artigo();
-            List<Model.Artigo> listArts = new List<Model.Artigo>();
-
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
+                StdBELista objListCab;
+                Model.Artigo art;
+                List<Model.Artigo> listArts = new List<Model.Artigo>();
 
-                objList = PriEngine.Engine.Comercial.Artigos.LstArtigos();
+                objListCab = PriEngine.Engine.Consulta("SELECT Artigo, Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega From Artigo");
 
-                while (!objList.NoFim())
+                while (!objListCab.NoFim())
                 {
                     art = new Model.Artigo();
-                    art.Codigo = objList.Valor("artigo");
-
-                    GcpBEArtigo objArtigo = PriEngine.Engine.Comercial.Artigos.Edita(art.Codigo);
-                    art.Descricao = objArtigo.get_Descricao();
-                    art.StockAtual = objArtigo.get_StkActual();
-                    art.PrecoUltimo = objArtigo.get_PCUltimo();
-                    art.PrecoMedio = objArtigo.get_PCMedio();
-                    art.Iva = objArtigo.get_IVA();
-                    art.PrazoEntrega = objArtigo.get_PrazoEntrega();
+                    art.Codigo = objListCab.Valor("Artigo");
+                    art.Descricao = objListCab.Valor("Descricao");
+                    art.StockAtual = objListCab.Valor("STKActual");
+                    art.PrecoUltimo = objListCab.Valor("PCUltimo");
+                    art.PrecoMedio = objListCab.Valor("PCMedio");
+                    art.Iva = objListCab.Valor("Iva");
+                    art.PrazoEntrega = objListCab.Valor("PrazoEntrega");
 
                     listArts.Add(art);
-                    objList.Seguinte();
+
+                    objListCab.Seguinte();
                 }
 
                 return listArts;
