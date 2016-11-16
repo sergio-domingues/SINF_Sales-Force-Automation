@@ -1,17 +1,6 @@
 <template>
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-		<div class="row">
-			<ol class="breadcrumb">
-				<li>
-					<router-link to="/"><i class="fa fa-home" aria-hidden="true"></i></router-link>
-				</li>
-				<li>
-					<router-link to="/activities">Atividades</router-link>
-				</li>
-				<li class="active">Ajuste de Detalhes</li>
-			</ol>
-		</div>
-		<!--/.row-->
+		<breadcrumb :items="[{path:'activities',name:'Actividades'},{path:'current',name:'Ajuste de Detalhes'}]"></breadcrumb>
 
 		<div class="row">
 			<div class="col-lg-12">
@@ -28,8 +17,8 @@
 							<i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg','clicable']" aria-hidden="true"></i>
 							<i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times clicable" aria-hidden="true"></i>
 						</div>
-						
-							
+
+
 					</div>
 					<div class="panel-body">
 
@@ -54,14 +43,14 @@
 								</div>
 							</div>
 
-                            <div class="form-group">
+							<div class="form-group">
 								<label for="inputPassword0" class="col-sm-2 control-label">Data de Inicio</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" id="inputPassword0" placeholder="Password" value="The White House" :disabled="!editing">
 								</div>
 							</div>
 
-                            <div class="form-group">
+							<div class="form-group">
 								<label for="inputPassword1" class="col-sm-2 control-label">Data de Fim</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" id="inputPassword1" placeholder="Password" value="The White House" :disabled="!editing">
@@ -93,8 +82,8 @@
 			</div>
 
 		</div>
-
 	</div>
+
 </template>
 
 <script>
