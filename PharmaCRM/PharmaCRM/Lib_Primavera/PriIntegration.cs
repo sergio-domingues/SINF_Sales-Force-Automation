@@ -775,6 +775,34 @@ namespace PharmaCRM.Lib_Primavera
 
         # region Atividade
 
+        public static List<Model.Atividade> GetListaAtividades()
+        {
+            StdBELista objList;
+            List<Model.Atividade> listTarefas = new List<Model.Atividade>();
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objList = PriEngine.Engine.Consulta("SELECT * FROM tarefas");
+                while (!objList.NoFim())
+                {
+                    Model.Atividade atividade = new Model.Atividade();
+                    atividade.id = objList.Valor("Id");
+                    atividade.idTipoAtividade = objList.Valor("IdTipoActividade");
+                    atividade.estado = objList.Valor("Estado");
+                    atividade.descricao = objList.Valor("Descricao");
+                    atividade.dataInicio = objList.Valor("DataInicio");
+                    atividade.dataFim = objList.Valor("DataFim");
+                    atividade.local = objList.Valor("LocalRealizacao");
+                    atividade.vendedor = objList.Valor("Utilizador");
+                    atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
+                    listTarefas.Add(atividade);
+                    objList.Seguinte();
+                }
+                return listTarefas;
+            }
+            else
+                return null;
+        }
+
         public static Model.Atividade GetAtividade(string id)
         {
 
@@ -793,6 +821,7 @@ namespace PharmaCRM.Lib_Primavera
                 atividade = PriEngine.Engine.CRM.Actividades.Edita(id);
                 model_actividade = new Model.Atividade();
 
+                model_actividade.id = atividade.get_ID();
                 model_actividade.descricao = atividade.get_Descricao();
                 model_actividade.idTipoAtividade = atividade.get_IDTipoActividade();
                 model_actividade.vendedor = atividade.get_CriadoPor();
