@@ -7,6 +7,7 @@
              <li v-for="item in items">
                 <router-link :to="'/'+item.path">{{item.name}}</router-link>
             </li>
+            <li class="active">{{current}}</li>
         </ol>
     </div>
 </template>
@@ -18,6 +19,6 @@ export default {
   data () {
     return {}
   },
-  props:['items']
+  props:['items','current']
 }
 </script>

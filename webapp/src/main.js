@@ -9,6 +9,7 @@ import LeadList from './components/LeadList.vue'
 import Activity from './components/Activity.vue'
 import ActivityList from './components/ActivityList.vue'
 import NotFound from './components/NotFound.vue'
+import Breadcrumb from './components/Breadcrumb.vue'
 
 
 Vue.use(VueRouter);
@@ -29,6 +30,8 @@ const router = new VueRouter({
   linkActiveClass: 'active',
   routes
 })
+
+Vue.component('breadcrumb', Breadcrumb)
 
 new Vue({
   router,

@@ -1,17 +1,6 @@
 <template>
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-		<div class="row">
-			<ol class="breadcrumb">
-				<li>
-					<router-link to="/"><i class="fa fa-home" aria-hidden="true"></i></router-link>
-				</li>
-				<li>
-					<router-link to="/leads">Oportunidades</router-link>
-				</li>
-				<li class="active">Projecto de Implementação 1</li>
-			</ol>
-		</div>
-		<!--/.row-->
+		<breadcrumb :items="[{path:'leads',name:'Oportunidades'}]" :current="'Projecto de Implementação 1'"></breadcrumb>
 
 		<div classt="row">
 			<div class="col-lg-12">
