@@ -25,7 +25,7 @@ namespace PharmaCRM.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("PharmaLabs")]
+        [global::System.Configuration.DefaultSettingValueAttribute("DEMOSINF")]
         public string Company {
             get {
                 return ((string)(this["Company"]));

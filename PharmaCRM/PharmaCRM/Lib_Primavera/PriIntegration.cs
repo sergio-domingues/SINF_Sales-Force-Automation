@@ -13,6 +13,62 @@ namespace PharmaCRM.Lib_Primavera
 {
     public class PriIntegration
     {
+        #region Vendedor
+
+
+        public static List<Model.Vendedor> ListaVendedores()
+        {
+
+            StdBELista objList;
+            List<Model.Vendedor> listVendedores = new List<Model.Vendedor>();
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objList = PriEngine.Engine.Consulta("SELECT Vendedor, Nome FROM vendedores");
+                while (!objList.NoFim())
+                {
+                    Model.Vendedor vendedor = new Model.Vendedor();
+                    vendedor.cod = objList.Valor("Vendedor");
+                    vendedor.nome = objList.Valor("Nome");
+                    listVendedores.Add(vendedor);
+
+                    objList.Seguinte();
+                }
+                return listVendedores;
+            }
+            else
+                return null; // Erro
+        }
+
+        public static Lib_Primavera.Model.Vendedor GetVendedor(string id)
+        {
+            StdBELista objVen = new StdBELista();
+
+
+            Model.Vendedor myVend = new Model.Vendedor();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                if (PriEngine.Engine.Comercial.Vendedores.Existe(id) == true)
+                {
+                    objVen = PriEngine.Engine.Consulta("SELECT Vendedor, Nome FROM vendedores WHERE Vendedor = " + "\'" + id + "\'");
+                    Model.Vendedor vendedor = new Model.Vendedor();
+                    vendedor.cod = objVen.Valor("Vendedor");
+                    vendedor.nome = objVen.Valor("Nome");
+
+                    return vendedor;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+                return null; // Erro
+
+        }
+
+        #endregion Vendedor;
 
         # region Cliente
 
