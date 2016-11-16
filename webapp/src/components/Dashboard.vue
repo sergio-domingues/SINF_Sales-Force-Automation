@@ -10,7 +10,7 @@
 
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Dashboard</h1>
+					<h1 class="page-header">Painel</h1>
 				</div>
 			</div>
 			<!--/.row-->
@@ -18,7 +18,7 @@
 			<div class="row">
 				<div class="col-lg-4">
 					<div class="panel panel-default">
-						<div class="panel-heading">Activities</div>
+						<div class="panel-heading">Atividades</div>
 						<div class="panel-body">
 						</div>
 					</div>
@@ -26,19 +26,17 @@
 
 				<div class="col-lg-8">
 					<div class="panel panel-default">
-						<div class="panel-heading">Route</div>
+						<div class="panel-heading">Rota </div>
 						<div class="panel-body">
 						</div>
 					</div>
 				</div>
 			</div>
-			<!--/.row-->
-
 
 			<div class="row">
 				<div class="col-md-4">
 					<div class="panel panel-default">
-						<div class="panel-heading">Data Picker</div>
+						<div class="panel-heading">Calendário</div>
 						<div class="panel-body">
 						</div>
 					</div>
@@ -46,7 +44,7 @@
 
 				<div class="col-md-8">
 					<div class="panel panel-default">
-						<div class="panel-heading">Leads</div>
+						<div class="panel-heading">Oportunidades</div>
 						<div class="panel-body">
 						</div>
 					</div>

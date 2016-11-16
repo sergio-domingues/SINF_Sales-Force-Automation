@@ -6,16 +6,16 @@
 					<router-link to="/"><i class="fa fa-home" aria-hidden="true"></i></router-link>
 				</li>
 				<li>
-					<router-link to="/">Clientes</router-link>
+					<router-link to="/activities">Atividades</router-link>
 				</li>
-				<li class="active">Barack Obama</li>
+				<li class="active">Ajuste de Detalhes</li>
 			</ol>
 		</div>
 		<!--/.row-->
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Barack Obama</h1>
+				<h1 class="page-header">Ajuste de Detalhes</h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -25,8 +25,8 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">Info
 						<div class="pull-right">
-							<i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg']" aria-hidden="true"></i>
-							<i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times" aria-hidden="true"></i>
+							<i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg','clicable']" aria-hidden="true"></i>
+							<i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times clicable" aria-hidden="true"></i>
 						</div>
 						
 							
@@ -37,27 +37,41 @@
 							<div class="form-group">
 								<label for="inputEmail3" class="col-sm-2 control-label">Id</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputEmail3" placeholder="Id" value="6" disabled>
+									<input type="text" class="form-control" id="inputEmail3" placeholder="Id" :value="$route.params.id" disabled>
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label">Nome</label>
+								<label for="inputPassword3" class="col-sm-2 control-label">Tipo</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" id="inputPassword3" placeholder="Password" value="Barack Hussein Obama" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword2" class="col-sm-2 control-label">Morada</label>
+								<label for="inputPassword2" class="col-sm-2 control-label">Estado</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" id="inputPassword2" placeholder="Password" value="The White House" :disabled="!editing">
 								</div>
 							</div>
 
-							<div class="form-group">
-								<label for="inputPassword1" class="col-sm-2 control-label">Contacto</label>
+                            <div class="form-group">
+								<label for="inputPassword0" class="col-sm-2 control-label">Data de Inicio</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword1" placeholder="Password" value="91675984" :disabled="!editing">
+									<input type="text" class="form-control" id="inputPassword0" placeholder="Password" value="The White House" :disabled="!editing">
+								</div>
+							</div>
+
+                            <div class="form-group">
+								<label for="inputPassword1" class="col-sm-2 control-label">Data de Fim</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="inputPassword1" placeholder="Password" value="The White House" :disabled="!editing">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="inputPassword4" class="col-sm-2 control-label">Local</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="inputPassword4" placeholder="Password" value="91675984" :disabled="!editing">
 								</div>
 							</div>
 
@@ -79,33 +93,6 @@
 			</div>
 
 		</div>
-		<div class="row">
-			<div class="col-lg-4">
-				<div class="panel panel-blue">
-					<div class="panel-heading">Atividades</div>
-					<div class="panel-body" style="background-color:white">
-					</div>
-				</div>
-			</div>
-
-			<div class="col-lg-4">
-				<div class="panel panel-blue">
-					<div class="panel-heading">Oportunidades</div>
-					<div class="panel-body" style="background-color:white">
-					</div>
-				</div>
-			</div>
-
-			<div class="col-lg-4">
-				<div class="panel panel-blue">
-					<div class="panel-heading">Encomendas</div>
-					<div class="panel-body" style="background-color:white">
-					</div>
-				</div>
-			</div>
-
-		</div>
-		<!--/.row-->
 
 	</div>
 </template>

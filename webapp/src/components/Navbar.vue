@@ -1,5 +1,4 @@
 <template>
-  <div>
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -23,24 +22,6 @@
       </div>
       <!-- /.container-fluid -->
     </nav>
-
-    <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-      <form role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-      </form>
-      <ul class="nav menu">
-        <router-link tag="li" to="/" exact><a>Dashboard</a></router-link>
-        <router-link tag="li" to="/customers"><a>Customers</a>
-        </router-link>
-        <router-link tag="li" to="/leads"><a>Leads</a></router-link>
-        <router-link tag="li" to="/activities"><a>Activities</a></router-link>
-        <router-link tag="li" to="/salesordes"><a>Sales Orders</a></router-link>
-      </ul>
-
-    </div>
-  </div>
 </template>
 
 <script>

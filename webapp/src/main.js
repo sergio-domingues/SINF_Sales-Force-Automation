@@ -1,24 +1,37 @@
 import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
-import Customer from './components/Customer'
-import Dashboard from './components/Dashboard'
+import Customer from './components/Customer.vue'
+import CustomerList from './components/CustomerList.vue'
+import Dashboard from './components/Dashboard.vue'
+import Lead from './components/Lead.vue'
+import LeadList from './components/LeadList.vue'
+import Activity from './components/Activity.vue'
+import ActivityList from './components/ActivityList.vue'
+import NotFound from './components/NotFound.vue'
+
 
 Vue.use(VueRouter);
 
 const routes = [
-  { path: '/customer', component: Customer },
-  { path: '/', component: Dashboard}
+  { path: '/', component: Dashboard },
+  { path: '/customers', component: CustomerList },
+  { path: '/customers/:id', component: Customer },
+  { path: '/leads', component: LeadList },
+  { path: '/leads/:id', component: Lead },
+  { path: '/activities', component: ActivityList },
+  { path: '/activities/:id', component: Activity },
+  { path: '*', component: NotFound },
 ]
 
 //Add history mode in future
 const router = new VueRouter({
-  linkActiveClass:'active',
-  routes 
+  linkActiveClass: 'active',
+  routes
 })
 
 new Vue({
   router,
   el: '#app',
-   render: h => h(App)
+  render: h => h(App)
 })
