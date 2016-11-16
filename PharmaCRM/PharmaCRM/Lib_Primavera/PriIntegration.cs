@@ -98,7 +98,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.local = objList.Valor("LocalRealizacao");
                     atividade.vendedor = vendedorID;
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
-                    
+
                     listTarefas.Add(atividade);
                     objList.Seguinte();
                 }
@@ -483,7 +483,81 @@ namespace PharmaCRM.Lib_Primavera
 
         #endregion Artigo
 
+        #region Stock
 
+        public static List<Lib_Primavera.Model.StockArtigo> GetStock()
+        {
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StdBELista objListCab;
+
+                objListCab = PriEngine.Engine.Consulta("SELECT Artigo FROM Artigo");
+
+                List<Lib_Primavera.Model.StockArtigo> stocks = new List<Model.StockArtigo>();
+
+                while (!objListCab.NoFim())
+                {
+                    string codigo = objListCab.Valor("Artigo");
+                    Model.StockArtigo stk = ActualGetStockArtigo(codigo);
+                    stocks.Add(stk);
+                    objListCab.Seguinte();
+                }
+
+                return stocks;
+            }
+
+            return null;
+        }
+
+        public static Lib_Primavera.Model.StockArtigo GetStockArtigo(string codArtigo)
+        {
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                return ActualGetStockArtigo(codArtigo);
+            }
+
+            return null;
+        }
+
+        private static Lib_Primavera.Model.StockArtigo ActualGetStockArtigo(string codArtigo)
+        {
+            StdBELista objListCab;
+
+            objListCab = PriEngine.Engine.Consulta("SELECT Artigo, Armazem, Lote, StkActual, Localizacao, QtReservada, UltimaContagem, DataUltimaContagem, PCMedio, PCUltimo, BloqueadoInventario "
+                + "FROM ArtigoArmazem WHERE Artigo = '" + codArtigo + "'");
+
+            Model.StockArtigo stockCompleto = new Model.StockArtigo();
+            stockCompleto.CodigoArtigo = codArtigo;
+            stockCompleto.Stocks = new List<Model.StockArtigoArmazem>();
+
+            while (!objListCab.NoFim())
+            {
+                Model.StockArtigoArmazem stk = new Model.StockArtigoArmazem();
+                stk.Armazem = objListCab.Valor("Armazem");
+                stk.Lote = objListCab.Valor("Lote");
+                stk.StockAtual = objListCab.Valor("StkActual");
+                stk.Localizacao = objListCab.Valor("Localizacao");
+                stk.QuantidadeReservada = objListCab.Valor("QtReservada");
+                stk.UltimaContagem = objListCab.Valor("UltimaContagem");
+                var data = objListCab.Valor("DataUltimaContagem");
+                if (data is DateTime)
+                {
+                    stk.DataUltimaContagem = data;
+                }
+                stk.PrecoMedio = objListCab.Valor("PCMedio");
+                stk.PrecoUltimo = objListCab.Valor("PCUltimo");
+                stk.BloqueadoInventario = objListCab.Valor("BloqueadoInventario");
+
+                stockCompleto.Stocks.Add(stk);
+
+                objListCab.Seguinte();
+            }
+
+
+            return stockCompleto;
+        }
+
+        #endregion
 
         #region DocCompra
 
