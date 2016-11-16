@@ -48,5 +48,11 @@ namespace PharmaCRM.Lib_Primavera.Model
             get;
             set;
         }
+
+        public List<double> PVPs
+        {
+            get;
+            set;
+        }
     }
 }

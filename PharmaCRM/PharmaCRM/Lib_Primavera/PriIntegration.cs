@@ -338,24 +338,33 @@ namespace PharmaCRM.Lib_Primavera
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
 
-                if (PriEngine.Engine.Comercial.Artigos.Existe(codArtigo) == false)
+                StdBELista objListCab;
+
+                objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6 "
+                    + "FROM Artigo, ArtigoMoeda WHERE Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.Artigo = '" + codArtigo + "'");
+
+                if (objListCab.NoFim())
                 {
                     return null;
                 }
-                else
-                {
-                    objArtigo = PriEngine.Engine.Comercial.Artigos.Edita(codArtigo);
-                    myArt.Codigo = objArtigo.get_Artigo();
-                    myArt.Descricao = objArtigo.get_Descricao();
-                    myArt.StockAtual = objArtigo.get_StkActual();
-                    myArt.PrecoUltimo = objArtigo.get_PCUltimo();
-                    myArt.PrecoMedio = objArtigo.get_PCMedio();
-                    myArt.Iva = objArtigo.get_IVA();
-                    myArt.PrazoEntrega = objArtigo.get_PrazoEntrega();
 
-                    return myArt;
-                }
+                Model.Artigo art = new Model.Artigo();
+                art.Codigo = objListCab.Valor("Artigo");
+                art.Descricao = objListCab.Valor("Descricao");
+                art.StockAtual = objListCab.Valor("STKActual");
+                art.PrecoUltimo = objListCab.Valor("PCUltimo");
+                art.PrecoMedio = objListCab.Valor("PCMedio");
+                art.Iva = objListCab.Valor("Iva");
+                art.PrazoEntrega = objListCab.Valor("PrazoEntrega");
+                art.PVPs = new List<double>();
+                art.PVPs.Add(objListCab.Valor("PVP1"));
+                art.PVPs.Add(objListCab.Valor("PVP2"));
+                art.PVPs.Add(objListCab.Valor("PVP3"));
+                art.PVPs.Add(objListCab.Valor("PVP4"));
+                art.PVPs.Add(objListCab.Valor("PVP5"));
+                art.PVPs.Add(objListCab.Valor("PVP6"));
 
+                return art;
             }
             else
             {
@@ -372,8 +381,8 @@ namespace PharmaCRM.Lib_Primavera
                 Model.Artigo art;
                 List<Model.Artigo> listArts = new List<Model.Artigo>();
 
-                objListCab = PriEngine.Engine.Consulta("SELECT Artigo, Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega From Artigo");
-
+                objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6 "
+                    + "FROM Artigo, ArtigoMoeda WHERE Artigo.Artigo = ArtigoMoeda.Artigo");
                 while (!objListCab.NoFim())
                 {
                     art = new Model.Artigo();
@@ -384,6 +393,13 @@ namespace PharmaCRM.Lib_Primavera
                     art.PrecoMedio = objListCab.Valor("PCMedio");
                     art.Iva = objListCab.Valor("Iva");
                     art.PrazoEntrega = objListCab.Valor("PrazoEntrega");
+                    art.PVPs = new List<double>();
+                    art.PVPs.Add(objListCab.Valor("PVP1"));
+                    art.PVPs.Add(objListCab.Valor("PVP2"));
+                    art.PVPs.Add(objListCab.Valor("PVP3"));
+                    art.PVPs.Add(objListCab.Valor("PVP4"));
+                    art.PVPs.Add(objListCab.Valor("PVP5"));
+                    art.PVPs.Add(objListCab.Valor("PVP6"));
 
                     listArts.Add(art);
 
