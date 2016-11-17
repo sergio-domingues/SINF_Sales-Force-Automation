@@ -5,7 +5,7 @@ using System.Web;
 
 namespace PharmaCRM.Lib_Primavera.Model
 {
-    public class Encomenda
+    public class Oportunidade
     {
         public string id
         {
@@ -13,49 +13,31 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
-        public int NumeroDocumento
+        public string descricao
         {
             get;
             set;
         }
 
-        public DateTime Data
+        public string entidade
         {
             get;
             set;
         }
 
-        public string Entidade
+        public string tipoEntidade
         {
             get;
             set;
         }
 
-        public double TotalMercadoria
+        public string vendedor
         {
             get;
             set;
         }
 
-        public double TotalIva
-        {
-            get;
-            set;
-        }
-
-        public double TotalDesconto
-        {
-            get;
-            set;
-        }
-
-        public DateTime DataVencimento
-        {
-            get;
-            set;
-        }
-
-        public List<LinhaEncomenda> Linhas
+        public double valorTotalOV
         {
             get;
             set;
