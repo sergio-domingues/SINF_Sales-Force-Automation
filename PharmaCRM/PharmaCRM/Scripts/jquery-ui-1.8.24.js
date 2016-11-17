@@ -8040,13 +8040,13 @@ $.extend(Datepicker.prototype, {
 
 	/* Format a date object into a string value.
 	   The format can be combinations of the following:
-	   d  - day of month (no leading zero)
+	   d  - day of month (no Oportunidadeing zero)
 	   dd - day of month (two digit)
-	   o  - day of year (no leading zeros)
+	   o  - day of year (no Oportunidadeing zeros)
 	   oo - day of year (three digit)
 	   D  - day name short
 	   DD - day name long
-	   m  - month of year (no leading zero)
+	   m  - month of year (no Oportunidadeing zero)
 	   mm - month of year (two digit)
 	   M  - month name short
 	   MM - month name long
@@ -8079,7 +8079,7 @@ $.extend(Datepicker.prototype, {
 				iFormat++;
 			return matches;
 		};
-		// Format a number, with leading zero if necessary
+		// Format a number, with Oportunidadeing zero if necessary
 		var formatNumber = function(match, value, len) {
 			var num = '' + value;
 			if (lookAhead(match))
@@ -8453,11 +8453,11 @@ $.extend(Datepicker.prototype, {
 				var daysInMonth = this._getDaysInMonth(drawYear, drawMonth);
 				if (drawYear == inst.selectedYear && drawMonth == inst.selectedMonth)
 					inst.selectedDay = Math.min(inst.selectedDay, daysInMonth);
-				var leadDays = (this._getFirstDayOfMonth(drawYear, drawMonth) - firstDay + 7) % 7;
-				var curRows = Math.ceil((leadDays + daysInMonth) / 7); // calculate the number of rows to generate
+				var OportunidadeDays = (this._getFirstDayOfMonth(drawYear, drawMonth) - firstDay + 7) % 7;
+				var curRows = Math.ceil((OportunidadeDays + daysInMonth) / 7); // calculate the number of rows to generate
 				var numRows = (isMultiMonth ? this.maxRows > curRows ? this.maxRows : curRows : curRows); //If multiple months, use the higher number of rows (see #7043)
 				this.maxRows = numRows;
-				var printDate = this._daylightSavingAdjust(new Date(drawYear, drawMonth, 1 - leadDays));
+				var printDate = this._daylightSavingAdjust(new Date(drawYear, drawMonth, 1 - OportunidadeDays));
 				for (var dRow = 0; dRow < numRows; dRow++) { // create date picker rows
 					calender += '<tr>';
 					var tbody = (!showWeek ? '' : '<td class="ui-datepicker-week-col">' +
