@@ -15,10 +15,10 @@ namespace PharmaCRM.Controllers
             return Lib_Primavera.PriIntegration.getOportunidades();
         }
 
-        /*public Lib_Primavera.Model.Oportunidade Get(string id)
+        public Lib_Primavera.Model.Oportunidade Get(string id)
         {
-            return Lib_Primavera.PriIntegration.GetOportunidade(id);
-        }
+            return Lib_Primavera.PriIntegration.getOportunidade(id);
+        }/*
 
         [Route("api/oportunidades/{id}/atividades")]
         [HttpGet]

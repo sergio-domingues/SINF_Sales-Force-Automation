@@ -1122,6 +1122,21 @@ namespace PharmaCRM.Lib_Primavera
                 return null;
         }
 
+        public static Lib_Primavera.Model.Oportunidade getOportunidade(string id)
+        {
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT * FROM CabecOportunidadesVenda WHERE ID='" + id + "'");
+
+                return null; // TODO
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
         #endregion
     }
 }
