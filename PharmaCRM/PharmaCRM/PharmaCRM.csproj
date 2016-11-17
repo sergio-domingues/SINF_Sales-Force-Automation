@@ -278,6 +278,7 @@
     <Compile Include="Controllers\ArtigosController.cs" />
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\EncomendasClienteController.cs" />
     <Compile Include="Controllers\EncomendasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StockController.cs" />
@@ -287,6 +288,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Lib_Primavera\Model\Encomenda.cs" />
+    <Compile Include="Lib_Primavera\Model\LinhaEncomenda.cs" />
     <Compile Include="Lib_Primavera\Model\StockArtigoArmazem.cs" />
     <Compile Include="Lib_Primavera\Model\StockArtigo.cs" />
     <Compile Include="Lib_Primavera\Model\ArtigoResumo.cs" />
