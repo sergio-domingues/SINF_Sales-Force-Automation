@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace PharmaCRM.Controllers
 {
+    [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
     public class ClientesController : ApiController
     {
         //
@@ -27,9 +28,7 @@ namespace PharmaCRM.Controllers
             Lib_Primavera.Model.Cliente cliente = Lib_Primavera.PriIntegration.GetCliente(id);
             if (cliente == null)
             {
-                throw new HttpResponseException(
-                        Request.CreateResponse(HttpStatusCode.NotFound));
-
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
             }
             else
             {
