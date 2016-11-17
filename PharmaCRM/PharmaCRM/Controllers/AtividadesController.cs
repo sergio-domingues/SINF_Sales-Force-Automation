@@ -16,7 +16,16 @@ namespace PharmaCRM.Controllers
 
         public Lib_Primavera.Model.Atividade Get(string id)
         {
-            return PharmaCRM.Lib_Primavera.PriIntegration.GetAtividade(id);
+            Lib_Primavera.Model.Atividade atividade = PharmaCRM.Lib_Primavera.PriIntegration.GetAtividade(id);
+
+            if (atividade == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+            else
+            {
+                return PharmaCRM.Lib_Primavera.PriIntegration.GetAtividade(id);
+            }                       
         }
     }
 }
