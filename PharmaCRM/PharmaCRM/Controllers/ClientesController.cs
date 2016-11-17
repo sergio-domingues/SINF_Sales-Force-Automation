@@ -9,7 +9,6 @@ using System.Web.Http.Cors;
 
 namespace PharmaCRM.Controllers
 {
-    [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
     public class ClientesController : ApiController
     {
         //
@@ -23,6 +22,8 @@ namespace PharmaCRM.Controllers
 
 
         // GET api/cliente/5    
+        [Route("api/clientes/{id}")]
+        [HttpGet]  
         public Lib_Primavera.Model.Cliente Get(string id)
         {
             Lib_Primavera.Model.Cliente cliente = Lib_Primavera.PriIntegration.GetCliente(id);
@@ -36,7 +37,8 @@ namespace PharmaCRM.Controllers
             }
         }
 
-
+        [Route("api/clientes")]
+        [HttpPost]
         public HttpResponseMessage Post(Lib_Primavera.Model.Cliente cliente)
         {
             Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
@@ -58,7 +60,8 @@ namespace PharmaCRM.Controllers
 
         }
 
-
+        [Route("api/clientes")]
+        [HttpPut]
         public HttpResponseMessage Put(string id, Lib_Primavera.Model.Cliente cliente)
         {
 
@@ -83,8 +86,8 @@ namespace PharmaCRM.Controllers
             }
         }
 
-
-
+        [Route("api/clientes")]
+        [HttpDelete]
         public HttpResponseMessage Delete(string id)
         {
 
