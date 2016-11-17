@@ -108,6 +108,55 @@ namespace PharmaCRM.Lib_Primavera
                 return null;
         }
 
+        public static Lib_Primavera.Model.RespostaErro UpdVendedor(Lib_Primavera.Model.Vendedor vendedor)
+        {
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+
+            GcpBEVendedor objVendedor = new GcpBEVendedor();
+
+            try
+            {
+                if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+                {
+
+                    if (PriEngine.Engine.Comercial.Vendedores.Existe(vendedor.cod) == false)
+                    {
+                        erro.Erro = 1;
+                        erro.Descricao = "O vendedor não existe";
+                        return erro;
+                    }
+                    else
+                    {
+                        objVendedor = PriEngine.Engine.Comercial.Vendedores.Edita(vendedor.cod);
+                        objVendedor.set_EmModoEdicao(true);
+
+                        objVendedor.set_Nome(vendedor.nome);
+
+                        objVendedor.set_EmModoEdicao(false); //TODO será necessário, ou o "Actualiza" já trata disto?
+                        PriEngine.Engine.Comercial.Vendedores.Actualiza(objVendedor);
+
+                        erro.Erro = 0;
+                        erro.Descricao = "Sucesso";
+                        return erro;
+                    }
+                }
+                else
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = "Erro ao abrir a empresa";
+                    return erro;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                erro.Erro = 1;
+                erro.Descricao = ex.Message;
+                return erro;
+            }
+        }
+
+
         #endregion Vendedor;
 
         # region Cliente
@@ -181,12 +230,10 @@ namespace PharmaCRM.Lib_Primavera
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
 
-
             GcpBECliente objCli = new GcpBECliente();
 
             try
             {
-
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
 
@@ -198,14 +245,15 @@ namespace PharmaCRM.Lib_Primavera
                     }
                     else
                     {
-
                         objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente.CodCliente);
                         objCli.set_EmModoEdicao(true);
 
+                        //nao se edita o codCliente?
                         objCli.set_Nome(cliente.Nome);
                         objCli.set_NumContribuinte(cliente.NumContribuinte);
                         objCli.set_Morada(cliente.Morada);
 
+                        objCli.set_EmModoEdicao(false); // será necessário ou estará já incluido no metodo .Actualiza(...)??
                         PriEngine.Engine.Comercial.Clientes.Actualiza(objCli);
 
                         erro.Erro = 0;
