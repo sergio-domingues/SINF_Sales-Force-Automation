@@ -885,33 +885,37 @@ namespace PharmaCRM.Lib_Primavera
             CrmBEActividade atividade = new CrmBEActividade();
             Model.Atividade model_actividade;
 
-            /*  if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
-              {*/
-
-            if (PriEngine.Engine.Comercial.Artigos.Existe(id) == false)
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
+
+                if (PriEngine.Engine.Comercial.Artigos.Existe(id) == false)
+                {
+                    return null;
+                }
+                else
+                {
+                    atividade = PriEngine.Engine.CRM.Actividades.Edita(id);
+                    model_actividade = new Model.Atividade();
+
+                    model_actividade.id = atividade.get_ID();
+                    model_actividade.idTipoAtividade = atividade.get_IDTipoActividade();
+                    model_actividade.estado = Int32.Parse(atividade.get_Estado());
+                    model_actividade.descricao = atividade.get_Descricao();
+                    model_actividade.dataInicio = atividade.get_DataInicio();
+                    model_actividade.dataFim = atividade.get_DataFim();
+                    model_actividade.local = atividade.get_LocalRealizacao();
+                    model_actividade.vendedor = atividade.get_CriadoPor();
+                    model_actividade.tipoEntidadePrincipal = atividade.get_TipoEntidadePrincipal();
+                    model_actividade.idContactoPrincipal = atividade.get_IDContactoPrincipal();
+                    model_actividade.idCabecalhoOportunidadeVenda = atividade.get_IDCabecOVenda();
+
+                    return model_actividade;
+                }
+
+            }
+            else {
                 return null;
-            }
-            else
-            {
-                atividade = PriEngine.Engine.CRM.Actividades.Edita(id);
-                model_actividade = new Model.Atividade();
-
-                model_actividade.id = atividade.get_ID();
-                model_actividade.descricao = atividade.get_Descricao();
-                model_actividade.idTipoAtividade = atividade.get_IDTipoActividade();
-                model_actividade.vendedor = atividade.get_CriadoPor();
-                model_actividade.local = atividade.get_LocalRealizacao();
-                model_actividade.dataInicio = atividade.get_DataInicio();
-                model_actividade.dataFim = atividade.get_DataFim();
-
-                return model_actividade;
-            }
-
-            //}
-
-
-           // return null;
+            }           
         }
 
 
