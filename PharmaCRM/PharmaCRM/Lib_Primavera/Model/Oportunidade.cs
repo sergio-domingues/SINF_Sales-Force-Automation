@@ -31,19 +31,13 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
-        public string Vendedor
+        public string vendedor
         {
             get;
             set;
         }
 
-        public int Estado
-        {
-            get;
-            set;
-        }
-
-        public double ValorTotalOV
+        public double valorTotalOV
         {
             get;
             set;

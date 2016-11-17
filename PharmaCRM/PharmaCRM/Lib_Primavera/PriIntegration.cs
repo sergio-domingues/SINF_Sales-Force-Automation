@@ -1102,36 +1102,20 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-
-                //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
-
-                objList = PriEngine.Engine.Consulta("SELECT ID, Descricao, Entidade, TipoEntidade, Resumo, ValorTotalOV, DataFecho, DataCriacao FROM CabecOportunidadesVenda");
-
+                objList = PriEngine.Engine.Consulta("SELECT * FROM CabecOportunidadesVenda");
 
                 while (!objList.NoFim())
                 {
-                    /*Model.Oportunidade oportunidades = new Model.Oportunidade();
-                    oportunidades.id = objList.Valor("ID");
-                    oportunidades.descricao = objList.Valor("Descricao");
-                    oportunidades.entidade = objList.Valor("Entidade");
-                    oportunidades.tipoEntidade = objList.Valor("TipoEntidade");
-                    oportunidades
-                    listLeads.Add(new Model.Lead
-                    {
-                        idLead = objList.Valor("ID"),
-                        DescLead = objList.Valor("Descricao"),
-                        Entidade = objList.Valor("Entidade"),
-                        TipoEntidade = objList.Valor("TipoEntidade"),
-                        Resumo = objList.Valor("Resumo"),
-                        ValorTotalOV = objList.Valor("ValorTotalOV"),
-                        //mudar para DataFecho depois, quando nao houver nulls
-                        DataFecho = objList.Valor("DataCriacao")
-
-                    });*/
+                    Model.Oportunidade oportunidade = new Model.Oportunidade();
+                    oportunidade.id = objList.Valor("ID");
+                    oportunidade.descricao = objList.Valor("Descricao");
+                    oportunidade.entidade = objList.Valor("Entidade");
+                    oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
+                    oportunidade.vendedor = objList.Valor("Vendedor");
+                    oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
+                    listLeads.Add(oportunidade);
                     objList.Seguinte();
-
                 }
-
                 return listLeads;
             }
             else
