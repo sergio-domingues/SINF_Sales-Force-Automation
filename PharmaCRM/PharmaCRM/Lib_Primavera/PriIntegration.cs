@@ -964,6 +964,64 @@ namespace PharmaCRM.Lib_Primavera
             }           
         }
 
+        public static Lib_Primavera.Model.RespostaErro UpdAtividade (Lib_Primavera.Model.Atividade atividade)
+        {
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+
+            CrmBEActividade objAtividade = new CrmBEActividade();
+
+            try
+            {
+                if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+                {
+
+                    if (PriEngine.Engine.Comercial.Vendedores.Existe(atividade.id) == false)
+                    {
+                        erro.Erro = 1;
+                        erro.Descricao = "A atividade não existe";
+                        return erro;
+                    }
+                    else
+                    {
+                        objAtividade = PriEngine.Engine.CRM.Actividades.Edita(atividade.id);
+                        objAtividade.set_EmModoEdicao(true);
+
+                        //actualizam-se todos os membros mesmo que so tenham sido editados alguns
+                        objAtividade.set_Estado(atividade.estado.ToString());
+                        objAtividade.set_Descricao( atividade.descricao );
+                        objAtividade.set_DataInicio( atividade.dataInicio);
+                        objAtividade.set_DataFim( atividade.dataFim);
+                        objAtividade.set_LocalRealizacao( atividade.local);
+                        objAtividade.set_CriadoPor(atividade.vendedor);
+                        objAtividade.set_TipoEntidadePrincipal( atividade.tipoEntidadePrincipal);
+                        objAtividade.set_IDContactoPrincipal( atividade.idContactoPrincipal);
+                        objAtividade.set_IDCabecOVenda(atividade.idCabecalhoOportunidadeVenda);
+
+                        objAtividade.set_EmModoEdicao(false); //TODO será necessário, ou o "Actualiza" já trata disto?
+                        PriEngine.Engine.CRM.Actividades.Actualiza(objAtividade);
+
+                        erro.Erro = 0;
+                        erro.Descricao = "Sucesso";
+                        return erro;
+                    }
+                }
+                else
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = "Erro ao abrir a empresa";
+                    return erro;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                erro.Erro = 1;
+                erro.Descricao = ex.Message;
+                return erro;
+            }
+        }
+
+
 
         #endregion Actividade;   // -----------------------------  END   Actividade    -----------------------
 
