@@ -274,12 +274,14 @@
     <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\EncomendasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OportunidadesController.cs" />
     <Compile Include="Controllers\StockController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\VendedoresController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Lib_Primavera\Model\Oportunidade.cs" />
     <Compile Include="Lib_Primavera\Model\Encomenda.cs" />
     <Compile Include="Lib_Primavera\Model\StockArtigoArmazem.cs" />
     <Compile Include="Lib_Primavera\Model\StockArtigo.cs" />

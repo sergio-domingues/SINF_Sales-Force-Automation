@@ -680,7 +680,7 @@ ko.exportSymbol('utils.domNodeDisposal', ko.utils.domNodeDisposal);
 ko.exportSymbol('utils.domNodeDisposal.addDisposeCallback', ko.utils.domNodeDisposal.addDisposeCallback);
 ko.exportSymbol('utils.domNodeDisposal.removeDisposeCallback', ko.utils.domNodeDisposal.removeDisposeCallback);
 (function () {
-    var leadingCommentRegex = /^(\s*)<!--(.*?)-->/;
+    var OportunidadeingCommentRegex = /^(\s*)<!--(.*?)-->/;
 
     function simpleHtmlParse(html) {
         // Based on jQuery's "clean" function, but only accounting for table-related elements.
@@ -701,7 +701,7 @@ ko.exportSymbol('utils.domNodeDisposal.removeDisposeCallback', ko.utils.domNodeD
                    /* anything else */                                 [0, "", ""];
 
         // Go to html and back, then peel off extra wrappers
-        // Note that we always prefix with some dummy text, because otherwise, IE<9 will strip out leading comment nodes in descendants. Total madness.
+        // Note that we always prefix with some dummy text, because otherwise, IE<9 will strip out Oportunidadeing comment nodes in descendants. Total madness.
         var markup = "ignored<div>" + wrap[1] + html + wrap[2] + "</div>";
         if (typeof window['innerShiv'] == "function") {
             div.appendChild(window['innerShiv'](markup));
@@ -1707,7 +1707,7 @@ ko.exportSymbol('expressionRewriting.bindingRewriteValidators', ko.expressionRew
 ko.exportSymbol('expressionRewriting.parseObjectLiteral', ko.expressionRewriting.parseObjectLiteral);
 ko.exportSymbol('expressionRewriting.preProcessBindings', ko.expressionRewriting.preProcessBindings);
 
-// For backward compatibility, define the following aliases. (Previously, these function names were misleading because
+// For backward compatibility, define the following aliases. (Previously, these function names were misOportunidadeing because
 // they referred to JSON specifically, even though they actually work with arbitrary JavaScript object literal expressions.)
 ko.exportSymbol('jsonExpressionRewriting', ko.expressionRewriting);
 ko.exportSymbol('jsonExpressionRewriting.insertPropertyAccessorsIntoJson', ko.expressionRewriting.preProcessBindings);(function() {
@@ -3302,11 +3302,11 @@ ko.exportSymbol('utils.compareArrays', ko.utils.compareArrays);
         // Before moving, deleting, or replacing a set of nodes that were previously outputted by the "map" function, we have to reconcile
         // them against what is in the DOM right now. It may be that some of the nodes have already been removed from the document,
         // or that new nodes might have been inserted in the middle, for example by a binding. Also, there may previously have been
-        // leading comment nodes (created by rewritten string-based templates) that have since been removed during binding.
+        // Oportunidadeing comment nodes (created by rewritten string-based templates) that have since been removed during binding.
         // So, this function translates the old "map" output array into its best guess of what set of current DOM nodes should be removed.
         //
         // Rules:
-        //   [A] Any leading nodes that aren't in the document any more should be ignored
+        //   [A] Any Oportunidadeing nodes that aren't in the document any more should be ignored
         //       These most likely correspond to memoization nodes that were already removed during binding
         //       See https://github.com/SteveSanderson/knockout/pull/440
         //   [B] We want to output a contiguous series of nodes that are still in the document. So, ignore any nodes that

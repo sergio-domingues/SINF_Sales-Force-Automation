@@ -72,14 +72,14 @@ namespace PharmaCRM.Lib_Primavera
         {
             StdBELista objList;
 
-            List<Model.Atividade> listTarefas = new List<Model.Atividade>();
+            List<Model.Atividade> listAtividades = new List<Model.Atividade>();
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
 
                 //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
 
-                objList = PriEngine.Engine.Consulta("SELECT Tarefas.* FROM Tarefas, CabecOportunidadesVenda WHERE Vendedor = " + "\'" + vendedorID + "\'"
+                objList = PriEngine.Engine.Consulta("SELECT Atividades.* FROM Atividades, CabecOportunidadesVenda WHERE Vendedor = " + "\'" + vendedorID + "\'"
                         + " AND IdCabecOVenda = CabecOportunidadesVenda.ID"
                         + " AND DataInicio >= \'" + dataInicio + "\'"
                         + " AND DataFim <= \'" + dataFim + "\'"
@@ -99,10 +99,10 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.vendedor = vendedorID;
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
 
-                    listTarefas.Add(atividade);
+                    listAtividades.Add(atividade);
                     objList.Seguinte();
                 }
-                return listTarefas;
+                return listAtividades;
             }
             else
                 return null;
@@ -898,10 +898,10 @@ namespace PharmaCRM.Lib_Primavera
         public static List<Model.Atividade> GetListaAtividades()
         {
             StdBELista objList;
-            List<Model.Atividade> listTarefas = new List<Model.Atividade>();
+            List<Model.Atividade> listAtividades = new List<Model.Atividade>();
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objList = PriEngine.Engine.Consulta("SELECT * FROM tarefas");
+                objList = PriEngine.Engine.Consulta("SELECT * FROM Atividades");
                 while (!objList.NoFim())
                 {
                     Model.Atividade atividade = new Model.Atividade();
@@ -916,10 +916,10 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
                     atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
-                    listTarefas.Add(atividade);
+                    listAtividades.Add(atividade);
                     objList.Seguinte();
                 }
-                return listTarefas;
+                return listAtividades;
             }
             else
                 return null;
@@ -1089,6 +1089,53 @@ namespace PharmaCRM.Lib_Primavera
                 return null;
             }
 
+        }
+
+        #endregion
+
+        #region Oportunidade
+
+        public static List<Model.Oportunidade> getOportunidades()
+        {
+            StdBELista objList;
+            List<Model.Oportunidade> listLeads = new List<Model.Oportunidade>();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
+
+                objList = PriEngine.Engine.Consulta("SELECT ID, Descricao, Entidade, TipoEntidade, Resumo, ValorTotalOV, DataFecho, DataCriacao FROM CabecOportunidadesVenda");
+
+
+                while (!objList.NoFim())
+                {
+                    /*Model.Oportunidade oportunidades = new Model.Oportunidade();
+                    oportunidades.id = objList.Valor("ID");
+                    oportunidades.descricao = objList.Valor("Descricao");
+                    oportunidades.entidade = objList.Valor("Entidade");
+                    oportunidades.tipoEntidade = objList.Valor("TipoEntidade");
+                    oportunidades
+                    listLeads.Add(new Model.Lead
+                    {
+                        idLead = objList.Valor("ID"),
+                        DescLead = objList.Valor("Descricao"),
+                        Entidade = objList.Valor("Entidade"),
+                        TipoEntidade = objList.Valor("TipoEntidade"),
+                        Resumo = objList.Valor("Resumo"),
+                        ValorTotalOV = objList.Valor("ValorTotalOV"),
+                        //mudar para DataFecho depois, quando nao houver nulls
+                        DataFecho = objList.Valor("DataCriacao")
+
+                    });*/
+                    objList.Seguinte();
+
+                }
+
+                return listLeads;
+            }
+            else
+                return null;
         }
 
         #endregion
