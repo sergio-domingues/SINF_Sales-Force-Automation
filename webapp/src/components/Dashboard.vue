@@ -1,12 +1,6 @@
 <template>
   <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-			<div class="row">
-				<ol class="breadcrumb">
-					<li><a href="#"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-					<li class="active">Donald Trump</li>
-				</ol>
-			</div>
-			<!--/.row-->
+	  <breadcrumb :current="'Donal Trump'"></breadcrumb>
 
 			<div class="row">
 				<div class="col-lg-12">

@@ -1,17 +1,6 @@
 <template>
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-		<div class="row">
-			<ol class="breadcrumb">
-				<li>
-					<router-link to="/"><i class="fa fa-home" aria-hidden="true"></i></router-link>
-				</li>
-				<li>
-					<router-link to="/">Clientes</router-link>
-				</li>
-				<li class="active">Barack Obama</li>
-			</ol>
-		</div>
-		<!--/.row-->
+		<breadcrumb :items="[{path:'customers',name:'Clientes'}]" :current="'Barack Obama'"></breadcrumb>
 
 		<div class="row">
 			<div class="col-lg-12">

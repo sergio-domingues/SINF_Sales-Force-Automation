@@ -1,10 +1,10 @@
 <template>
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-		<breadcrumb :current="'Atividades'"></breadcrumb>
+		<breadcrumb :current="'Encomendas'"></breadcrumb>
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Atividades</h1>
+				<h1 class="page-header">Lista de Encomendas</h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -17,20 +17,23 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Descrição</th>
-									<th>Data</th>
+									<th>Nome</th>
+									<th>Cliente</th>
+									<th>Rep. de Venda</th>
 								</tr>
 							</thead>
 							<tbody>
-								<router-link tag="tr" to="/activities/1" class="clicable">
+								<router-link tag="tr" to="/salesorders/1" class="clicable">
 									<th scope="row">1</th>
-									<td>Telefonar ao João</td>
-									<td>17/10/2017</td>
+									<td>Energizers 1 </td>
+									<td>Maria José da Silva</td>
+									<td>José Esteves</td>
 								</router-link>
-								<router-link tag="tr" to="/activities/2" class="clicable">
+								<router-link tag="tr" to="/salesorders/2" class="clicable">
 									<th scope="row">2</th>
-									<td>Mandar mail á Maria</td>
-									<td>18/12/2017</td>
+									<td>Energizers 2 </td>
+									<td>Maria José da Silva</td>
+									<td>José Esteves</td>
 								</router-link>
 							</tbody>
 						</table>
