@@ -867,6 +867,8 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.dataFim = objList.Valor("DataFim");
                     atividade.local = objList.Valor("LocalRealizacao");
                     atividade.vendedor = objList.Valor("Utilizador");
+                    atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
+                    atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
                     listTarefas.Add(atividade);
                     objList.Seguinte();

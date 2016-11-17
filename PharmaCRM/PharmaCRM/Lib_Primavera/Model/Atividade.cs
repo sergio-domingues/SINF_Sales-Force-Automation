@@ -47,6 +47,12 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
+        public string tipoEntidadePrincipal
+        {
+            get;
+            set;
+        }
+
         public string idContactoPrincipal
         {
             get;
