@@ -54,7 +54,7 @@ export default {
   },
   mounted: function(){
 	  this.$http.get('http://localhost:49559/api/clientes').then((response)=>{
-		clientes=response;
+		this.clientes=response;
 	  })
 
   }
