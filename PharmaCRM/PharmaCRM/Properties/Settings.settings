@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Company" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">PharmaLabs</Value>
+      <Value Profile="(Default)">DEMOSINF</Value>
     </Setting>
     <Setting Name="User" Type="System.String" Scope="Application">
       <Value Profile="(Default)">sinf</Value>
