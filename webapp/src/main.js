@@ -8,6 +8,8 @@ import Lead from './components/Lead.vue'
 import LeadList from './components/LeadList.vue'
 import Activity from './components/Activity.vue'
 import ActivityList from './components/ActivityList.vue'
+import SalesOrder from './components/SalesOrder.vue'
+import SalesOrderList from './components/SalesOrderList.vue'
 import NotFound from './components/NotFound.vue'
 
 
@@ -21,6 +23,8 @@ const routes = [
   { path: '/leads/:id', component: Lead },
   { path: '/activities', component: ActivityList },
   { path: '/activities/:id', component: Activity },
+  { path: '/salesordes', component: SalesOrderList },
+  { path: '/salesOrder/:id', component: SalesOrder },
   { path: '*', component: NotFound },
 ]
 
