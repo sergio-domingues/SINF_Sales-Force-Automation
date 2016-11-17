@@ -54,10 +54,20 @@
 </template>
 
 <script>
+
+
 export default {
   name: 'CustomerList',
   data () {
-    return {}
+    return {
+		clientes:{}
+	}
+  },
+  mounted: function(){
+	  this.$http.get('http://localhost:49559/api/clientes').then((response)=>{
+		console.log(response);
+	  })
+	  
   }
 }
 </script>
