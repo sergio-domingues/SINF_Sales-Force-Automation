@@ -5,60 +5,62 @@ using System.Web;
 
 namespace PharmaCRM.Lib_Primavera.Model
 {
-    public class Encomenda
+    public class LinhaEncomenda
     {
-        public string id
+        public string CodArtigo
         {
             get;
             set;
         }
 
-        public int NumeroDocumento
+        public string DescArtigo
         {
             get;
             set;
         }
 
-        public DateTime Data
+        public string IdCabecDoc
         {
             get;
             set;
         }
 
-        public string Entidade
+        public double Quantidade
         {
             get;
             set;
         }
 
-        public double TotalMercadoria
+        public string Unidade
         {
             get;
             set;
         }
 
-        public double TotalIva
+        public double Desconto
         {
             get;
             set;
         }
 
-        public double TotalDesconto
+        public double PrecoUnitario
         {
             get;
             set;
         }
 
-        public DateTime DataVencimento
+        public double TotalILiquido
         {
             get;
             set;
         }
 
-        public List<LinhaEncomenda> Linhas
+        public double TotalLiquido
         {
             get;
             set;
         }
+
+
     }
 }
