@@ -12,9 +12,12 @@ import SalesOrder from './components/SalesOrder.vue'
 import SalesOrderList from './components/SalesOrderList.vue'
 import NotFound from './components/NotFound.vue'
 import Breadcrumb from './components/Breadcrumb.vue'
+import VueResource from 'vue-resource'
 
 
 Vue.use(VueRouter);
+Vue.use(VueResource);
+
 
 const routes = [
   { path: '/', component: Dashboard },
@@ -36,8 +39,12 @@ const router = new VueRouter({
 })
 
 Vue.component('breadcrumb', Breadcrumb)
+Vue.http.headers.common['Access-Control-Allow-Origin'] = '*'
 
 new Vue({
+  http: {
+    root: '/api'
+  },
   router,
   el: '#app',
   render: h => h(App)
