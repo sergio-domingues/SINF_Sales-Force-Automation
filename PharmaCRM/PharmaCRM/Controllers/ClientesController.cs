@@ -5,8 +5,7 @@ using System.Web;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using PharmaCRM.Lib_Primavera.Model;
-using System.Web.Mvc;
+using System.Web.Http.Cors;
 
 namespace PharmaCRM.Controllers
 {
@@ -15,7 +14,8 @@ namespace PharmaCRM.Controllers
     {
         //
         // GET: /Clientes/
-
+        [Route("api/clientes")]
+        [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Cliente> Get()
         {
             return Lib_Primavera.PriIntegration.ListaClientes();
@@ -23,7 +23,7 @@ namespace PharmaCRM.Controllers
 
 
         // GET api/cliente/5    
-        public Cliente Get(string id)
+        public Lib_Primavera.Model.Cliente Get(string id)
         {
             Lib_Primavera.Model.Cliente cliente = Lib_Primavera.PriIntegration.GetCliente(id);
             if (cliente == null)
