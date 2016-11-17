@@ -39,7 +39,7 @@ const router = new VueRouter({
 })
 
 Vue.component('breadcrumb', Breadcrumb)
-Vue.http.headers.common['Access-Control-Allow-Origin'] = '*'
+//Vue.http.headers.common['Access-Control-Allow-Origin'] = '*'
 
 new Vue({
   http: {
