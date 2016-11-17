@@ -19,6 +19,12 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
+        public string IdVendedor
+        {
+            get;
+            set;
+        }
+
         public DateTime Data
         {
             get;
