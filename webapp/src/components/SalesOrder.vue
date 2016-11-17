@@ -1,6 +1,6 @@
 <template>
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-        <breadcrumb :items="[{path:'salesOrder',name:'Encomendas'}]" :current="'Encomendas'"></breadcrumb>
+        <breadcrumb :items="[{path:'salesorders',name:'Encomendas'}]" :current="'Energizers 1'"></breadcrumb>
 
         <div class="row">
             <div class="col-lg-12">
@@ -56,7 +56,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Lista de Encomentas
+                    <div class="panel-heading">Lista de Encomendsas
                     </div>
                     <div class="panel-body">
                         <table class="table table-hover">

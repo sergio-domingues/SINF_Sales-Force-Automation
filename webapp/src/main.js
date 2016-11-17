@@ -11,6 +11,7 @@ import ActivityList from './components/ActivityList.vue'
 import SalesOrder from './components/SalesOrder.vue'
 import SalesOrderList from './components/SalesOrderList.vue'
 import NotFound from './components/NotFound.vue'
+import Breadcrumb from './components/Breadcrumb.vue'
 
 
 Vue.use(VueRouter);
@@ -23,8 +24,8 @@ const routes = [
   { path: '/leads/:id', component: Lead },
   { path: '/activities', component: ActivityList },
   { path: '/activities/:id', component: Activity },
-  { path: '/salesordes', component: SalesOrderList },
-  { path: '/salesOrder/:id', component: SalesOrder },
+  { path: '/salesorders', component: SalesOrderList },
+  { path: '/salesorders/:id', component: SalesOrder },
   { path: '*', component: NotFound },
 ]
 
@@ -33,6 +34,8 @@ const router = new VueRouter({
   linkActiveClass: 'active',
   routes
 })
+
+Vue.component('breadcrumb', Breadcrumb)
 
 new Vue({
   router,

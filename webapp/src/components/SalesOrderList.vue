@@ -23,13 +23,13 @@
 								</tr>
 							</thead>
 							<tbody>
-								<router-link tag="tr" to="/salesOrder/1" class="clicable">
+								<router-link tag="tr" to="/salesorders/1" class="clicable">
 									<th scope="row">1</th>
 									<td>Energizers 1 </td>
 									<td>Maria José da Silva</td>
 									<td>José Esteves</td>
 								</router-link>
-								<router-link tag="tr" to="/salesOrder/2" class="clicable">
+								<router-link tag="tr" to="/salesorders/2" class="clicable">
 									<th scope="row">2</th>
 									<td>Energizers 2 </td>
 									<td>Maria José da Silva</td>

@@ -1,6 +1,6 @@
 <template>
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-		<breadcrumb :items="[{path:'activities',name:'Actividades'},{path:'current',name:'Ajuste de Detalhes'}]"></breadcrumb>
+		<breadcrumb :items="[{path:'activities',name:'Actividades'}]" :current="'Ajuste de Detalhes'"></breadcrumb>
 
 		<div class="row">
 			<div class="col-lg-12">
