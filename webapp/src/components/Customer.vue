@@ -124,7 +124,7 @@ export default {
 		 this.editing = !this.editing;
 	  }
   },
-	created: function(){
+	mounted: function(){
 		const cliente = findById(this.$root.$data.clientes,this.$route.params.id,'CodCliente');
 		if(cliente){
 			this.cliente=cliente;

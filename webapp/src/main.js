@@ -19,7 +19,8 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 const store = {
-  clientes:[]
+  clientes:[],
+  oportunidades:[]
 }
 
 const routes = [
