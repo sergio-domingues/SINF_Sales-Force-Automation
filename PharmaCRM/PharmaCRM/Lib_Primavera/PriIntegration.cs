@@ -1110,7 +1110,7 @@ namespace PharmaCRM.Lib_Primavera
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
 
-                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT id, NumDoc, Data, Entidade, TotalMerc, TotalIva, TotalDesc, DataVencimento"
+                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT id, NumDoc, Data, Entidade, TotalMerc, TotalIva, TotalDesc, DataVencimento, Responsavel"
                     + " FROM CabecDoc WHERE TipoDoc='ECL' AND NumDoc='" + numDocumento + "'");
 
                 if (objListCab.NoFim())
@@ -1118,7 +1118,7 @@ namespace PharmaCRM.Lib_Primavera
                     return null;
                 }
 
-                return parseEncomenda(objListCab);
+                return parseEncomenda(objListCab, true);
             }
             else
             {
@@ -1133,12 +1133,12 @@ namespace PharmaCRM.Lib_Primavera
             {
                 List<Lib_Primavera.Model.Encomenda> encs = new List<Model.Encomenda>();
 
-                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT TOP 400 id, NumDoc, Data, Entidade, TotalMerc, TotalIva, TotalDesc, DataVencimento"
+                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT TOP 400 id, NumDoc, Data, Entidade, TotalMerc, TotalIva, TotalDesc, DataVencimento, Responsavel"
                     + " FROM CabecDoc WHERE TipoDoc='ECL'");
 
                 while (!objListCab.NoFim())
                 {
-                    encs.Add(parseEncomenda(objListCab));
+                    encs.Add(parseEncomenda(objListCab, false));
                     objListCab.Seguinte();
                 }
 
@@ -1157,12 +1157,12 @@ namespace PharmaCRM.Lib_Primavera
             {
                 List<Lib_Primavera.Model.Encomenda> encs = new List<Model.Encomenda>();
 
-                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT id, NumDoc, Data, Entidade, TotalMerc, TotalIva, TotalDesc, DataVencimento"
+                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT id, NumDoc, Data, Entidade, TotalMerc, TotalIva, TotalDesc, DataVencimento, Responsavel"
                     + " FROM CabecDoc WHERE TipoDoc='ECL' AND Entidade='" + codCliente + "'");
 
                 while (!objListCab.NoFim())
                 {
-                    encs.Add(parseEncomenda(objListCab));
+                    encs.Add(parseEncomenda(objListCab, false));
                     objListCab.Seguinte();
                 }
 
@@ -1174,37 +1174,64 @@ namespace PharmaCRM.Lib_Primavera
             }
         }
 
-        public static Lib_Primavera.Model.Encomenda parseEncomenda(StdBELista objListCab)
+        public static List<Lib_Primavera.Model.Encomenda> GetEncomendasVendedor(string idVendedor)
+        {
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                List<Lib_Primavera.Model.Encomenda> encs = new List<Model.Encomenda>();
+
+                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT id, NumDoc, Data, Entidade, TotalMerc, TotalIva, TotalDesc, DataVencimento, Responsavel"
+                    + " FROM CabecDoc WHERE TipoDoc='ECL' AND Responsavel='" + idVendedor + "'");
+
+                while (!objListCab.NoFim())
+                {
+                    encs.Add(parseEncomenda(objListCab, false));
+                    objListCab.Seguinte();
+                }
+
+                return encs;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static Lib_Primavera.Model.Encomenda parseEncomenda(StdBELista objListCab, bool incluirLinhas)
         {
             Model.Encomenda enc = new Model.Encomenda();
             enc.id = objListCab.Valor("id");
             enc.NumeroDocumento = objListCab.Valor("NumDoc");
+            enc.IdVendedor = objListCab.Valor("Responsavel");
             enc.Data = objListCab.Valor("Data");
             enc.Entidade = objListCab.Valor("Entidade");
             enc.TotalMercadoria = objListCab.Valor("TotalMerc");
             enc.TotalIva = objListCab.Valor("TotalIva");
             enc.TotalDesconto = objListCab.Valor("TotalDesc");
             enc.DataVencimento = objListCab.Valor("DataVencimento");
-
-            StdBELista objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
-                + "FROM LinhasDoc where IdCabecDoc='" + enc.id + "' order By NumLinha");
             enc.Linhas = new List<Model.LinhaEncomenda>();
 
-            while (!objListLin.NoFim())
+            if (incluirLinhas)
             {
-                Model.LinhaEncomenda linha = new Model.LinhaEncomenda();
-                linha.IdCabecDoc = objListLin.Valor("idCabecDoc");
-                linha.CodArtigo = objListLin.Valor("Artigo");
-                linha.DescArtigo = objListLin.Valor("Descricao");
-                linha.Quantidade = objListLin.Valor("Quantidade");
-                linha.Unidade = objListLin.Valor("Unidade");
-                linha.Desconto = objListLin.Valor("Desconto1");
-                linha.PrecoUnitario = objListLin.Valor("PrecUnit");
-                linha.TotalILiquido = objListLin.Valor("TotalILiquido");
-                linha.TotalLiquido = objListLin.Valor("PrecoLiquido");
-                enc.Linhas.Add(linha);
+                StdBELista objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
+                + "FROM LinhasDoc where IdCabecDoc='" + enc.id + "' order By NumLinha");
 
-                objListLin.Seguinte();
+                while (!objListLin.NoFim())
+                {
+                    Model.LinhaEncomenda linha = new Model.LinhaEncomenda();
+                    linha.IdCabecDoc = objListLin.Valor("idCabecDoc");
+                    linha.CodArtigo = objListLin.Valor("Artigo");
+                    linha.DescArtigo = objListLin.Valor("Descricao");
+                    linha.Quantidade = objListLin.Valor("Quantidade");
+                    linha.Unidade = objListLin.Valor("Unidade");
+                    linha.Desconto = objListLin.Valor("Desconto1");
+                    linha.PrecoUnitario = objListLin.Valor("PrecUnit");
+                    linha.TotalILiquido = objListLin.Valor("TotalILiquido");
+                    linha.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                    enc.Linhas.Add(linha);
+
+                    objListLin.Seguinte();
+                }
             }
 
             return enc;

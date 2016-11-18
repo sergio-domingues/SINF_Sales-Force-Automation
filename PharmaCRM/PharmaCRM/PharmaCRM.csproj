@@ -280,6 +280,7 @@
     <Compile Include="Controllers\ArtigosController.cs" />
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\EncomendasVendedorController.cs" />
     <Compile Include="Controllers\EncomendasClienteController.cs" />
     <Compile Include="Controllers\EncomendasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
