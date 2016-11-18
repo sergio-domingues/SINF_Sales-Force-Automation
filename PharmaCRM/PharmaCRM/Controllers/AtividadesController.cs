@@ -31,5 +31,21 @@ namespace PharmaCRM.Controllers
                 return PharmaCRM.Lib_Primavera.PriIntegration.GetAtividade(id);
             }                       
         }
+
+        [Route("api/atividades")]
+        [HttpPost]
+        public HttpResponseMessage Post(Lib_Primavera.Model.Atividade atividade)
+        {
+            Lib_Primavera.Model.RespostaErro respostaErro = new Lib_Primavera.Model.RespostaErro();
+            respostaErro = Lib_Primavera.PriIntegration.InsereObjAtividade(atividade);
+            if (respostaErro.Erro == 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.Created, atividade);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, respostaErro.Descricao);
+            }
+        }
     }
 }
