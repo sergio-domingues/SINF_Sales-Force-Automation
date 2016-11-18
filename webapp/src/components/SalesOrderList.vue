@@ -51,7 +51,7 @@
 export default {
   name: 'SalesOrderList',
   data () {
-    return {}
+    return {salesOrders:[]}
   }
 }
 </script>

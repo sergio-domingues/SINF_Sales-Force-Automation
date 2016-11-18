@@ -35,7 +35,7 @@
 				</div>
 			</div>
 
-		</div>
+			</div>
 		<!--/.row-->
 
 	</div>
@@ -52,13 +52,15 @@ export default {
 	}
   },
   mounted: function(){
-	  this.$http.get('http://localhost:49559/api/clientes')
+		if(this.$root.$data.clientes.length>0){
+			this.clientes=this.$root.clientes;
+		}else{
+	  this.$http.get('http://localhost:49559/api/clientes/')
 		.then((response)=>{
-			for(var cliente of response.body){
-				this.clientes.push(cliente)
-			}
-	  })
-
+			this.clientes=response.body;
+			this.$root.$data.clientes=response.body;
+	  });
   }
+}
 }
 </script>

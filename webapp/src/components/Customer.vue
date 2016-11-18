@@ -99,6 +99,14 @@
 </template>
 
 <script>
+function findById(array,id,idProp){
+	for(var elem of array){
+		if(elem[idProp]===id){
+			return elem;
+		}
+	}
+	return null;
+}
 export default {
   name: 'Customer',
   data () {
@@ -117,10 +125,16 @@ export default {
 	  }
   },
 	created: function(){
+		const cliente = findById(this.$root.$data.clientes,this.$route.params.id,'CodCliente');
+		if(cliente){
+			this.cliente=cliente;
+		}else{
 	  this.$http.get('http://localhost:49559/api/clientes/'+this.$route.params.id)
 		.then((response)=>{
-			this.cliente=response.body
+			this.cliente=response.body;
+			this.$root.clientes.push(response.body);
 	  })
+	}
 }
 }
 </script>
