@@ -15,12 +15,6 @@ namespace PharmaCRM
             var corsAttr = new EnableCorsAttribute("http://localhost:8080", "*", "*");
             config.EnableCors(corsAttr);
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
-
             //Attr routing
             config.MapHttpAttributeRoutes();
 

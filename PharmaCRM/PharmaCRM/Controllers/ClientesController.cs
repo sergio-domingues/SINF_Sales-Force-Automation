@@ -5,8 +5,7 @@ using System.Web;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using PharmaCRM.Lib_Primavera.Model;
-using System.Web.Mvc;
+using System.Web.Http.Cors;
 
 namespace PharmaCRM.Controllers
 {
@@ -14,7 +13,8 @@ namespace PharmaCRM.Controllers
     {
         //
         // GET: /Clientes/
-
+        [Route("api/clientes")]
+        [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Cliente> Get()
         {
             return Lib_Primavera.PriIntegration.ListaClientes();
@@ -22,14 +22,14 @@ namespace PharmaCRM.Controllers
 
 
         // GET api/cliente/5    
-        public Cliente Get(string id)
+        [Route("api/clientes/{id}")]
+        [HttpGet]  
+        public Lib_Primavera.Model.Cliente Get(string id)
         {
             Lib_Primavera.Model.Cliente cliente = Lib_Primavera.PriIntegration.GetCliente(id);
             if (cliente == null)
             {
-                throw new HttpResponseException(
-                        Request.CreateResponse(HttpStatusCode.NotFound));
-
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
             }
             else
             {
@@ -37,7 +37,8 @@ namespace PharmaCRM.Controllers
             }
         }
 
-
+        [Route("api/clientes")]
+        [HttpPost]
         public HttpResponseMessage Post(Lib_Primavera.Model.Cliente cliente)
         {
             Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
@@ -59,7 +60,8 @@ namespace PharmaCRM.Controllers
 
         }
 
-
+        [Route("api/clientes")]
+        [HttpPut]
         public HttpResponseMessage Put(string id, Lib_Primavera.Model.Cliente cliente)
         {
 
@@ -84,8 +86,8 @@ namespace PharmaCRM.Controllers
             }
         }
 
-
-
+        [Route("api/clientes")]
+        [HttpDelete]
         public HttpResponseMessage Delete(string id)
         {
 

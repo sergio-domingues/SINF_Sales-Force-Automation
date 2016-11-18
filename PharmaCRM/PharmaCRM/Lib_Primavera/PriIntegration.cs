@@ -1213,25 +1213,25 @@ namespace PharmaCRM.Lib_Primavera
 
             if (incluirLinhas)
             {
-                StdBELista objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
+            StdBELista objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
                 + "FROM LinhasDoc where IdCabecDoc='" + enc.id + "' order By NumLinha");
 
-                while (!objListLin.NoFim())
-                {
-                    Model.LinhaEncomenda linha = new Model.LinhaEncomenda();
-                    linha.IdCabecDoc = objListLin.Valor("idCabecDoc");
-                    linha.CodArtigo = objListLin.Valor("Artigo");
-                    linha.DescArtigo = objListLin.Valor("Descricao");
-                    linha.Quantidade = objListLin.Valor("Quantidade");
-                    linha.Unidade = objListLin.Valor("Unidade");
-                    linha.Desconto = objListLin.Valor("Desconto1");
-                    linha.PrecoUnitario = objListLin.Valor("PrecUnit");
-                    linha.TotalILiquido = objListLin.Valor("TotalILiquido");
-                    linha.TotalLiquido = objListLin.Valor("PrecoLiquido");
-                    enc.Linhas.Add(linha);
+            while (!objListLin.NoFim())
+            {
+                Model.LinhaEncomenda linha = new Model.LinhaEncomenda();
+                linha.IdCabecDoc = objListLin.Valor("idCabecDoc");
+                linha.CodArtigo = objListLin.Valor("Artigo");
+                linha.DescArtigo = objListLin.Valor("Descricao");
+                linha.Quantidade = objListLin.Valor("Quantidade");
+                linha.Unidade = objListLin.Valor("Unidade");
+                linha.Desconto = objListLin.Valor("Desconto1");
+                linha.PrecoUnitario = objListLin.Valor("PrecUnit");
+                linha.TotalILiquido = objListLin.Valor("TotalILiquido");
+                linha.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                enc.Linhas.Add(linha);
 
-                    objListLin.Seguinte();
-                }
+                objListLin.Seguinte();
+            }
             }
 
             return enc;
@@ -1266,6 +1266,21 @@ namespace PharmaCRM.Lib_Primavera
             }
             else
                 return null;
+        }
+
+        public static Lib_Primavera.Model.Oportunidade getOportunidade(string id)
+        {
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StdBELista objList = PriEngine.Engine.Consulta("SELECT * FROM CabecOportunidadesVenda WHERE ID='" + id + "'");
+
+                return null; // TODO
+            }
+            else
+            {
+                return null;
+        }
+
         }
 
         #endregion

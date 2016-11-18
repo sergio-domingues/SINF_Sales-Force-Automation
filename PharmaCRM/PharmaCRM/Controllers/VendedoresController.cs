@@ -9,11 +9,15 @@ namespace PharmaCRM.Controllers
 {
     public class VendedoresController : ApiController
     {
+        [Route("api/vendedores")]
+        [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Vendedor> Get()
         {
             return PharmaCRM.Lib_Primavera.PriIntegration.ListaVendedores();
         }
 
+        [Route("api/vendedores/{id}")]
+        [HttpGet]
         public Lib_Primavera.Model.Vendedor Get(String id)
         {
             Lib_Primavera.Model.Vendedor vendedor = PharmaCRM.Lib_Primavera.PriIntegration.GetVendedor(id);
