@@ -118,5 +118,11 @@ namespace PharmaCRM.Controllers
 
         }
 
+        [Route("api/clientes/{id}/encomendas")]
+        [HttpGet]
+        public IEnumerable<Lib_Primavera.Model.Encomenda> GetClienteEncomendas(string id)
+        {
+            return Lib_Primavera.PriIntegration.GetEncomendasCliente(id);
+        }
     }
 }

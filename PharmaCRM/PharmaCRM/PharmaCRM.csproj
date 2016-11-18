@@ -20,6 +20,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -278,6 +280,7 @@
     <Compile Include="Controllers\ArtigosController.cs" />
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\EncomendasVendedorController.cs" />
     <Compile Include="Controllers\EncomendasClienteController.cs" />
     <Compile Include="Controllers\EncomendasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -289,18 +292,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Lib_Primavera\Model\Oportunidade.cs" />
-    <Compile Include="Lib_Primavera\Model\Encomenda.cs" />
-    <Compile Include="Lib_Primavera\Model\LinhaEncomenda.cs" />
     <Compile Include="Lib_Primavera\Model\StockArtigoArmazem.cs" />
     <Compile Include="Lib_Primavera\Model\StockArtigo.cs" />
     <Compile Include="Lib_Primavera\Model\ArtigoResumo.cs" />
     <Compile Include="Lib_Primavera\Model\Vendedor.cs" />
     <Compile Include="Lib_Primavera\Model\Artigo.cs" />
     <Compile Include="Lib_Primavera\Model\Cliente.cs" />
-    <Compile Include="Lib_Primavera\Model\DocCompra.cs" />
-    <Compile Include="Lib_Primavera\Model\DocVenda.cs" />
-    <Compile Include="Lib_Primavera\Model\LinhaDocCompra.cs" />
-    <Compile Include="Lib_Primavera\Model\LinhaDocVenda.cs" />
+    <Compile Include="Lib_Primavera\Model\Encomenda.cs" />
+    <Compile Include="Lib_Primavera\Model\LinhaEncomenda.cs" />
     <Compile Include="Lib_Primavera\Model\RespostaErro.cs" />
     <Compile Include="Lib_Primavera\PriEngine.cs" />
     <Compile Include="Lib_Primavera\PriIntegration.cs" />
