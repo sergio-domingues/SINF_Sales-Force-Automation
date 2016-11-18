@@ -10,11 +10,15 @@ namespace PharmaCRM.Controllers
 
     public class OportunidadesController : ApiController
     {
+        [Route("api/oportunidades")]
+        [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Oportunidade> Get()
         {
             return Lib_Primavera.PriIntegration.getOportunidades();
         }
 
+        [Route("api/oportunidades/{id}")]
+        [HttpGet]
         public Lib_Primavera.Model.Oportunidade Get(string id)
         {
             return Lib_Primavera.PriIntegration.getOportunidade(id);

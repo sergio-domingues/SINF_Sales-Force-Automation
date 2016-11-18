@@ -10,6 +10,7 @@ namespace PharmaCRM.Controllers
     public class EncomendasClienteController : ApiController
     {
         // GET: api/EncomendasCliente
+
         public IEnumerable<Lib_Primavera.Model.Encomenda> Get()
         {
             // TODO
