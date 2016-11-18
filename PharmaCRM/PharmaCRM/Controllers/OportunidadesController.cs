@@ -37,7 +37,6 @@ namespace PharmaCRM.Controllers
         {
             Lib_Primavera.Model.RespostaErro respostaErro = new Lib_Primavera.Model.RespostaErro();
             respostaErro = Lib_Primavera.PriIntegration.createOportunidade(Oportunidade);
-
             if (respostaErro.Erro == 0)
             {
                 return Request.CreateResponse(HttpStatusCode.Created, Oportunidade);
