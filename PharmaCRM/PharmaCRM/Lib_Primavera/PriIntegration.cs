@@ -1249,6 +1249,53 @@ namespace PharmaCRM.Lib_Primavera
             return respostaErro;
         }
 
+        public static Lib_Primavera.Model.RespostaErro UpdOportunidade(Lib_Primavera.Model.Oportunidade oportunidade)
+        {
+            Lib_Primavera.Model.RespostaErro respostaErro = new Model.RespostaErro();
+            CrmBEOportunidadeVenda objOportunidade = new CrmBEOportunidadeVenda();
+            try
+            {
+                if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+                {
+                    if (!PriEngine.Engine.CRM.OportunidadesVenda.Existe(oportunidade.id))
+                    {
+                        respostaErro.Erro = 1;
+                        respostaErro.Descricao = "Oportunidade não encontrada.";
+                    }
+                    else
+                    {
+                        objOportunidade = PriEngine.Engine.CRM.OportunidadesVenda.Edita(oportunidade.id);
+                        objOportunidade.set_EmModoEdicao(true);
+
+                        //actualizam-se todos os membros mesmo que so tenham sido editados alguns
+                        objOportunidade.set_ID(oportunidade.id);
+                        objOportunidade.set_Descricao(oportunidade.descricao);
+                        objOportunidade.set_Entidade(oportunidade.entidade);
+                        objOportunidade.set_TipoEntidade(oportunidade.tipoEntidade);
+                        objOportunidade.set_Vendedor(oportunidade.vendedor);
+                        objOportunidade.set_ValorTotalOV(oportunidade.valorTotalOV);
+                        PriEngine.Engine.CRM.OportunidadesVenda.Actualiza(objOportunidade);
+
+                        respostaErro.Erro = 0;
+                        respostaErro.Descricao = "Sucesso";
+                    }
+                }
+                else
+                {
+                    respostaErro.Erro = 1;
+                    respostaErro.Descricao = "Erro ao abrir a empresa";
+                }
+                return respostaErro;
+            }
+
+            catch (Exception ex)
+            {
+                respostaErro.Erro = 1;
+                respostaErro.Descricao = ex.Message;
+                return respostaErro;
+            }
+        }
+
         #endregion
     }
 }
