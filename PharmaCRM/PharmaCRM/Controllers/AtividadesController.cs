@@ -50,7 +50,7 @@ namespace PharmaCRM.Controllers
 
         [Route("api/atividades")]
         [HttpPut]
-        public HttpResponseMessage Put(string id, Lib_Primavera.Model.Atividade atividade)
+        public HttpResponseMessage Put(Lib_Primavera.Model.Atividade atividade)
         {
             Lib_Primavera.Model.RespostaErro respostaErro = new Lib_Primavera.Model.RespostaErro();
             try
