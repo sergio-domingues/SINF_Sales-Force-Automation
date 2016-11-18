@@ -275,18 +275,14 @@ namespace PharmaCRM.Lib_Primavera
             }
 
         }
-
-
+        
         public static Lib_Primavera.Model.RespostaErro DelCliente(string codCliente)
         {
-
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             GcpBECliente objCli = new GcpBECliente();
 
-
             try
             {
-
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
                     if (PriEngine.Engine.Comercial.Clientes.Existe(codCliente) == false)
@@ -297,14 +293,12 @@ namespace PharmaCRM.Lib_Primavera
                     }
                     else
                     {
-
                         PriEngine.Engine.Comercial.Clientes.Remove(codCliente);
                         erro.Erro = 0;
                         erro.Descricao = "Sucesso";
                         return erro;
                     }
                 }
-
                 else
                 {
                     erro.Erro = 1;
@@ -319,10 +313,7 @@ namespace PharmaCRM.Lib_Primavera
                 erro.Descricao = ex.Message;
                 return erro;
             }
-
         }
-
-
 
         public static Lib_Primavera.Model.RespostaErro InsereClienteObj(Model.Cliente cli)
         {
@@ -365,9 +356,7 @@ namespace PharmaCRM.Lib_Primavera
 
 
         }
-
-
-
+        
         #endregion Cliente;   // -----------------------------  END   CLIENTE    -----------------------
 
         #region Artigo
@@ -627,6 +616,7 @@ namespace PharmaCRM.Lib_Primavera
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
                     myEnc.set_Responsavel(dv.idResponsavel);
+                    myEnc.set_Filial(dv.Filial);
                     // Linhas do documento para a lista de linhas
                     lstlindv = dv.LinhasDocumento;
                     //PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc, rl);
@@ -677,7 +667,7 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel From CabecDoc where TipoDoc='ECL'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL'");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
@@ -688,6 +678,7 @@ namespace PharmaCRM.Lib_Primavera
                     dv.TotalMercadoria = objListCab.Valor("TotalMerc");
                     dv.Serie = objListCab.Valor("Serie");
                     dv.idResponsavel = objListCab.Valor("Responsavel");
+                    dv.Filial = objListCab.Valor("Filial");
                     listlindv = new List<Model.LinhaEncomenda>();
 
                     if (incluirLinhas)
@@ -726,7 +717,7 @@ namespace PharmaCRM.Lib_Primavera
             return listdv;
         }
 
-        public static Model.Encomenda GetEncomenda(int numdoc)
+        public static Model.Encomenda GetEncomenda(int numdoc, bool incluirLinhas)
         {
             StdBELista objListCab;
             StdBELista objListLin;
@@ -736,7 +727,7 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel FROM CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
+                string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial FROM CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
                 objListCab = PriEngine.Engine.Consulta(st);
                 dv = new Model.Encomenda();
                 dv.idInterno = objListCab.Valor("id");
@@ -746,27 +737,37 @@ namespace PharmaCRM.Lib_Primavera
                 dv.TotalMercadoria = objListCab.Valor("TotalMerc");
                 dv.Serie = objListCab.Valor("Serie");
                 dv.idResponsavel = objListCab.Valor("Responsavel");
+                dv.Filial = objListCab.Valor("Filial");
                 objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
                     + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
-                listlindv = new List<Model.LinhaEncomenda>();
 
-                while (!objListLin.NoFim())
+                if (incluirLinhas)
                 {
-                    lindv = new Model.LinhaEncomenda();
-                    lindv.IdCabecaDocumento = objListLin.Valor("idCabecDoc");
-                    lindv.CodigoArtigo = objListLin.Valor("Artigo");
-                    lindv.DescricaoArtigo = objListLin.Valor("Descricao");
-                    lindv.Quantidade = objListLin.Valor("Quantidade");
-                    lindv.Unidade = objListLin.Valor("Unidade");
-                    lindv.Desconto = objListLin.Valor("Desconto1");
-                    lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
-                    lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                    lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
-                    listlindv.Add(lindv);
-                    objListLin.Seguinte();
-                }
+                    listlindv = new List<Model.LinhaEncomenda>();
 
-                dv.LinhasDocumento = listlindv;
+                    while (!objListLin.NoFim())
+                    {
+                        lindv = new Model.LinhaEncomenda();
+                        lindv.IdCabecaDocumento = objListLin.Valor("idCabecDoc");
+                        lindv.CodigoArtigo = objListLin.Valor("Artigo");
+                        lindv.DescricaoArtigo = objListLin.Valor("Descricao");
+                        lindv.Quantidade = objListLin.Valor("Quantidade");
+                        lindv.Unidade = objListLin.Valor("Unidade");
+                        lindv.Desconto = objListLin.Valor("Desconto1");
+                        lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
+                        lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
+                        lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                        listlindv.Add(lindv);
+                        objListLin.Seguinte();
+                    }
+
+                    dv.LinhasDocumento = listlindv;
+                }
+                else
+                {
+                    dv.LinhasDocumento = new List<Model.LinhaEncomenda>();
+                }
+                
                 return dv;
             }
             return null;
@@ -784,7 +785,7 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel From CabecDoc where TipoDoc='ECL' AND Responsavel='" + idVendedor + "'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Responsavel='" + idVendedor + "'");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
@@ -795,6 +796,7 @@ namespace PharmaCRM.Lib_Primavera
                     dv.TotalMercadoria = objListCab.Valor("TotalMerc");
                     dv.Serie = objListCab.Valor("Serie");
                     dv.idResponsavel = objListCab.Valor("Responsavel");
+                    dv.Filial = objListCab.Valor("Filial");
                     listlindv = new List<Model.LinhaEncomenda>();
 
                     objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
@@ -838,7 +840,7 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel From CabecDoc where TipoDoc='ECL' AND Entidade='" + idCliente + "'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Entidade='" + idCliente + "'");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
@@ -849,6 +851,7 @@ namespace PharmaCRM.Lib_Primavera
                     dv.TotalMercadoria = objListCab.Valor("TotalMerc");
                     dv.Serie = objListCab.Valor("Serie");
                     dv.idResponsavel = objListCab.Valor("Responsavel");
+                    dv.Filial = objListCab.Valor("Filial");
                     listlindv = new List<Model.LinhaEncomenda>();
 
                     objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
@@ -878,6 +881,34 @@ namespace PharmaCRM.Lib_Primavera
                 }
             }
             return listdv;
+        }
+
+        public static Lib_Primavera.Model.RespostaErro DeleteEncomenda(int numDoc)
+        {
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            try
+            {
+                Model.Encomenda enc = GetEncomenda(numDoc, false);
+                if (enc == null)
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = "A encomenda não existe";
+                    return erro;
+                }
+                else
+                {
+                    PriEngine.Engine.Comercial.Vendas.Remove(enc.Filial, "ENC", enc.Serie, enc.NumeroDocumento);
+                    erro.Erro = 0;
+                    erro.Descricao = "Sucesso";
+                    return erro;
+                }
+            }
+            catch (Exception ex)
+            {
+                erro.Erro = 1;
+                erro.Descricao = ex.Message;
+                return erro;
+            }
         }
 
         #endregion Encomenda
