@@ -7,7 +7,7 @@ namespace PharmaCRM.Lib_Primavera.Model
 {
     public class Encomenda
     {
-        public string id
+        public string Entidade
         {
             get;
             set;
@@ -19,19 +19,7 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
-        public string IdVendedor
-        {
-            get;
-            set;
-        }
-
         public DateTime Data
-        {
-            get;
-            set;
-        }
-
-        public string Entidade
         {
             get;
             set;
@@ -43,25 +31,20 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
-        public double TotalIva
+        public string Serie
         {
             get;
             set;
         }
 
-        public double TotalDesconto
+        public List<Model.LinhaEncomenda> LinhasDocumento
+
         {
             get;
             set;
         }
 
-        public DateTime DataVencimento
-        {
-            get;
-            set;
-        }
-
-        public List<LinhaEncomenda> Linhas
+        public string idInterno
         {
             get;
             set;

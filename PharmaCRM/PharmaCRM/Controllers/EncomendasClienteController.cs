@@ -20,7 +20,7 @@ namespace PharmaCRM.Controllers
         // GET: api/EncomendasCliente/5
         public List<Lib_Primavera.Model.Encomenda> Get(string id)
         {
-            return Lib_Primavera.PriIntegration.GetEncomendasCliente(id);
+            return null;// Lib_Primavera.PriIntegration.GetEncomendasCliente(id);
         }
 
         // POST: api/EncomendasCliente
