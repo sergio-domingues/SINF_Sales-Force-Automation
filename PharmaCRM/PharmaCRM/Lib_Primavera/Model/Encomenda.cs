@@ -37,6 +37,12 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
+        public string idResponsavel
+        {
+            get;
+            set;
+        }
+
         public List<Model.LinhaEncomenda> LinhasDocumento
 
         {
