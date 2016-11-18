@@ -7,19 +7,19 @@ namespace PharmaCRM.Lib_Primavera.Model
 {
     public class LinhaEncomenda
     {
-        public string CodArtigo
+        public string CodigoArtigo
         {
             get;
             set;
         }
 
-        public string DescArtigo
+        public string DescricaoArtigo
         {
             get;
             set;
         }
 
-        public string IdCabecDoc
+        public string IdCabecaDocumento
         {
             get;
             set;
@@ -60,7 +60,6 @@ namespace PharmaCRM.Lib_Primavera.Model
             get;
             set;
         }
-
 
     }
 }

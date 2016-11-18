@@ -14,7 +14,7 @@ namespace PharmaCRM.Controllers
         [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Encomenda> Get()
         {
-            return Lib_Primavera.PriIntegration.GetEncomendas();
+            return Lib_Primavera.PriIntegration.GetEncomendas(false);
         }
 
         // GET: api/Encomendas/5
