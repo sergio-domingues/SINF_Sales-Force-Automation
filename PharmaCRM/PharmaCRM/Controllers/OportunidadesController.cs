@@ -22,15 +22,15 @@ namespace PharmaCRM.Controllers
         public Lib_Primavera.Model.Oportunidade Get(string id)
         {
             return Lib_Primavera.PriIntegration.getOportunidade(id);
-        }/*
+        }
 
         [Route("api/oportunidades/{id}/atividades")]
         [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Atividade> GetAtividades(string id)
         {
-            return Lib_Primavera.PriIntegration.GetAtividadesDeOportunidade(id);
+            return Lib_Primavera.PriIntegration.getAtividadesDeOportunidade(id);
         }
-
+        /*
         [HttpPost]
         public HttpResponseMessage Post(Lib_Primavera.Model.Oportunidade Oportunidade)
         {

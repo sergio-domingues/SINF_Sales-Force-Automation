@@ -76,6 +76,5 @@ namespace PharmaCRM.Lib_Primavera.Model
             get;
             set;
         }
-
     }
 }
