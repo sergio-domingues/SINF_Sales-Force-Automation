@@ -826,6 +826,60 @@ namespace PharmaCRM.Lib_Primavera
             return listdv;
         }
 
+        public static List<Model.Encomenda> GetEncomendasCliente(string idCliente)
+        {
+            StdBELista objListCab;
+            StdBELista objListLin;
+            Model.Encomenda dv = new Model.Encomenda();
+            List<Model.Encomenda> listdv = new List<Model.Encomenda>();
+            Model.LinhaEncomenda lindv = new Model.LinhaEncomenda();
+            List<Model.LinhaEncomenda> listlindv = new
+            List<Model.LinhaEncomenda>();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel From CabecDoc where TipoDoc='ECL' AND Entidade='" + idCliente + "'");
+                while (!objListCab.NoFim())
+                {
+                    dv = new Model.Encomenda();
+                    dv.idInterno = objListCab.Valor("id");
+                    dv.Entidade = objListCab.Valor("Entidade");
+                    dv.NumeroDocumento = objListCab.Valor("NumDoc");
+                    dv.Data = objListCab.Valor("Data");
+                    dv.TotalMercadoria = objListCab.Valor("TotalMerc");
+                    dv.Serie = objListCab.Valor("Serie");
+                    dv.idResponsavel = objListCab.Valor("Responsavel");
+                    listlindv = new List<Model.LinhaEncomenda>();
+
+                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
+                        + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
+
+                    while (!objListLin.NoFim())
+                    {
+                        lindv = new Model.LinhaEncomenda();
+                        lindv.IdCabecaDocumento = objListLin.Valor("idCabecDoc");
+                        lindv.CodigoArtigo = objListLin.Valor("Artigo");
+                        lindv.DescricaoArtigo = objListLin.Valor("Descricao");
+                        lindv.Quantidade = objListLin.Valor("Quantidade");
+                        lindv.Unidade = objListLin.Valor("Unidade");
+                        lindv.Desconto = objListLin.Valor("Desconto1");
+                        lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
+                        lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
+                        lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+
+                        listlindv.Add(lindv);
+                        objListLin.Seguinte();
+                    }
+
+                    dv.LinhasDocumento = listlindv;
+
+                    listdv.Add(dv);
+                    objListCab.Seguinte();
+                }
+            }
+            return listdv;
+        }
+
         #endregion Encomenda
 
         # region Atividade
