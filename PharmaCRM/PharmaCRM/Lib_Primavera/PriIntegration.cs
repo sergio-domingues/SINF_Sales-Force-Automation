@@ -1320,6 +1320,43 @@ namespace PharmaCRM.Lib_Primavera
                 return null;
         }
 
+        public static Lib_Primavera.Model.RespostaErro createOportunidade(Model.Oportunidade oportunidade)
+        {
+            Lib_Primavera.Model.RespostaErro respostaErro = new Model.RespostaErro();
+
+            try
+            {
+                if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+                {
+
+                    CrmBEOportunidadeVenda oportunidadeVenda = new CrmBEOportunidadeVenda();
+                    oportunidadeVenda.set_ID(Guid.NewGuid().ToString());
+                    oportunidadeVenda.set_Descricao(oportunidade.descricao);
+                    oportunidadeVenda.set_Entidade(oportunidade.entidade);
+                    oportunidadeVenda.set_TipoEntidade(oportunidade.tipoEntidade);
+                    oportunidadeVenda.set_Vendedor(oportunidade.vendedor);
+                    oportunidadeVenda.set_ValorTotalOV(oportunidade.valorTotalOV);
+
+                    PriEngine.Engine.CRM.OportunidadesVenda.Actualiza(oportunidadeVenda);
+
+
+                    respostaErro.Erro = 0;
+                    respostaErro.Descricao = "Oportunidade criada com sucesso.";
+                }
+                else
+                {
+                    respostaErro.Erro = 1;
+                    respostaErro.Descricao = "Falha a inicializar a empresa.";
+                }
+            }
+            catch (Exception ex)
+            {
+                respostaErro.Erro = 1;
+                respostaErro.Descricao = ex.Message;
+            }
+            return respostaErro;
+        }
+
         #endregion
     }
 }

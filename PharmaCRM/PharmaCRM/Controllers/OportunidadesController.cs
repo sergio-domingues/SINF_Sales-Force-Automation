@@ -30,27 +30,22 @@ namespace PharmaCRM.Controllers
         {
             return Lib_Primavera.PriIntegration.getAtividadesDeOportunidade(id);
         }
-        /*
+        
+        [Route("api/oportunidades")]
         [HttpPost]
         public HttpResponseMessage Post(Lib_Primavera.Model.Oportunidade Oportunidade)
         {
-            Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
-            erro = Lib_Primavera.PriIntegration.InsereOportunidadeObj(Oportunidade);
+            Lib_Primavera.Model.RespostaErro respostaErro = new Lib_Primavera.Model.RespostaErro();
+            respostaErro = Lib_Primavera.PriIntegration.createOportunidade(Oportunidade);
 
-            if (erro.Erro == 0)
+            if (respostaErro.Erro == 0)
             {
-                var response = Request.CreateResponse(
-                   HttpStatusCode.Created, Oportunidade);
-                /*string uri = Url.Link("DefaultApi", new { CodCliente = cliente.CodCliente });
-                response.Headers.Location = new Uri(uri);*/
-           /*     return response;
+                return Request.CreateResponse(HttpStatusCode.Created, Oportunidade);
             }
-
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, erro.Descricao);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, respostaErro.Descricao);
             }
-
-        }*/
+        }
     }
 }
