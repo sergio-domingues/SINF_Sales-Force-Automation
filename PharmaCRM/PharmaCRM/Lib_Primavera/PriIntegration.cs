@@ -1323,12 +1323,10 @@ namespace PharmaCRM.Lib_Primavera
         public static Lib_Primavera.Model.RespostaErro createOportunidade(Model.Oportunidade oportunidade)
         {
             Lib_Primavera.Model.RespostaErro respostaErro = new Model.RespostaErro();
-
             try
             {
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
-
                     CrmBEOportunidadeVenda oportunidadeVenda = new CrmBEOportunidadeVenda();
                     oportunidadeVenda.set_ID(Guid.NewGuid().ToString());
                     oportunidadeVenda.set_Descricao(oportunidade.descricao);
@@ -1339,9 +1337,41 @@ namespace PharmaCRM.Lib_Primavera
 
                     PriEngine.Engine.CRM.OportunidadesVenda.Actualiza(oportunidadeVenda);
 
-
                     respostaErro.Erro = 0;
                     respostaErro.Descricao = "Oportunidade criada com sucesso.";
+                }
+                else
+                {
+                    respostaErro.Erro = 1;
+                    respostaErro.Descricao = "Falha a inicializar a empresa.";
+                }
+            }
+            catch (Exception ex)
+            {
+                respostaErro.Erro = 1;
+                respostaErro.Descricao = ex.Message;
+            }
+            return respostaErro;
+        }
+
+        public static Lib_Primavera.Model.RespostaErro deleteOportunidade(string id)
+        {
+            Lib_Primavera.Model.RespostaErro respostaErro = new Model.RespostaErro();
+            try
+            {
+                if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+                {
+                    if (PriEngine.Engine.CRM.OportunidadesVenda.Existe(id) == false)
+                    {
+                        respostaErro.Erro = 1;
+                        respostaErro.Descricao = "Oportunidade não encontrada.";
+                    }
+                    else
+                    {
+                        PriEngine.Engine.CRM.OportunidadesVenda.Remove(id);
+                        respostaErro.Erro = 0;
+                        respostaErro.Descricao = "Oportunidade apagada com sucesso.";
+                    }
                 }
                 else
                 {
