@@ -23,8 +23,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<router-link tag="tr" :to="'/customers/'+cliente.CodCliente" v-for="cliente in clientes">
-									<th scope="row">1</th>
+								<router-link tag="tr" class="clicable" :to="'/customers/'+cliente.CodCliente" v-for="cliente in clientes">
 									<td>{{cliente.CodCliente}}</td>
 									<td>{{cliente.Nome}}</td>
 									<td>{{cliente.Morada}}</td>
@@ -49,12 +48,15 @@ export default {
   name: 'CustomerList',
   data () {
     return {
-		clientes:{}
+		clientes:[]
 	}
   },
   mounted: function(){
-	  this.$http.get('http://localhost:49559/api/clientes').then((response)=>{
-		this.clientes=response;
+	  this.$http.get('http://localhost:49559/api/clientes')
+		.then((response)=>{
+			for(var cliente of response.body){
+				this.clientes.push(cliente)
+			}
 	  })
 
   }

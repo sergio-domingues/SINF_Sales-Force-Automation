@@ -17,8 +17,8 @@
 							<i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg']" aria-hidden="true"></i>
 							<i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times" aria-hidden="true"></i>
 						</div>
-						
-							
+
+
 					</div>
 					<div class="panel-body">
 
@@ -26,35 +26,34 @@
 							<div class="form-group">
 								<label for="inputEmail3" class="col-sm-2 control-label">Id</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputEmail3" placeholder="Id" value="6" disabled>
+									<input type="text" class="form-control" id="inputEmail3" placeholder="Id" :value="cliente.CodCliente" disabled>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-2 control-label">Nome</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword3" placeholder="Password" value="Barack Hussein Obama" :disabled="!editing">
+									<input type="text" class="form-control" id="inputPassword3" placeholder="Nome" :value="cliente.Nome" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword2" class="col-sm-2 control-label">Morada</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword2" placeholder="Password" value="The White House" :disabled="!editing">
+									<input type="text" class="form-control" id="inputPassword2" placeholder="Morada" :value="cliente.Morada" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword1" class="col-sm-2 control-label">Contacto</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword1" placeholder="Password" value="91675984" :disabled="!editing">
+									<input type="text" class="form-control" id="inputPassword1" placeholder="Contacto" value="TODO" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword0" class="col-sm-2 control-label">Descrição</label>
 								<div class="col-sm-10">
-									<textarea class="form-control" rows="3" :disabled="!editing">Barack Hussein Obama II é um advogado e político dos Estados Unidos, o 44.º e atual presidente daquele país, sendo o primeiro afro-americano a ocupar o cargo.
-									</textarea>
+									<textarea class="form-control" rows="3" :disabled="!editing">TODO</textarea>
 								</div>
 							</div>
 
@@ -103,7 +102,7 @@
 export default {
   name: 'Customer',
   data () {
-    return {editing:false}
+    return {editing:false,cliente:{}}
   },
   methods:{
 	  toggleEditing: function(){
@@ -116,7 +115,13 @@ export default {
 		  //TODO
 		 this.editing = !this.editing;
 	  }
-  }
+  },
+	created: function(){
+	  this.$http.get('http://localhost:49559/api/clientes/'+this.$route.params.id)
+		.then((response)=>{
+			this.cliente=response.body
+	  })
+}
 }
 </script>
 

@@ -41,9 +41,6 @@ const router = new VueRouter({
 Vue.component('breadcrumb', Breadcrumb)
 
 new Vue({
-  http: {
-    root: '/api'
-  },
   router,
   el: '#app',
   render: h => h(App)
