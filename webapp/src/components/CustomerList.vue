@@ -52,15 +52,10 @@ export default {
 	}
   },
   mounted: function(){
-		if(this.$root.$data.clientes.length>0){
-			this.clientes=this.$root.clientes;
-		}else{
 	  this.$http.get('http://localhost:49559/api/clientes/')
 		.then((response)=>{
 			this.clientes=response.body;
-			this.$root.$data.clientes=response.body;
 	  });
-  }
 }
 }
 </script>

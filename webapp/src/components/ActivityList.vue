@@ -16,21 +16,25 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>#</th>
-									<th>Descrição</th>
 									<th>Data</th>
+									<th>Tipo</th>
+									<th>Descrição</th>
+									<th>Estado</th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
-								<router-link tag="tr" to="/activities/1" class="clicable">
-									<th scope="row">1</th>
-									<td>Telefonar ao João</td>
-									<td>17/10/2017</td>
-								</router-link>
-								<router-link tag="tr" to="/activities/2" class="clicable">
-									<th scope="row">2</th>
-									<td>Mandar mail á Maria</td>
-									<td>18/12/2017</td>
+								<router-link tag="tr" v-for="atividade in atividades" :to="'activities/'+ encodeURIComponent(atividade.id)" class="clicable">
+									<th scope="row">{{displayDate(atividade.dataInicio)}}</th>
+									<td>TODO</td>
+									<td>{{atividade.descricao}}</td>
+									<td v-if="atividade.estado == 0">INCOMPLETA</td>
+									<td v-else>FEITA</td>
+									<td>
+									<router-link to="">
+										<i v-on:click="deleteActivity(atividade.id)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+									</router-link>
+									</td>
 								</router-link>
 							</tbody>
 						</table>
@@ -48,7 +52,37 @@
 export default {
   name: 'LeadList',
   data () {
-    return {}
+    return {atividades : []}
+  },
+  mounted: function(){
+		if(this.$root.$data.atividades.length>0){
+			this.atividades=this.$root.atividades;
+		}else{
+	  this.$http.get('http://localhost:49559/api/atividades/')
+		.then((response)=>{
+			this.atividades=response.body;
+			this.$root.$data.atividades=response.body;
+	  });
+  }
+  },
+  methods: {
+	  displayDate: function(date){
+		  var d = new Date(date);
+		  	return  d.getDay()+ '-'+ d.getMonth()+ '-' + d.getFullYear()+' '+ d.getHours()+':'+ d.getMinutes()+':'+ d.getSeconds();
+	  },
+	  deleteActivity: function(id){
+				  alert('delete Activity ' + id)
+		/*  	this.$http.delete('http://localhost:49559/api/atividades/', id)
+			  .then((res) =>{
+				  alert('success')
+				  console.log('sucess')
+			  }, 
+			  (err) => {
+				  alert('error')
+				  console.log('error')
+			  });
+			  */
+	  }
   }
 }
 </script>
