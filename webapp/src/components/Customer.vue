@@ -32,14 +32,14 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-2 control-label">Nome</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword3" placeholder="Nome" :value="cliente.Nome" :disabled="!editing">
+									<input type="text" class="form-control" id="inputPassword3" placeholder="Nome" v-model="cliente.Nome" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword2" class="col-sm-2 control-label">Morada</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword2" placeholder="Morada" :value="cliente.Morada" :disabled="!editing">
+									<input type="text" class="form-control" id="inputPassword2" placeholder="Morada" v-model="cliente.Morada" :disabled="!editing">
 								</div>
 							</div>
 
@@ -110,17 +110,22 @@ function findById(array,id,idProp){
 export default {
   name: 'Customer',
   data () {
-    return {editing:false,cliente:{}}
+    return {editing:false,cliente:{},clienteTemp:{}}
   },
   methods:{
 	  toggleEditing: function(){
 		  if(this.editing){
-			  console.log('Enviar pedido para editar')
+			  this.$http.put('http://localhost:49559/api/clientes/'+this.cliente.CodCliente,this.cliente.CodCliente)
+				.then((response)=>{
+					console.log(response)
+				})
 		  }
 		  this.editing = !this.editing;
+			this.clienteTemp=Object.assign({}, this.cliente);
+
 	  },
 	  cancelEditing:function(){
-		  //TODO
+		 this.cliente=this.clienteTemp;
 		 this.editing = !this.editing;
 	  }
   },
