@@ -26,71 +26,76 @@
 							<div class="form-group">
 								<label for="inputEmail3" class="col-sm-2 control-label">Id</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputEmail3" placeholder="Id" :value="$route.params.id" disabled>
+									<input type="text" class="form-control" id="inputEmail3" placeholder="Id" :value="atividade.id" disabled>
 								</div>
 							</div>
+
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-2 control-label">Tipo</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword3" placeholder="Password" value="Barack Hussein Obama" :disabled="!editing">
+									<input type="text" class="form-control" id="inputPassword3" placeholder="tipo" value="TODO" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword2" class="col-sm-2 control-label">Estado</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword2" placeholder="Password" value="The White House" :disabled="!editing">
+									<input v-if="atividade.estado == 0" type="text" class="form-control" id="inputPassword2" placeholder="estado" value="INCOMPLETA"
+										:disabled="!editing">
+									<input v-else type="text" class="form-control" id="inputPassword2" placeholder="estado" value="FEITA" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword0" class="col-sm-2 control-label">Data de Inicio</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword0" placeholder="Password" value="The White House" :disabled="!editing">
+									<input type="text" class="form-control" id="inputPassword0" placeholder="data inicio" :value="atividade.dataInicio" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword1" class="col-sm-2 control-label">Data de Fim</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword1" placeholder="Password" value="The White House" :disabled="!editing">
+									<input type="text" class="form-control" id="inputPassword1" placeholder="data fim" :value="atividade.dataFim" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword4" class="col-sm-2 control-label">Local</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword4" placeholder="Password" value="91675984" :disabled="!editing">
+									<input type="text" class="form-control" id="inputPassword4" placeholder="local" :value="atividade.local" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword0" class="col-sm-2 control-label">Descrição</label>
 								<div class="col-sm-10">
-									<textarea class="form-control" rows="3" :disabled="!editing">Barack Hussein Obama II é um advogado e político dos Estados Unidos, o 44.º e atual presidente daquele país, sendo o primeiro afro-americano a ocupar o cargo.
+									<textarea class="form-control" rows="3" :disabled="!editing">{{atividade.descricao}}
 									</textarea>
 								</div>
 							</div>
-
-
-
 						</form>
-
-
 					</div>
 				</div>
 			</div>
 
 		</div>
 	</div>
-
 </template>
 
 <script>
+function findById(array,id,idProp){
+	for(var elem of array){
+		if(elem[idProp]===id){
+			return elem;
+		}
+	}
+	return null;
+}
 export default {
   name: 'Customer',
   data () {
-    return {editing:false}
+    return {editing:false, atividade : {}}
   },
   methods:{
 	  toggleEditing: function(){
@@ -103,7 +108,19 @@ export default {
 		  //TODO
 		 this.editing = !this.editing;
 	  }
-  }
+  },
+	mounted: function(){
+		const atividade = findById(this.$root.$data.atividades,this.$route.params.id,'id');
+		if(atividade){
+			this.atividade=atividade;
+		}else{
+	  this.$http.get('http://localhost:49559/api/atividades/'+this.$route.params.id)
+		.then((response)=>{
+			this.atividade=response.body;
+			this.$root.atividades.push(response.body);
+	  })
+	}
+}
 }
 </script>
 
