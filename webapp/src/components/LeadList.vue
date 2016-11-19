@@ -45,15 +45,10 @@ export default {
     return {oportunidades:[]}
   },
 	mounted: function(){
-		if(this.$root.oportunidades.length>0){
-			this.oportunidades=this.$root.oportunidades;
-		}else{
 	  this.$http.get('http://localhost:49559/api/oportunidades/')
 		.then((response)=>{
 			this.oportunidades=response.body;
-			this.$root.oportunidades=response.body;
 	  });
   }
-}
 }
 </script>

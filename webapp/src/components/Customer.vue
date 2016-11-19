@@ -1,10 +1,10 @@
 <template>
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-		<breadcrumb :items="[{path:'customers',name:'Clientes'}]" :current="'Barack Obama'"></breadcrumb>
+		<breadcrumb :items="[{path:'customers',name:'Clientes'}]" :current="cliente.Nome"></breadcrumb>
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Barack Obama</h1>
+				<h1 class="page-header">{{cliente.Nome}}</h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -107,40 +107,35 @@ function findById(array,id,idProp){
 	}
 	return null;
 }
+var clienteTemp;
 export default {
   name: 'Customer',
   data () {
-    return {editing:false,cliente:{},clienteTemp:{}}
+    return {editing:false,cliente:{}}
   },
   methods:{
 	  toggleEditing: function(){
 		  if(this.editing){
-			  this.$http.put('http://localhost:49559/api/clientes/'+this.cliente.CodCliente,this.cliente.CodCliente)
+			  this.$http.put('http://localhost:49559/api/clientes/'+this.cliente.CodCliente,this.cliente)
 				.then((response)=>{
 					console.log(response)
 				})
 		  }
 		  this.editing = !this.editing;
-			this.clienteTemp=Object.assign({}, this.cliente);
+			clienteTemp=Object.assign({}, this.cliente);
 
 	  },
 	  cancelEditing:function(){
-		 this.cliente=this.clienteTemp;
+		 this.cliente=Object.assign({}, clienteTemp);
 		 this.editing = !this.editing;
 	  }
   },
 	mounted: function(){
-		const cliente = findById(this.$root.$data.clientes,this.$route.params.id,'CodCliente');
-		if(cliente){
-			this.cliente=cliente;
-		}else{
 	  this.$http.get('http://localhost:49559/api/clientes/'+this.$route.params.id)
 		.then((response)=>{
 			this.cliente=response.body;
-			this.$root.clientes.push(response.body);
 	  })
 	}
-}
 }
 </script>
 

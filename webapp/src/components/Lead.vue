@@ -1,10 +1,10 @@
 <template>
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-		<breadcrumb :items="[{path:'leads',name:'Oportunidades'}]" :current="'Projecto de Implementação 1'"></breadcrumb>
+		<breadcrumb :items="[{path:'leads',name:'Oportunidades'}]" :current="oportunidade.descricao"></breadcrumb>
 
 		<div classt="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Projecto de Implementação 1</h1>
+				<h1 class="page-header">{{oportunidade.descricao}}</h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -32,21 +32,21 @@
 							<div class="form-group">
 								<label for="cliente" class="col-sm-2 control-label">Cliente</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="cliente" placeholder="Cliente" :value="oportunidade.entidade" :disabled="!editing">
+									<input type="text" class="form-control" id="cliente" placeholder="Cliente" v-model="oportunidade.entidade" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="descricao" class="col-sm-2 control-label">Descrição</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="descricao" placeholder="Descrição" :value="oportunidade.descricao" :disabled="!editing">
+									<input type="text" class="form-control" id="descricao" placeholder="Descrição" v-model="oportunidade.descricao" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="valorTotalOV" class="col-sm-2 control-label">Valor Total</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="valorTotalOV" placeholder="Valot Total" :value="oportunidade.valorTotalOV + '€'" :disabled="!editing">
+									<input type="text" class="form-control" id="valorTotalOV" placeholder="Valot Total" v-model="oportunidade.valorTotalOV" :disabled="!editing">
 								</div>
 							</div>
 						</form>
@@ -81,6 +81,7 @@ function findById(array,id,idProp){
 	}
 	return null;
 }
+var oportunidadeTemp;
 
 export default {
   name: 'Lead',
@@ -90,27 +91,28 @@ export default {
   methods:{
 	  toggleEditing: function(){
 		  if(this.editing){
-			  console.log('Enviar pedido para editar')
+				const URL = encodeURI('http://localhost:49559/api/oportunidades/'+this.oportunidade.id);
+				this.$http.put('http://localhost:49559/api/oportunidades/'+this.oportunidade.id,this.oportunidade)
+				.then((response)=>{
+					this.oportunidade=response.body;
+				})
+
 		  }
 		  this.editing = !this.editing;
+			oportunidadeTemp=JSON.parse(JSON.stringify(this.oportunidade));
 	  },
 	  cancelEditing:function(){
-		  //TODO
+		 this.oportunidade=JSON.parse(JSON.stringify(oportunidadeTemp));
 		 this.editing = !this.editing;
 	  }
   },
 	mounted: function(){
-		const oportunidade = findById(this.$root.oportunidades,this.$route.params.id,'id');
-		if(oportunidade){
-			this.oportunidade=oportunidade;
-		}else{
+
 		const URL = encodeURI('http://localhost:49559/api/oportunidades/'+this.$route.params.id);
 		this.$http.get(URL)
 		.then((response)=>{
 			this.oportunidade=response.body;
-			this.$root.oportunidades.push(response.body);
 		})
-	}
 }
 }
 </script>
