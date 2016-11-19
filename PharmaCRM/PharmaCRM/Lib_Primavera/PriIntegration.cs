@@ -131,7 +131,6 @@ namespace PharmaCRM.Lib_Primavera
 
                         objVendedor.set_Nome(vendedor.nome);
 
-                        objVendedor.set_EmModoEdicao(false); //TODO será necessário, ou o "Actualiza" já trata disto?
                         PriEngine.Engine.Comercial.Vendedores.Actualiza(objVendedor);
 
                         erro.Erro = 0;
@@ -270,12 +269,10 @@ namespace PharmaCRM.Lib_Primavera
                         objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente.CodCliente);
                         objCli.set_EmModoEdicao(true);
 
-                        //nao se edita o codCliente?
                         objCli.set_Nome(cliente.Nome);
                         objCli.set_NumContribuinte(cliente.NumContribuinte);
                         objCli.set_Morada(cliente.Morada);
 
-                        objCli.set_EmModoEdicao(false); // será necessário ou estará já incluido no metodo .Actualiza(...)??
                         PriEngine.Engine.Comercial.Clientes.Actualiza(objCli);
 
                         erro.Erro = 0;
@@ -1090,7 +1087,6 @@ namespace PharmaCRM.Lib_Primavera
                         objAtividade.set_IDContactoPrincipal(atividade.idContactoPrincipal);
                         objAtividade.set_IDCabecOVenda(atividade.idCabecalhoOportunidadeVenda);
 
-                        objAtividade.set_EmModoEdicao(false); //TODO será necessário, ou o "Actualiza" já trata disto?
                         PriEngine.Engine.CRM.Actividades.Actualiza(objAtividade);
 
                         erro.Erro = 0;

@@ -47,7 +47,7 @@ namespace PharmaCRM.Controllers
             }
         }
 
-        [Route("api/oportunidades")]
+        [Route("api/oportunidades/{id}")]
         [HttpPut]
         public HttpResponseMessage Put(Lib_Primavera.Model.Oportunidade oportunidade)
         {
