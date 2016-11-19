@@ -30,7 +30,11 @@
 									<td>{{atividade.descricao}}</td>
 									<td v-if="atividade.estado == 0">INCOMPLETA</td>
 									<td v-else>FEITA</td>
-									<td v-on:click="delete(atividade.id)"><i class="fa fa-lg fa-trash" aria-hidden="true"></i></td>
+									<td>
+									<router-link to="">
+										<i v-on:click="deleteActivity(atividade.id)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+									</router-link>
+									</td>
 								</router-link>
 							</tbody>
 						</table>
@@ -66,9 +70,9 @@ export default {
 		  var d = new Date(date);
 		  	return  d.getDay()+ '-'+ d.getMonth()+ '-' + d.getFullYear()+' '+ d.getHours()+':'+ d.getMinutes()+':'+ d.getSeconds();
 	  },
-	  delete: function(id){
-				  console.log('id' + id)
-		  	this.$http.post('http://localhost:49559/api/atividades/', id)
+	  deleteActivity: function(id){
+				  alert('delete Activity ' + id)
+		/*  	this.$http.delete('http://localhost:49559/api/atividades/', id)
 			  .then((res) =>{
 				  alert('success')
 				  console.log('sucess')
@@ -77,6 +81,7 @@ export default {
 				  alert('error')
 				  console.log('error')
 			  });
+			  */
 	  }
   }
 }
