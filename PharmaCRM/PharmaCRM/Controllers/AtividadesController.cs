@@ -48,7 +48,7 @@ namespace PharmaCRM.Controllers
             }
         }
 
-        [Route("api/atividades")]
+        [Route("api/atividades/{id}")]
         [HttpPut]
         public HttpResponseMessage Put(Lib_Primavera.Model.Atividade atividade)
         {
