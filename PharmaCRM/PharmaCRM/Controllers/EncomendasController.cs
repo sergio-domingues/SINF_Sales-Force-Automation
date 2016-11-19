@@ -22,7 +22,7 @@ namespace PharmaCRM.Controllers
         [HttpGet]
         public Lib_Primavera.Model.Encomenda Get(int id)
         {
-            return Lib_Primavera.PriIntegration.GetEncomenda(id);
+            return Lib_Primavera.PriIntegration.GetEncomenda(id, true);
         }
 
         // POST: api/Encomendas
@@ -48,8 +48,7 @@ namespace PharmaCRM.Controllers
         [HttpDelete]
         public void Delete(int id)
         {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            Lib_Primavera.PriIntegration.DeleteEncomenda(id);
         }
     }
 }
