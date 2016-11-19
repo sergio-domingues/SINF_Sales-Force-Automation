@@ -14,6 +14,14 @@
             <input type="text" class="form-control" id="descricao" v-model="oportunidade.descricao" placeholder="Descrição">
           </div>
           <div class="form-group">
+            <label for="identificador">Identificador</label>
+            <input type="text" class="form-control" id="identificador" v-model="oportunidade.identificador" placeholder="Identificador">
+          </div>
+          <div class="form-group">
+            <label for="date">Data de Expiraçao</label>
+            <input type="date" class="form-control" id="date" v-model="oportunidade.data" placeholder="Data de Expiração">
+          </div>
+          <div class="form-group">
             <label for="cliente">Cliente</label>
             <select class="form-control" id="cliente" v-model="selected">
               <option v-for="option in options" v-bind:value="option.value">
@@ -34,7 +42,7 @@
 export default {
   name: 'CreateLeadModal',
   data () {
-    return {oportunidade:{descricao:''},options:[],selected:''}
+    return {oportunidade:{descricao:'',data:null,identificador:''},options:[],selected:''}
   },
   mounted: function(){
     this.$http.get('http://localhost:49559/api/clientes/')
@@ -46,12 +54,12 @@ export default {
   },
   methods:{
     createLead: function(e){
-      console.log
-      this.$http.post('http://localhost:49559/api/oportunidades/',{descricao:this.oportunidade.descricao,entidade:this.selected})
-			.then((response)=>{
-				console.log(response)
-			},(err)=>{
-				console.log(err)
+      this.$http.post('http://localhost:49559/api/oportunidades/',{descricao:this.oportunidade.descricao,entidade:this.selected,
+          tipoEntidade:"C",vendedor:thi.$root.vendedor.id,dataExpiracao:oportunidade.data,codigo:oportunidade.identificador})
+        .then((response)=>{
+          console.log(response)
+        },(err)=>{
+          console.log(err)
 			});
     }
   }
