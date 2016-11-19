@@ -14,11 +14,9 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">Info
 						<div class="pull-right">
-							<i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg']" aria-hidden="true"></i>
-							<i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times" aria-hidden="true"></i>
+							<i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg','clicable']" aria-hidden="true"></i>
+							<i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times clicable" aria-hidden="true"></i>
 						</div>
-
-
 					</div>
 					<div class="panel-body">
 
@@ -50,8 +48,6 @@
 								</div>
 							</div>
 						</form>
-
-
 					</div>
 				</div>
 			</div>
@@ -73,14 +69,6 @@
 </template>
 
 <script>
-function findById(array,id,idProp){
-	for(var elem of array){
-		if(elem[idProp]==id){
-			return elem;
-		}
-	}
-	return null;
-}
 var oportunidadeTemp;
 
 export default {
@@ -90,16 +78,19 @@ export default {
   },
   methods:{
 	  toggleEditing: function(){
+			oportunidadeTemp=JSON.parse(JSON.stringify(this.oportunidade));
 		  if(this.editing){
 				const URL = encodeURI('http://localhost:49559/api/oportunidades/'+this.oportunidade.id);
 				this.$http.put('http://localhost:49559/api/oportunidades/'+this.oportunidade.id,this.oportunidade)
 				.then((response)=>{
+					this.editing = !this.editing;
 					this.oportunidade=response.body;
-				})
-
-		  }
-		  this.editing = !this.editing;
-			oportunidadeTemp=JSON.parse(JSON.stringify(this.oportunidade));
+				},(err)=>{
+					console.log(err)
+			})
+		  }else{
+					this.editing = !this.editing;
+			}
 	  },
 	  cancelEditing:function(){
 		 this.oportunidade=JSON.parse(JSON.stringify(oportunidadeTemp));

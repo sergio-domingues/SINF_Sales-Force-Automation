@@ -14,11 +14,9 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">Info
 						<div class="pull-right">
-							<i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg']" aria-hidden="true"></i>
-							<i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times" aria-hidden="true"></i>
+							<i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg','clicable']" aria-hidden="true"></i>
+							<i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times clicable" aria-hidden="true"></i>
 						</div>
-
-
 					</div>
 					<div class="panel-body">
 
@@ -99,14 +97,6 @@
 </template>
 
 <script>
-function findById(array,id,idProp){
-	for(var elem of array){
-		if(elem[idProp]===id){
-			return elem;
-		}
-	}
-	return null;
-}
 var clienteTemp;
 export default {
   name: 'Customer',
@@ -115,15 +105,18 @@ export default {
   },
   methods:{
 	  toggleEditing: function(){
+			clienteTemp=Object.assign({}, this.cliente);
 		  if(this.editing){
 			  this.$http.put('http://localhost:49559/api/clientes/'+this.cliente.CodCliente,this.cliente)
 				.then((response)=>{
-					console.log(response)
+					this.editing = !this.editing;
+					this.oportunidade=response.body;
+				},(err)=>{
+					console.log(err)
 				})
-		  }
-		  this.editing = !this.editing;
-			clienteTemp=Object.assign({}, this.cliente);
-
+		  }else{
+				this.editing = !this.editing;
+			}
 	  },
 	  cancelEditing:function(){
 		 this.cliente=Object.assign({}, clienteTemp);
