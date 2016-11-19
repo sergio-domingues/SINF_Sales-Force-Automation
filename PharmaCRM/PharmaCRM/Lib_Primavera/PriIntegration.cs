@@ -1287,14 +1287,14 @@ namespace PharmaCRM.Lib_Primavera
             {
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
-                    if (PriEngine.Engine.CRM.OportunidadesVenda.Existe(id) == false)
+                    if (!PriEngine.Engine.CRM.OportunidadesVenda.ExisteID(id))
                     {
                         respostaErro.Erro = 1;
                         respostaErro.Descricao = "Oportunidade não encontrada.";
                     }
                     else
                     {
-                        PriEngine.Engine.CRM.OportunidadesVenda.Remove(id);
+                        PriEngine.Engine.CRM.OportunidadesVenda.RemoveID(id);
                         respostaErro.Erro = 0;
                         respostaErro.Descricao = "Oportunidade apagada com sucesso.";
                     }
@@ -1321,14 +1321,14 @@ namespace PharmaCRM.Lib_Primavera
             {
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
-                    if (!PriEngine.Engine.CRM.OportunidadesVenda.Existe(oportunidade.id))
+                    if (!PriEngine.Engine.CRM.OportunidadesVenda.ExisteID(oportunidade.id))
                     {
                         respostaErro.Erro = 1;
                         respostaErro.Descricao = "Oportunidade não encontrada.";
                     }
                     else
                     {
-                        objOportunidade = PriEngine.Engine.CRM.OportunidadesVenda.Edita(oportunidade.id);
+                        objOportunidade = PriEngine.Engine.CRM.OportunidadesVenda.EditaID(oportunidade.id);
                         objOportunidade.set_EmModoEdicao(true);
 
                         //actualizam-se todos os membros mesmo que so tenham sido editados alguns
