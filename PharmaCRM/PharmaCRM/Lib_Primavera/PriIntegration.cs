@@ -1169,9 +1169,12 @@ namespace PharmaCRM.Lib_Primavera
                 {
                     Model.Oportunidade oportunidade = new Model.Oportunidade();
                     oportunidade.id = objList.Valor("ID");
+                    oportunidade.codigo = objList.Valor("Oportunidade");
                     oportunidade.descricao = objList.Valor("Descricao");
                     oportunidade.entidade = objList.Valor("Entidade");
                     oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
+                    oportunidade.dataCriacao = objList.Valor("DataCriacao");
+                    oportunidade.dataExpiracao = objList.Valor("DataExpiracao");
                     oportunidade.vendedor = objList.Valor("Vendedor");
                     oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
                     listLeads.Add(oportunidade);
@@ -1190,9 +1193,12 @@ namespace PharmaCRM.Lib_Primavera
                 StdBELista objList = PriEngine.Engine.Consulta("SELECT * FROM CabecOportunidadesVenda WHERE ID='" + id + "'");
                 Model.Oportunidade oportunidade = new Model.Oportunidade();
                 oportunidade.id = objList.Valor("ID");
+                oportunidade.codigo = objList.Valor("Oportunidade");
                 oportunidade.descricao = objList.Valor("Descricao");
                 oportunidade.entidade = objList.Valor("Entidade");
                 oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
+                oportunidade.dataCriacao = objList.Valor("DataCriacao");
+                oportunidade.dataExpiracao = objList.Valor("DataExpiracao");
                 oportunidade.vendedor = objList.Valor("Vendedor");
                 oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
                 return oportunidade;
