@@ -155,6 +155,32 @@ namespace PharmaCRM.Lib_Primavera
             }
         }
 
+        public static List<Model.Oportunidade> GetVendedorOportunidades(string idVendedor)
+        {
+            StdBELista objList;
+            List<Model.Oportunidade> oportunidades = new List<Model.Oportunidade>();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objList = PriEngine.Engine.Consulta("SELECT * FROM CabecOportunidadesVenda WHERE Vendedor = " + idVendedor);
+
+                while (!objList.NoFim())
+                {
+                    Model.Oportunidade oportunidade = new Model.Oportunidade();
+                    oportunidade.id = objList.Valor("ID");
+                    oportunidade.descricao = objList.Valor("Descricao");
+                    oportunidade.entidade = objList.Valor("Entidade");
+                    oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
+                    oportunidade.vendedor = objList.Valor("Vendedor");
+                    oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
+                    oportunidades.Add(oportunidade);
+                    objList.Seguinte();
+                }
+                return oportunidades;
+            }
+            else
+                return null;
+        }
 
         #endregion Vendedor;
 

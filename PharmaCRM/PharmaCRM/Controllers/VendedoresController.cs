@@ -31,9 +31,7 @@ namespace PharmaCRM.Controllers
             }
         }
 
-
         // http://localhost:49559/api/vendedores/1/atividades?dataInicio=2010-11-15&dataFim=2016-11-15
-
         [Route("api/vendedores/{id}/atividades")]
         [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Atividade> GetVendedorAtividades(string id, [FromUri] string dataInicio, [FromUri] string dataFim)
@@ -46,6 +44,13 @@ namespace PharmaCRM.Controllers
         public IEnumerable<Lib_Primavera.Model.Encomenda> GetVendedorEncomendas(string id)
         {
             return Lib_Primavera.PriIntegration.GetEncomendasVendedor(id);
+        }
+
+        [Route("api/vendedores/{id}/oportunidades")]
+        [HttpGet]
+        public IEnumerable<Lib_Primavera.Model.Oportunidade> GetVendedorOportunidades(string id)
+        {
+            return Lib_Primavera.PriIntegration.GetVendedorOportunidades(id);
         }
     }
 }
