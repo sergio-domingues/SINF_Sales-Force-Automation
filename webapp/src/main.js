@@ -12,9 +12,16 @@ import SalesOrder from './components/SalesOrder.vue'
 import SalesOrderList from './components/SalesOrderList.vue'
 import NotFound from './components/NotFound.vue'
 import Breadcrumb from './components/Breadcrumb.vue'
+import VueResource from 'vue-resource'
 
 
 Vue.use(VueRouter);
+Vue.use(VueResource);
+
+const store = {
+  clientes:[],
+  oportunidades:[]
+}
 
 const routes = [
   { path: '/', component: Dashboard },
@@ -39,6 +46,7 @@ Vue.component('breadcrumb', Breadcrumb)
 
 new Vue({
   router,
+  data:store,
   el: '#app',
   render: h => h(App)
 })

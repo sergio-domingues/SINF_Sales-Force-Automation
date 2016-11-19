@@ -16,22 +16,16 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>#</th>
+									<th>Descrição</th>
+									<th>Valor da Oportunidade</th>
 									<th>Cliente</th>
-									<th>Sumário</th>
 								</tr>
 							</thead>
 							<tbody>
-								<router-link tag="tr" to="/leads/1">
-									<th scope="row">1</th>
-									<td>XPTO1</td>
-									<td>Projecto de Implemntação 1</td>
-								</router-link>
-								<router-link tag="tr" to="/leads/2">
-									<th scope="row">2</th>
-									<td>XPTO2</td>
-									<td>Projecto de Implemntação 2</td>
-								</router-link>
+								<router-link tag="tr" class="clicable" :to="'/leads/'+oportunidade.id" v-for="oportunidade in oportunidades">
+									<td>{{oportunidade.descricao}}</td>
+									<td>{{oportunidade.valorTotalOV}} €</td>
+									<td><router-link :to="'/customers/'+oportunidade.entidade">{{oportunidade.entidade}}</router-link></td>
 							</tbody>
 						</table>
 					</div>
@@ -48,7 +42,18 @@
 export default {
   name: 'LeadList',
   data () {
-    return {}
+    return {oportunidades:[]}
+  },
+	mounted: function(){
+		if(this.$root.oportunidades.length>0){
+			this.oportunidades=this.$root.oportunidades;
+		}else{
+	  this.$http.get('http://localhost:49559/api/oportunidades/')
+		.then((response)=>{
+			this.oportunidades=response.body;
+			this.$root.oportunidades=response.body;
+	  });
   }
+}
 }
 </script>

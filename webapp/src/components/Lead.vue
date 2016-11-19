@@ -17,42 +17,38 @@
 							<i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg']" aria-hidden="true"></i>
 							<i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times" aria-hidden="true"></i>
 						</div>
-						
-							
+
+
 					</div>
 					<div class="panel-body">
 
 						<form class="form-horizontal">
 							<div class="form-group">
-								<label for="inputEmail3" class="col-sm-2 control-label">Id</label>
+								<label for="id" class="col-sm-2 control-label">Id</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputEmail3" placeholder="Id" value="6" disabled>
+									<input type="text" class="form-control" id="id" placeholder="Id" :value="oportunidade.id" disabled>
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label">Cliente</label>
+								<label for="cliente" class="col-sm-2 control-label">Cliente</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword3" placeholder="Password" value="XPTO1" :disabled="!editing">
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label for="inputPassword2" class="col-sm-2 control-label">Nome</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword2" placeholder="Password" value="Projecto de Implementação 1" :disabled="!editing">
+									<input type="text" class="form-control" id="cliente" placeholder="Cliente" :value="oportunidade.entidade" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword0" class="col-sm-2 control-label">Sumario</label>
+								<label for="descricao" class="col-sm-2 control-label">Descrição</label>
 								<div class="col-sm-10">
-									<textarea class="form-control" rows="3" :disabled="!editing">Barack Hussein Obama II é um advogado e político dos Estados Unidos, o 44.º e atual presidente daquele país, sendo o primeiro afro-americano a ocupar o cargo.
-									</textarea>
+									<input type="text" class="form-control" id="descricao" placeholder="Descrição" :value="oportunidade.descricao" :disabled="!editing">
 								</div>
 							</div>
 
-
-
+							<div class="form-group">
+								<label for="valorTotalOV" class="col-sm-2 control-label">Valor Total</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="valorTotalOV" placeholder="Valot Total" :value="oportunidade.valorTotalOV + '€'" :disabled="!editing">
+								</div>
+							</div>
 						</form>
 
 
@@ -77,10 +73,19 @@
 </template>
 
 <script>
+function findById(array,id,idProp){
+	for(var elem of array){
+		if(elem[idProp]==id){
+			return elem;
+		}
+	}
+	return null;
+}
+
 export default {
   name: 'Lead',
   data () {
-    return {editing:false}
+    return {editing:false,oportunidade:{}}
   },
   methods:{
 	  toggleEditing: function(){
@@ -93,7 +98,20 @@ export default {
 		  //TODO
 		 this.editing = !this.editing;
 	  }
-  }
+  },
+	mounted: function(){
+		const oportunidade = findById(this.$root.oportunidades,this.$route.params.id,'id');
+		if(oportunidade){
+			this.oportunidade=oportunidade;
+		}else{
+		const URL = encodeURI('http://localhost:49559/api/oportunidades/'+this.$route.params.id);
+		this.$http.get(URL)
+		.then((response)=>{
+			this.oportunidade=response.body;
+			this.$root.oportunidades.push(response.body);
+		})
+	}
+}
 }
 </script>
 

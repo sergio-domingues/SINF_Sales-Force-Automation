@@ -49,9 +49,9 @@
 
 <script>
 export default {
-  name: 'LeadList',
+  name: 'SalesOrderList',
   data () {
-    return {}
+    return {salesOrders:[]}
   }
 }
 </script>

@@ -120,7 +120,7 @@
 
 <script>
 export default {
-  name: 'Customer',
+  name: 'SalesOrders',
   data () {
     return {editing:false}
   },
@@ -140,9 +140,6 @@ export default {
 </script>
 
 <style>
-    textarea {
-        resize: vertical;
-    }
     
     .recipt {
         margin-top: 10px;
