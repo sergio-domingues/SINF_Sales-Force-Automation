@@ -18,7 +18,6 @@ import VueResource from 'vue-resource'
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
-
 const routes = [
   { path: '/', component: Dashboard },
   { path: '/customers', component: CustomerList },
