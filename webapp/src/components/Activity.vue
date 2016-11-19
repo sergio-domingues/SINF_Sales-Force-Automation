@@ -93,7 +93,6 @@ function findById(array,id,idProp){
 	return null;
 }
 export default {
-  name: 'Customer',
   data () {
     return {editing:false, atividade : {}}
   },
@@ -110,17 +109,11 @@ export default {
 	  }
   },
 	mounted: function(){
-		const atividade = findById(this.$root.$data.atividades,this.$route.params.id,'id');
-		if(atividade){
-			this.atividade=atividade;
-		}else{
 	  this.$http.get('http://localhost:49559/api/atividades/'+this.$route.params.id)
 		.then((response)=>{
 			this.atividade=response.body;
-			this.$root.atividades.push(response.body);
 	  })
 	}
-}
 }
 </script>
 

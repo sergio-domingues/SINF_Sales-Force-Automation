@@ -55,15 +55,10 @@ export default {
     return {atividades : []}
   },
   mounted: function(){
-		if(this.$root.$data.atividades.length>0){
-			this.atividades=this.$root.atividades;
-		}else{
 	  this.$http.get('http://localhost:49559/api/atividades/')
 		.then((response)=>{
 			this.atividades=response.body;
-			this.$root.$data.atividades=response.body;
 	  });
-  }
   },
   methods: {
 	  displayDate: function(date){
