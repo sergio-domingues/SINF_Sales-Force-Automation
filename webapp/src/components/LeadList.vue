@@ -4,7 +4,8 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Oportunidades</h1>
+				<h1 class="page-header">Lista de Oportunidades <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-modal" aria-hidden="true"></i></h1>
+
 			</div>
 		</div>
 		<!--/.row-->
@@ -26,29 +27,31 @@
 									<td>{{oportunidade.descricao}}</td>
 									<td>{{oportunidade.valorTotalOV}} €</td>
 									<td><router-link :to="'/customers/'+oportunidade.entidade">{{oportunidade.entidade}}</router-link></td>
-							</tbody>
-						</table>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
+
 			</div>
-
+			<!--/.row-->
+			<create-modal></create-modal>
 		</div>
-		<!--/.row-->
-
-	</div>
 </template>
 
-<script>
-export default {
-  name: 'LeadList',
-  data () {
-    return {oportunidades:[]}
-  },
-	mounted: function(){
-	  this.$http.get('http://localhost:49559/api/oportunidades/')
-		.then((response)=>{
-			this.oportunidades=response.body;
-	  });
-  }
-}
-</script>
+	<script>
+	import CreateModal from './modal/Lead.vue'
+	export default {
+		name: 'LeadList',
+		data () {
+			return {oportunidades:[]}
+		},
+		components:{CreateModal},
+		mounted: function(){
+			this.$http.get('http://localhost:49559/api/oportunidades/')
+			.then((response)=>{
+				this.oportunidades=response.body;
+			});
+		}
+	}
+	</script>
