@@ -60,7 +60,7 @@ namespace PharmaCRM.Controllers
 
         }
 
-        [Route("api/clientes")]
+        [Route("api/clientes/{id}")]
         [HttpPut]
         public HttpResponseMessage Put(string id, Lib_Primavera.Model.Cliente cliente)
         {
@@ -86,7 +86,7 @@ namespace PharmaCRM.Controllers
             }
         }
 
-        [Route("api/clientes")]
+        [Route("api/clientes/{id}")]
         [HttpDelete]
         public HttpResponseMessage Delete(string id)
         {

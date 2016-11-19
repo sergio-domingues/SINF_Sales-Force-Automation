@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Interop.CrmBE900;
 
 namespace PharmaCRM.Lib_Primavera.Model
 {
