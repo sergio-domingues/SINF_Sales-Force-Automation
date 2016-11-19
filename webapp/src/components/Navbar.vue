@@ -11,7 +11,7 @@
           <a class="navbar-brand" href="#"><span>Pharma</span>CRM</a>
           <ul class="user-menu">
             <li class="dropdown pull-right">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Donald Trump <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{name}}<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#">Logout</a></li>
               </ul>
@@ -28,7 +28,16 @@
 export default {
   name: 'navbar',
   data () {
-    return {}
+    return {name:''}
+  },
+  mounted:function(){
+    this.$http.get('http://localhost:49559/api/vendedores/1')
+      .then((response)=>{
+        this.$root.vendedor.id=response.body.cod;
+        this.$root.vendedor.name=response.body.nome;
+        this.name=response.body.nome;
+      })
+
   }
 }
 </script>
