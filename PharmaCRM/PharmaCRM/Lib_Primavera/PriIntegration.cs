@@ -1244,9 +1244,14 @@ namespace PharmaCRM.Lib_Primavera
                 {
                     CrmBEOportunidadeVenda oportunidadeVenda = new CrmBEOportunidadeVenda();
                     oportunidadeVenda.set_ID(Guid.NewGuid().ToString());
+                    oportunidadeVenda.set_Oportunidade(oportunidade.codigo);
                     oportunidadeVenda.set_Descricao(oportunidade.descricao);
                     oportunidadeVenda.set_Entidade(oportunidade.entidade);
                     oportunidadeVenda.set_TipoEntidade(oportunidade.tipoEntidade);
+                    oportunidadeVenda.set_DataCriacao(DateTime.Now);
+                    oportunidadeVenda.set_DataExpiracao(oportunidade.dataExpiracao);
+                    oportunidadeVenda.set_CicloVenda("CV_HW");
+                    oportunidadeVenda.set_Moeda("EUR");
                     oportunidadeVenda.set_Vendedor(oportunidade.vendedor);
                     oportunidadeVenda.set_ValorTotalOV(oportunidade.valorTotalOV);
 
@@ -1322,9 +1327,14 @@ namespace PharmaCRM.Lib_Primavera
 
                         //actualizam-se todos os membros mesmo que so tenham sido editados alguns
                         objOportunidade.set_ID(oportunidade.id);
+                        objOportunidade.set_Oportunidade(oportunidade.codigo);
                         objOportunidade.set_Descricao(oportunidade.descricao);
                         objOportunidade.set_Entidade(oportunidade.entidade);
                         objOportunidade.set_TipoEntidade(oportunidade.tipoEntidade);
+                        objOportunidade.set_DataCriacao(DateTime.Now);
+                        objOportunidade.set_DataExpiracao(oportunidade.dataExpiracao);
+                        objOportunidade.set_CicloVenda("CV_HW");
+                        objOportunidade.set_Moeda("EUR");
                         objOportunidade.set_Vendedor(oportunidade.vendedor);
                         objOportunidade.set_ValorTotalOV(oportunidade.valorTotalOV);
                         PriEngine.Engine.CRM.OportunidadesVenda.Actualiza(objOportunidade);
