@@ -28,10 +28,20 @@ namespace PharmaCRM.Controllers
         // POST: api/Encomendas
         [Route("api/encomendas")]
         [HttpPost]
-        public void Post([FromBody]string value)
+        public HttpResponseMessage Post([FromBody]Lib_Primavera.Model.Encomenda encomenda)
         {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
+            erro = Lib_Primavera.PriIntegration.CreateEncomenda(encomenda);
+            
+            if (erro.Erro == 0)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Created, encomenda.idInterno);
+                return Request.CreateResponse(HttpStatusCode.Created, encomenda);;
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
         }
 
         [Route("api/encomendas/{id}")]
@@ -46,9 +56,9 @@ namespace PharmaCRM.Controllers
         // DELETE: api/Encomendas/5
         [Route("api/encomendas/{id}")]
         [HttpDelete]
-        public void Delete(int id)
+        public string Delete(int id)
         {
-            Lib_Primavera.PriIntegration.DeleteEncomenda(id);
+            return Lib_Primavera.PriIntegration.DeleteEncomenda(id).Descricao.ToString();
         }
     }
 }

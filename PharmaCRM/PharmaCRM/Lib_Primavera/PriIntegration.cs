@@ -629,19 +629,12 @@ namespace PharmaCRM.Lib_Primavera
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             GcpBEDocumentoVenda myEnc = new GcpBEDocumentoVenda();
 
-            GcpBELinhaDocumentoVenda myLin = new GcpBELinhaDocumentoVenda();
-
-            GcpBELinhasDocumentoVenda myLinhas = new GcpBELinhasDocumentoVenda();
-
-            Interop.GcpBE900.PreencheRelacaoVendas rl = new Interop.GcpBE900.PreencheRelacaoVendas();
-            List<Model.LinhaEncomenda> lstlindv = new List<Model.LinhaEncomenda>();
-
             try
             {
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
                     // Atribui valores ao cabecalho do doc
-                    //myEnc.set_DataDoc(dv.Data);
+                    myEnc.set_DataDoc(dv.Data);
                     myEnc.set_Entidade(dv.Entidade);
                     myEnc.set_Serie(dv.Serie);
                     myEnc.set_Tipodoc("ECL");
@@ -649,21 +642,20 @@ namespace PharmaCRM.Lib_Primavera
                     myEnc.set_Responsavel(dv.idResponsavel);
                     myEnc.set_Filial(dv.Filial);
                     // Linhas do documento para a lista de linhas
-                    lstlindv = dv.LinhasDocumento;
-                    //PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc, rl);
+                    List<Model.LinhaEncomenda> lstlindv = dv.LinhasDocumento;
                     PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
                     foreach (Model.LinhaEncomenda lin in lstlindv)
                     {
                         PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodigoArtigo, lin.Quantidade, "", "", lin.PrecoUnitario, lin.Desconto);
                     }
 
-
-                    // PriEngine.Engine.Comercial.Compras.TransformaDocumento(
-
                     PriEngine.Engine.IniciaTransaccao();
-                    //PriEngine.Engine.Comercial.Vendas.Edita Actualiza(myEnc, "Teste");
                     PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc, "Teste");
                     PriEngine.Engine.TerminaTransaccao();
+
+                    dv.idInterno = myEnc.get_ID();
+                    dv.NumeroDocumento = myEnc.get_NumDoc();
+
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
                     return erro;
@@ -673,13 +665,12 @@ namespace PharmaCRM.Lib_Primavera
                     erro.Erro = 1;
                     erro.Descricao = "Erro ao abrir empresa";
                     return erro;
-
                 }
 
             }
             catch (Exception ex)
             {
-                PriEngine.Engine.DesfazTransaccao();
+                //PriEngine.Engine.DesfazTransaccao();
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;
                 return erro;
@@ -928,7 +919,7 @@ namespace PharmaCRM.Lib_Primavera
                 }
                 else
                 {
-                    PriEngine.Engine.Comercial.Vendas.Remove(enc.Filial, "ENC", enc.Serie, enc.NumeroDocumento);
+                    PriEngine.Engine.Comercial.Vendas.AnulaDocumento("000", "ECL", "2016", enc.NumeroDocumento);
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
                     return erro;
