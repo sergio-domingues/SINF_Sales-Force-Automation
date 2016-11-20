@@ -22,9 +22,32 @@ namespace PharmaCRM.Controllers
         [HttpGet]
         public Lib_Primavera.Model.Encomenda Get(int numDoc)
         {
-            return Lib_Primavera.PriIntegration.GetEncomenda(numDoc, true);
+            Lib_Primavera.Model.Encomenda enc = Lib_Primavera.PriIntegration.GetEncomenda(numDoc, true);
+            
+            if (enc == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+
+            return enc;
         }
 
+        /*
+        {
+            "Entidade": "MICROAVI",
+            "Data": "2016-10-07T00:00:00",
+            "TotalMercadoria": 1926,
+            "idResponsavel": "2",
+            "LinhasDocumento": [
+                {
+                    "CodigoArtigo": "A0001",
+                    "Quantidade": 1,
+                    "Desconto": 0,
+                    "PrecoUnitario": 1000
+                }
+            ]
+        }
+        */
         // POST: api/Encomendas
         [Route("api/encomendas")]
         [HttpPost]
@@ -58,7 +81,9 @@ namespace PharmaCRM.Controllers
         [HttpDelete]
         public void Delete(int numDoc)
         {
-            Lib_Primavera.PriIntegration.DeleteEncomenda(numDoc);
+            // TODO
+            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            //Lib_Primavera.PriIntegration.DeleteEncomenda(numDoc);
         }
     }
 }

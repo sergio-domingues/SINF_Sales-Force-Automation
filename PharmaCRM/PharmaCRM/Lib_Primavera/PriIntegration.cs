@@ -636,11 +636,12 @@ namespace PharmaCRM.Lib_Primavera
                     // Atribui valores ao cabecalho do doc
                     myEnc.set_DataDoc(dv.Data);
                     myEnc.set_Entidade(dv.Entidade);
-                    myEnc.set_Serie(dv.Serie);
+                    myEnc.set_Serie("2016");
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
                     myEnc.set_Responsavel(dv.idResponsavel);
-                    myEnc.set_Filial(dv.Filial);
+                    myEnc.set_Filial("000");
+
                     // Linhas do documento para a lista de linhas
                     List<Model.LinhaEncomenda> lstlindv = dv.LinhasDocumento;
                     PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
@@ -650,27 +651,26 @@ namespace PharmaCRM.Lib_Primavera
                     }
 
                     PriEngine.Engine.IniciaTransaccao();
-                    PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc, "Teste");
+                    PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc, "PharmaCRM");
                     PriEngine.Engine.TerminaTransaccao();
 
                     dv.idInterno = myEnc.get_ID();
                     dv.NumeroDocumento = myEnc.get_NumDoc();
 
                     erro.Erro = 0;
-                    erro.Descricao = "Sucesso";
+                    erro.Descricao = "Encomenda criada com sucesso.";
                     return erro;
                 }
                 else
                 {
                     erro.Erro = 1;
-                    erro.Descricao = "Erro ao abrir empresa";
+                    erro.Descricao = "Erro a criar encomenda (Não foi possível inicializar a empresa).";
                     return erro;
                 }
 
             }
             catch (Exception ex)
             {
-                //PriEngine.Engine.DesfazTransaccao();
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;
                 return erro;
@@ -751,6 +751,12 @@ namespace PharmaCRM.Lib_Primavera
             {
                 string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial FROM CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
                 objListCab = PriEngine.Engine.Consulta(st);
+
+                if (objListCab.NoFim())
+                {
+                    return null;
+                }
+
                 dv = new Model.Encomenda();
                 dv.idInterno = objListCab.Valor("id");
                 dv.Entidade = objListCab.Valor("Entidade");
@@ -792,6 +798,7 @@ namespace PharmaCRM.Lib_Primavera
                 
                 return dv;
             }
+
             return null;
         }
 
@@ -907,7 +914,8 @@ namespace PharmaCRM.Lib_Primavera
 
         public static Lib_Primavera.Model.RespostaErro DeleteEncomenda(int numDoc)
         {
-            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            // TOOD
+            /*Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             try
             {
                 Model.Encomenda enc = GetEncomenda(numDoc, false);
@@ -930,7 +938,11 @@ namespace PharmaCRM.Lib_Primavera
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;
                 return erro;
-            }
+            }*/
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            erro.Erro = 1;
+            erro.Descricao = "Método não implementado (issue #15).";
+            return erro;
         }
 
         #endregion Encomenda
