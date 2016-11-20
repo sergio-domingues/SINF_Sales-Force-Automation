@@ -28,7 +28,7 @@ namespace PharmaCRM.Controllers
             }
             else
             {
-                return PharmaCRM.Lib_Primavera.PriIntegration.GetAtividade(id);
+                return atividade;
             }                       
         }
 
@@ -92,6 +92,36 @@ namespace PharmaCRM.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest, erro.Descricao);
             }
+        }
+
+        [Route("api/atividades/tipos")]
+        public List<Lib_Primavera.Model.TipoAtividade> getTipos()
+        {
+            List<Lib_Primavera.Model.TipoAtividade> tipoAtividade = PharmaCRM.Lib_Primavera.PriIntegration.GetListaTiposAtividade();
+
+            if (tipoAtividade == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+            else
+            {
+                return tipoAtividade;
+            }
+        }
+
+        [Route("api/atividades/tipos/{id}")]
+        public Lib_Primavera.Model.TipoAtividade getTipo(string id)
+        {
+            Lib_Primavera.Model.TipoAtividade tipoAtividade = PharmaCRM.Lib_Primavera.PriIntegration.getTipoAtividade(id);
+
+            if (tipoAtividade == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+            else
+            {
+                return tipoAtividade;
+            } 
         }
     }
 }
