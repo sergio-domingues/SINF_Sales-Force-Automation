@@ -13,6 +13,18 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
+        public string Localidade
+        {
+            get;
+            set;
+        }
+
+        public string Notas
+        {
+            get;
+            set;
+        }
+
         public string CodCliente
         {
             get;
@@ -26,6 +38,12 @@ namespace PharmaCRM.Lib_Primavera.Model
         }
 
         public string NumContribuinte
+        {
+            get;
+            set;
+        }
+
+        public string Telefone
         {
             get;
             set;

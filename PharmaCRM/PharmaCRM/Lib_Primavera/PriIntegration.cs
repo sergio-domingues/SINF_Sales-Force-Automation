@@ -187,8 +187,6 @@ namespace PharmaCRM.Lib_Primavera
 
         public static List<Model.Cliente> ListaClientes()
         {
-
-
             StdBELista objList;
 
             List<Model.Cliente> listClientes = new List<Model.Cliente>();
@@ -196,9 +194,7 @@ namespace PharmaCRM.Lib_Primavera
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
 
-                //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
-
-                objList = PriEngine.Engine.Consulta("SELECT Cliente, Nome, Moeda, NumContrib as NumContribuinte, Fac_Mor AS campo_exemplo FROM  CLIENTES");
+                objList = PriEngine.Engine.Consulta("SELECT Cliente, Nome, Notas, Fac_Local, NumContrib, Fac_Mor, Fac_Tel FROM  CLIENTES");
 
 
                 while (!objList.NoFim())
@@ -207,8 +203,11 @@ namespace PharmaCRM.Lib_Primavera
                     {
                         CodCliente = objList.Valor("Cliente"),
                         Nome = objList.Valor("Nome"),
-                        NumContribuinte = objList.Valor("NumContribuinte"),
-                        Morada = objList.Valor("campo_exemplo")
+                        NumContribuinte = objList.Valor("NumContrib"),
+                        Morada = objList.Valor("Fac_Mor"),
+                        Localidade = objList.Valor("Fac_Local"),
+                        Notas = objList.Valor("Notas"),
+                        Telefone = objList.Valor("Fac_Tel")
                     });
                     objList.Seguinte();
 
@@ -236,6 +235,9 @@ namespace PharmaCRM.Lib_Primavera
                     myCli.Nome = objCli.get_Nome();
                     myCli.NumContribuinte = objCli.get_NumContribuinte();
                     myCli.Morada = objCli.get_Morada();
+                    myCli.Localidade = objCli.get_Localidade();
+                    myCli.Notas = objCli.get_Observacoes();
+                    myCli.Telefone = objCli.get_Telefone();
                     return myCli;
                 }
                 else
@@ -272,6 +274,9 @@ namespace PharmaCRM.Lib_Primavera
                         objCli.set_Nome(cliente.Nome);
                         objCli.set_NumContribuinte(cliente.NumContribuinte);
                         objCli.set_Morada(cliente.Morada);
+                        objCli.set_Localidade(cliente.Localidade);
+                        objCli.set_Observacoes(cliente.Notas);
+                        objCli.set_Telefone(cliente.Telefone);
 
                         PriEngine.Engine.Comercial.Clientes.Actualiza(objCli);
 
@@ -355,6 +360,9 @@ namespace PharmaCRM.Lib_Primavera
                     myCli.set_Nome(cli.Nome);
                     myCli.set_NumContribuinte(cli.NumContribuinte);
                     myCli.set_Morada(cli.Morada);
+                    myCli.set_Localidade(cli.Localidade);
+                    myCli.set_Observacoes(cli.Notas);
+                    myCli.set_Telefone(cli.Telefone);
 
                     PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
 
