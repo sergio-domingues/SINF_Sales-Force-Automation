@@ -70,5 +70,28 @@ namespace PharmaCRM.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, respostaErro.Descricao);
             }
         }
+
+        [Route("api/atividades/{id}")]
+        [HttpDelete]
+        public HttpResponseMessage Delete(string id)
+        {
+            Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
+            try
+            {
+                erro = Lib_Primavera.PriIntegration.DelAtividade(id);
+                if (erro.Erro == 0)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, erro.Descricao);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, erro.Descricao);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, erro.Descricao);
+            }
+        }
     }
 }

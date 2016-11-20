@@ -18,11 +18,11 @@ namespace PharmaCRM.Controllers
         }
 
         // GET: api/Encomendas/5
-        [Route("api/encomendas/{id}")]
+        [Route("api/encomendas/{numDoc}")]
         [HttpGet]
-        public Lib_Primavera.Model.Encomenda Get(int id)
+        public Lib_Primavera.Model.Encomenda Get(int numDoc)
         {
-            return Lib_Primavera.PriIntegration.GetEncomenda(id, true);
+            return Lib_Primavera.PriIntegration.GetEncomenda(numDoc, true);
         }
 
         // POST: api/Encomendas
@@ -44,11 +44,11 @@ namespace PharmaCRM.Controllers
         }
 
         // DELETE: api/Encomendas/5
-        [Route("api/encomendas/{id}")]
+        [Route("api/encomendas/{numDoc}")]
         [HttpDelete]
-        public void Delete(int id)
+        public void Delete(int numDoc)
         {
-            Lib_Primavera.PriIntegration.DeleteEncomenda(id);
+            Lib_Primavera.PriIntegration.DeleteEncomenda(numDoc);
         }
     }
 }
