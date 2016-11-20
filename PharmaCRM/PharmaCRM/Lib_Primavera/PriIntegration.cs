@@ -911,6 +911,71 @@ namespace PharmaCRM.Lib_Primavera
             return listdv;
         }
 
+        public static List<Model.Atividade> GetAtividadesCliente(string idCliente)
+        {
+            Model.Atividade atividade = new Model.Atividade();
+            List<Model.Atividade> atividades = new List<Model.Atividade>();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT * FROM Tarefas WHERE TipoEntidadePrincipal = 'C' AND EntidadePrincipal = '" + idCliente + "'");
+                while (!objListCab.NoFim())
+                {
+                    atividade = new Model.Atividade()
+                    {
+                        id = objListCab.Valor("Id"),
+                        idTipoAtividade = objListCab.Valor("IdTipoActividade"),
+                        estado = objListCab.Valor("Estado"),
+                        descricao = objListCab.Valor("Descricao"),
+                        resumo = objListCab.Valor("Resumo"),
+                        dataInicio = objListCab.Valor("DataInicio"),
+                        dataFim = objListCab.Valor("DataFim"),
+                        local = objListCab.Valor("LocalRealizacao"),
+                        tipoEntidadePrincipal = objListCab.Valor("TipoEntidadePrincipal"),
+                        vendedor = objListCab.Valor("ResponsavelPor"),
+                        idContactoPrincipal = objListCab.Valor("IdContactoPrincipal"),
+                        idCabecalhoOportunidadeVenda = objListCab.Valor("IdCabecOVenda"),
+                    };
+
+                    atividades.Add(atividade);
+                    objListCab.Seguinte();
+                }
+                return atividades;
+            }
+            else
+                return null;
+        }
+
+        public static List<Model.Oportunidade> GetOportunidadesCliente(string idCliente)
+        {
+            StdBELista objList;
+            List<Model.Oportunidade> listLeads = new List<Model.Oportunidade>();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objList = PriEngine.Engine.Consulta("SELECT * FROM CabecOportunidadesVenda WHERE TipoEntidade = 'C' AND Entidade = '" + idCliente + "'");
+
+                while (!objList.NoFim())
+                {
+                    Model.Oportunidade oportunidade = new Model.Oportunidade();
+                    oportunidade.id = objList.Valor("ID");
+                    oportunidade.codigo = objList.Valor("Oportunidade");
+                    oportunidade.descricao = objList.Valor("Descricao");
+                    oportunidade.entidade = objList.Valor("Entidade");
+                    oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
+                    oportunidade.dataCriacao = objList.Valor("DataCriacao");
+                    oportunidade.dataExpiracao = objList.Valor("DataExpiracao");
+                    oportunidade.vendedor = objList.Valor("Vendedor");
+                    oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
+                    listLeads.Add(oportunidade);
+                    objList.Seguinte();
+                }
+                return listLeads;
+            }
+            else
+                return null;
+        }
+
         public static Lib_Primavera.Model.RespostaErro DeleteEncomenda(int numDoc)
         {
             // TOOD

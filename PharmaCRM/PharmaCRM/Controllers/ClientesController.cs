@@ -124,5 +124,19 @@ namespace PharmaCRM.Controllers
         {
             return Lib_Primavera.PriIntegration.GetEncomendasCliente(id);
         }
+
+        [Route("api/clientes/{id}/atividades")]
+        [HttpGet]
+        public IEnumerable<Lib_Primavera.Model.Atividade> GetClienteAtividades(string id)
+        {
+            return Lib_Primavera.PriIntegration.GetAtividadesCliente(id);
+        }
+
+        [Route("api/clientes/{id}/oportunidades")]
+        [HttpGet]
+        public IEnumerable<Lib_Primavera.Model.Oportunidade> GetClienteOportunidades(string id)
+        {
+            return Lib_Primavera.PriIntegration.GetOportunidadesCliente(id);
+        }
     }
 }
