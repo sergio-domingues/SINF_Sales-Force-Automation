@@ -71,7 +71,7 @@ namespace PharmaCRM.Controllers
             if (erro.Erro == 0)
             {
                 var response = Request.CreateResponse(HttpStatusCode.Created, encomenda.idInterno);
-                return Request.CreateResponse(HttpStatusCode.Created, encomenda); ;
+                return Request.CreateResponse(HttpStatusCode.Created, encomenda);
             }
             else
             {
@@ -82,11 +82,16 @@ namespace PharmaCRM.Controllers
         // DELETE: api/Encomendas/5
         [Route("api/encomendas/{numDoc}")]
         [HttpDelete]
-        public void Delete(int numDoc)
+        public HttpResponseMessage Delete(int numDoc)
         {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
-            //Lib_Primavera.PriIntegration.DeleteEncomenda(numDoc);
+            Lib_Primavera.Model.RespostaErro erro = Lib_Primavera.PriIntegration.AnulaEncomenda(numDoc);
+
+            if (erro.Erro != 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
     }
 }

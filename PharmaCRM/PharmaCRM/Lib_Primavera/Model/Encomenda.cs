@@ -9,6 +9,7 @@ namespace PharmaCRM.Lib_Primavera.Model
     {
         public Encomenda() {
             NumeroDocumento = -1;
+            Anulada = false;
         }
 
         public string Entidade
@@ -55,6 +56,12 @@ namespace PharmaCRM.Lib_Primavera.Model
 
         public List<Model.LinhaEncomenda> LinhasDocumento
 
+        {
+            get;
+            set;
+        }
+
+        public Boolean Anulada
         {
             get;
             set;
