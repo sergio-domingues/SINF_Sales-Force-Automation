@@ -23,7 +23,7 @@ namespace PharmaCRM.Controllers
         public Lib_Primavera.Model.Encomenda Get(int numDoc)
         {
             Lib_Primavera.Model.Encomenda enc = Lib_Primavera.PriIntegration.GetEncomenda(numDoc, true);
-            
+
             if (enc == null)
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
@@ -53,27 +53,31 @@ namespace PharmaCRM.Controllers
         [HttpPost]
         public HttpResponseMessage Post([FromBody]Lib_Primavera.Model.Encomenda encomenda)
         {
-            Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
-            erro = Lib_Primavera.PriIntegration.CreateEncomenda(encomenda);
-            
-            if (erro.Erro == 0)
-            {
-                var response = Request.CreateResponse(HttpStatusCode.Created, encomenda.idInterno);
-                return Request.CreateResponse(HttpStatusCode.Created, encomenda);;
-            }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
+            return editaCriaEncomenda(encomenda);
         }
 
         [Route("api/encomendas/{id}")]
         [HttpPut]
         // PUT: api/Encomendas/5
-        public void Put(int id, [FromBody]string value)
+        public HttpResponseMessage Put(int id, [FromBody]Lib_Primavera.Model.Encomenda encomenda)
         {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            return editaCriaEncomenda(encomenda);
+        }
+
+        private HttpResponseMessage editaCriaEncomenda(Lib_Primavera.Model.Encomenda encomenda)
+        {
+            Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
+            erro = Lib_Primavera.PriIntegration.CreateEncomenda(encomenda);
+
+            if (erro.Erro == 0)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Created, encomenda.idInterno);
+                return Request.CreateResponse(HttpStatusCode.Created, encomenda); ;
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
         }
 
         // DELETE: api/Encomendas/5
