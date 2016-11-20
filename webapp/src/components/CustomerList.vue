@@ -22,6 +22,7 @@
 									<th>NIF</th>
 								</tr>
 							</thead>
+							<div v-show="loading" class="spinner"></div>
 							<tbody>
 								<router-link tag="tr" class="clicable" :to="'/customers/'+cliente.CodCliente" v-for="cliente in clientes">
 									<td>{{cliente.CodCliente}}</td>
@@ -48,12 +49,14 @@ export default {
   name: 'CustomerList',
   data () {
     return {
-		clientes:[]
+		clientes:[],
+		loading:true
 	}
   },
   mounted: function(){
 	  this.$http.get('http://localhost:49559/api/clientes/')
 		.then((response)=>{
+			this.loading=false;
 			this.clientes=response.body;
 	  });
 }

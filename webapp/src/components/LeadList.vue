@@ -23,6 +23,7 @@
 									<th>Ações</th>
 								</tr>
 							</thead>
+							<div v-show="loading" class="spinner"></div>
 							<tbody>
 								<router-link tag="tr" class="clicable" :to="'/leads/'+oportunidade.id" v-for="oportunidade in oportunidades">
 									<td>{{oportunidade.descricao}}</td>
@@ -46,10 +47,10 @@
 </template>
 
 	<script>
-	function deleteById(array,id,idProp){
+	function findById(array,id,idProp){
 		for(var i=0;i<array.length;i++){
 			if(array[i][idProp]===id){
-				return array.splice(i, 1);
+				return i;
 			}
 		}
 		return null;
@@ -58,12 +59,13 @@
 	export default {
 		name: 'LeadList',
 		data () {
-			return {oportunidades:[]}
+			return {oportunidades:[],loading:true}
 		},
 		components:{CreateModal},
 		mounted: function(){
 			this.$http.get('http://localhost:49559/api/oportunidades/')
 			.then((response)=>{
+				this.loading=false;
 				this.oportunidades=response.body;
 			});
 		},
@@ -71,10 +73,10 @@
 			deleteOportunity:function(id){
 				const URL=encodeURI('http://localhost:49559/api/oportunidades/'+id);
 				this.$http.delete(URL).then((response)=>{
-					this.oportunidades=deleteById(this.oportunidades,id,'id')
-				,(err)=>{
+					this.oportunidades.splice(findById(this.oportunidades,id,'id'),1);
+				},(err)=>{
 					console.log("erro ao eliminar da DB");
-				}})
+				})
 			}
 		}
 	}
