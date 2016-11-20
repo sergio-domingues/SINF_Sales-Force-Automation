@@ -63,9 +63,16 @@
 							</div>
 
 							<div class="form-group">
-								<label for="local" class="col-sm-2 control-label">Local</label>
+								<label for="tipoEntidade" class="col-sm-2 control-label">Tipo de Entidade</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="local" placeholder="local" v-model="atividade.local" :value="atividade.local" :disabled="!editing">
+									<input type="text" class="form-control" id="tipoEntidade" placeholder="Tipo de Entidade" v-model="atividade.tipoEntidadePrincipal" :value="atividade.local" :disabled="!editing">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="vendedor" class="col-sm-2 control-label">Vendedor</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="vendedor" placeholder="vendedor" v-model="atividade.vendedor" :value="atividade.local" :disabled="!editing">
 								</div>
 							</div>
 
@@ -108,6 +115,8 @@ export default {
 	  toggleEditing: function(){
 			  copy = (JSON.parse(JSON.stringify(this.atividade)));
 		  if(this.editing){
+				//TODO: idCabecalhoOportunidadeVenda e adicionar idContactoPrincipal
+				//TODO: DEPOIS TROCAR ISTO! 'http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15'
 	const URL = encodeURI('http://localhost:49559/api/atividades/'+this.$route.params.id);
 	  this.$http.put(URL, this.atividade)
 		.then((response)=>{
