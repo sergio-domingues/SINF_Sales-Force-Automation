@@ -67,7 +67,7 @@ namespace PharmaCRM.Lib_Primavera
 
         }
 
-        public static List<Model.Atividade> GetVendedorAtividades(string vendedorID, string dataInicio, string dataFim)
+        public static List<Model.Atividade> GetVendedorAtividades(string vendedorID, string dataInicio = null, string dataFim = null)
         {
             StdBELista objList;
 
@@ -75,14 +75,13 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-
-                //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
-
-                objList = PriEngine.Engine.Consulta("SELECT Tarefas.* FROM Tarefas, CabecOportunidadesVenda WHERE Vendedor = " + "\'" + vendedorID + "\'"
-                        + " AND IdCabecOVenda = CabecOportunidadesVenda.ID"
-                        + " AND DataInicio >= \'" + dataInicio + "\'"
-                        + " AND DataFim <= \'" + dataFim + "\'"
-                    );
+                string query = "SELECT Tarefas.* FROM Tarefas, CabecOportunidadesVenda WHERE Vendedor = " + "\'" + vendedorID + "\'"
+                        + " AND IdCabecOVenda = CabecOportunidadesVenda.ID";
+                if (dataInicio != null)
+                    query += " AND DataInicio >= \'" + dataInicio + "\'";
+                if (dataFim != null)
+                    query += " AND DataFim <= \'" + dataFim + "\'";
+                objList = PriEngine.Engine.Consulta(query);
 
 
                 while (!objList.NoFim())
