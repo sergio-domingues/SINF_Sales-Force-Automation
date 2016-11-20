@@ -20,6 +20,7 @@
 									<th>Descrição</th>
 									<th>Valor da Oportunidade</th>
 									<th>Cliente</th>
+									<th>Ações</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -27,6 +28,11 @@
 									<td>{{oportunidade.descricao}}</td>
 									<td>{{oportunidade.valorTotalOV}} €</td>
 									<td><router-link :to="'/customers/'+oportunidade.entidade">{{oportunidade.entidade}}</router-link></td>
+									<td>
+									<router-link to="">
+										<i v-on:click="deleteOportunity(oportunidade.id)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+									</router-link>
+								</td>
 								</tbody>
 							</table>
 						</div>
@@ -40,6 +46,14 @@
 </template>
 
 	<script>
+	function deleteById(array,id,idProp){
+		for(var i=0;i<array.length;i++){
+			if(array[i][idProp]===id){
+				return array.splice(i, 1);
+			}
+		}
+		return null;
+	}
 	import CreateModal from './modal/Lead.vue'
 	export default {
 		name: 'LeadList',
@@ -52,6 +66,16 @@
 			.then((response)=>{
 				this.oportunidades=response.body;
 			});
+		},
+		methods:{
+			deleteOportunity:function(id){
+				const URL=encodeURI('http://localhost:49559/api/oportunidades/'+id);
+				this.$http.delete(URL).then((response)=>{
+					this.oportunidades=deleteById(this.oportunidades,id,'id')
+				,(err)=>{
+					console.log("erro ao eliminar da DB");
+				}})
+			}
 		}
 	}
 	</script>

@@ -19,7 +19,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 const store={
-  vendedor:{id:'0',name:''}
+  vendedor:{id:'1',name:''}
 }
 
 const routes = [

@@ -33,7 +33,18 @@
 									<input type="text" class="form-control" id="cliente" placeholder="Cliente" v-model="oportunidade.entidade" :disabled="!editing">
 								</div>
 							</div>
-
+							<div class="form-group">
+								<label for="identificador" class="col-sm-2 control-label">Identificador</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="identificador" placeholder="Identificador" v-model="oportunidade.codigo" :disabled="!editing">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="dataExpiracao" class="col-sm-2 control-label">Data de Expiração</label>
+								<div class="col-sm-10">
+									<input type="date" class="form-control" id="dataExpiracao" placeholder="Data de Expiração" v-model="oportunidade.dataExpiracao" :disabled="!editing">
+								</div>
+							</div>
 							<div class="form-group">
 								<label for="descricao" class="col-sm-2 control-label">Descrição</label>
 								<div class="col-sm-10">
@@ -98,11 +109,11 @@ export default {
 	  }
   },
 	mounted: function(){
-
 		const URL = encodeURI('http://localhost:49559/api/oportunidades/'+this.$route.params.id);
 		this.$http.get(URL)
 		.then((response)=>{
 			this.oportunidade=response.body;
+			this.oportunidade.data=new Date(this.oportunidade.data);
 		})
 }
 }
