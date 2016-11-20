@@ -147,7 +147,6 @@ mounted:function(){
 </script>
 
 <style>
-
     .recipt {
         margin-top: 10px;
     }

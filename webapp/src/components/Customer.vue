@@ -80,6 +80,16 @@
 					<div class="panel-heading">Atividades</div>
 					<div class="panel-body" style="background-color:white">
 						<div v-show="loading.atividades" class="spinner"></div>
+<ul class="todo-list">
+						<router-link tag="li" :to="'/activities/'+atividade.id" class="todo-list-item clicable" v-for="atividade in atividades">
+							<div class="checkbox">
+								{{atividade.descricao}}
+							</div>
+							<div class="pull-right">
+								<i class="fa fa-check"v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
+							</div>
+						</router-link>
+</ul>
 					</div>
 				</div>
 			</div>
@@ -89,6 +99,16 @@
 					<div class="panel-heading">Oportunidades</div>
 					<div class="panel-body" style="background-color:white">
 						<div v-show="loading.oportunidades" class="spinner"></div>
+						<ul class="todo-list">
+							<router-link tag="li" :to="'/leads/'+oportunidade.id" class="todo-list-item clicable" v-for="oportunidade in oportunidades">
+								<div class="checkbox">
+									{{oportunidade.descricao}}
+								</div>
+								<div class="pull-right">
+									<i class="fa fa-check"v-bind:class="[null ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
+								</div>
+							</router-link>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -98,6 +118,13 @@
 					<div class="panel-heading">Encomendas</div>
 					<div class="panel-body" style="background-color:white">
 						<div v-show="loading.encomendas" class="spinner"></div>
+						<ul class="todo-list">
+							<router-link tag="li" :to="'/salesorders/'+encomenda.NumeroEncomenda" class="todo-list-item clicable" v-for="encomenda in encomendas">
+								<div class="checkbox">
+									{{encomenda.descricao}}
+								</div>
+							</router-link>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -152,14 +179,14 @@ export default {
 		this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/oportunidades'))
 		.then((response)=>{
 			this.loading.oportunidades=false;
-			this.cliente=response.body;
+			this.oportunidades=response.body;
 	  })
 
 		//atividades
 		this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/atividades'))
 		.then((response)=>{
 			this.loading.atividades=false;
-			this.cliente=response.body;
+			this.atividades=response.body;
 	  })
 	}
 }
