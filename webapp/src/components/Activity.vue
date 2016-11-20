@@ -24,53 +24,55 @@
 
 						<form class="form-horizontal">
 							<div class="form-group">
-								<label for="inputEmail3" class="col-sm-2 control-label">Id</label>
+								<label for="id" class="col-sm-2 control-label">Id</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputEmail3" placeholder="Id" :value="atividade.id" disabled>
+									<input type="text" class="form-control" id="id" placeholder="Id" :value="atividade.id" disabled>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label">Tipo</label>
+								<label for="tipo" class="col-sm-2 control-label">Tipo</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword3" placeholder="tipo" value="TODO" :disabled="!editing">
+									<input type="text" class="form-control" id="tipo" placeholder="tipo" value="TODO" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword2" class="col-sm-2 control-label">Estado</label>
+								<label for="estado" class="col-sm-2 control-label">Estado</label>
 								<div class="col-sm-10">
-									<input v-if="atividade.estado == 0" type="text" class="form-control" id="inputPassword2" placeholder="estado" value="INCOMPLETA"
-										:disabled="!editing">
-									<input v-else type="text" class="form-control" id="inputPassword2" placeholder="estado" value="FEITA" :disabled="!editing">
+									<select class="form-control" id="cliente" v-model="atividade.estado" :disabled="!editing">
+										<option v-for="option in options" v-bind:value="option.value">
+											{{ option.text }}
+										</option>
+            						</select>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword0" class="col-sm-2 control-label">Data de Inicio</label>
+								<label for="dataInicio" class="col-sm-2 control-label">Data de Inicio</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword0" placeholder="data inicio" :value="atividade.dataInicio" :disabled="!editing">
+									<input type="text" class="form-control" id="dataInicio" placeholder="data inicio" v-model="atividade.dataInicio" :value="atividade.dataInicio" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword1" class="col-sm-2 control-label">Data de Fim</label>
+								<label for="dataFim" class="col-sm-2 control-label">Data de Fim</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword1" placeholder="data fim" :value="atividade.dataFim" :disabled="!editing">
+									<input type="text" class="form-control" id="dataFim" placeholder="data fim" v-model="atividade.dataFim" :value="atividade.dataFim" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword4" class="col-sm-2 control-label">Local</label>
+								<label for="local" class="col-sm-2 control-label">Local</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword4" placeholder="local" :value="atividade.local" :disabled="!editing">
+									<input type="text" class="form-control" id="local" placeholder="local" v-model="atividade.local" :value="atividade.local" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword0" class="col-sm-2 control-label">Descrição</label>
+								<label for="descricao" class="col-sm-2 control-label">Descrição</label>
 								<div class="col-sm-10">
-									<textarea class="form-control" rows="3" :disabled="!editing">{{atividade.descricao}}
+									<textarea class="form-control" rows="3"  v-model="atividade.descricao" :disabled="!editing">
 									</textarea>
 								</div>
 							</div>
@@ -84,6 +86,7 @@
 </template>
 
 <script>
+var  copy;
 function findById(array,id,idProp){
 	for(var elem of array){
 		if(elem[idProp]===id){
@@ -94,22 +97,36 @@ function findById(array,id,idProp){
 }
 export default {
   data () {
-    return {editing:false, atividade : {}}
+    return {
+		editing:false, 
+		atividade : {},
+		options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}]
+	}
   },
   methods:{
 	  toggleEditing: function(){
+			  copy = (JSON.parse(JSON.stringify(this.atividade)));
 		  if(this.editing){
-			  console.log('Enviar pedido para editar')
-		  }
+	const URL = encodeURI('http://localhost:49559/api/atividades/'+this.$route.params.id);
+	  this.$http.put(URL, this.atividade)
+		.then((response)=>{
+		console.log('response ' + response.body)
+	  },(err)=>{
+			console.log(err)
+		})
+		console.log('Enviar pedido para editar')
+	}
+
 		  this.editing = !this.editing;
 	  },
 	  cancelEditing:function(){
-		  //TODO
+		  this.atividade = (JSON.parse(JSON.stringify(copy)));
 		 this.editing = !this.editing;
 	  }
   },
 	mounted: function(){
-	  this.$http.get('http://localhost:49559/api/atividades/'+this.$route.params.id)
+	const URL = encodeURI('http://localhost:49559/api/atividades/'+this.$route.params.id);
+	  this.$http.get(URL)
 		.then((response)=>{
 			this.atividade=response.body;
 	  })
