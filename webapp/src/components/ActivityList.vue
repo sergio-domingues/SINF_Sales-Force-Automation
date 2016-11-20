@@ -4,7 +4,7 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Atividades</h1>
+				<h1 class="page-header">Lista de Atividades <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-activity-modal" aria-hidden="true"></i></h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -44,26 +44,31 @@
 
 		</div>
 		<!--/.row-->
-
+		<create-modal></create-modal>
 	</div>
 </template>
 
 <script>
+function findById(array,id,idProp){
+	for(var i=0;i<array.length;i++){
+		if(array[i][idProp]===id){
+			return i;
+		}
+	}
+	return null;
+}
+import CreateModal from './modal/Activity.vue'
 export default {
-  name: 'LeadList',
+  name: 'ActivityList',
   data () {
     return {atividades : []}
   },
+	components:{CreateModal},
   mounted: function(){
-		if(this.$root.$data.atividades.length>0){
-			this.atividades=this.$root.atividades;
-		}else{
 	  this.$http.get('http://localhost:49559/api/atividades/')
 		.then((response)=>{
 			this.atividades=response.body;
-			this.$root.$data.atividades=response.body;
 	  });
-  }
   },
   methods: {
 	  displayDate: function(date){
@@ -71,17 +76,16 @@ export default {
 		  	return  d.getDay()+ '-'+ d.getMonth()+ '-' + d.getFullYear()+' '+ d.getHours()+':'+ d.getMinutes()+':'+ d.getSeconds();
 	  },
 	  deleteActivity: function(id){
-				  alert('delete Activity ' + id)
-		/*  	this.$http.delete('http://localhost:49559/api/atividades/', id)
+					const URL = encodeURI('http://localhost:49559/api/atividades/' + id)
+
+	  	this.$http.delete(URL)
 			  .then((res) =>{
-				  alert('success')
+					this.oportunidades.splice(findById(this.atividades,id,'id'),1);
 				  console.log('sucess')
-			  }, 
+			  },
 			  (err) => {
-				  alert('error')
 				  console.log('error')
 			  });
-			  */
 	  }
   }
 }

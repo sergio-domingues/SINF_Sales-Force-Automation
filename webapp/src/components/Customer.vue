@@ -42,24 +42,33 @@
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword1" class="col-sm-2 control-label">Contacto</label>
+								<label for="localidade" class="col-sm-2 control-label">Localidade</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputPassword1" placeholder="Contacto" value="TODO" :disabled="!editing">
+									<input type="text" class="form-control" id="localidade" placeholder="Morada" v-model="cliente.Localidade" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword0" class="col-sm-2 control-label">Descrição</label>
+								<label for="telefone" class="col-sm-2 control-label">Contacto</label>
 								<div class="col-sm-10">
-									<textarea class="form-control" rows="3" :disabled="!editing">TODO</textarea>
+									<input type="text" class="form-control" id="telefone" v-model="cliente.Telefone" placeholder="Contacto" :disabled="!editing">
 								</div>
 							</div>
 
+							<div class="form-group">
+								<label for="contribuinte" class="col-sm-2 control-label">Contribuinte</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="contribuinte" placeholder="Contribuinte" v-model="cliente.NumContribuinte" :disabled="!editing">
+								</div>
+							</div>
 
-
+							<div class="form-group">
+								<label for="inputPassword0" class="col-sm-2 control-label">Notas</label>
+								<div class="col-sm-10">
+									<textarea class="form-control" rows="3" :disabled="!editing">{{cliente.Notas}}</textarea>
+								</div>
+							</div>
 						</form>
-
-
 					</div>
 				</div>
 			</div>
@@ -70,6 +79,7 @@
 				<div class="panel panel-blue">
 					<div class="panel-heading">Atividades</div>
 					<div class="panel-body" style="background-color:white">
+						<div v-show="loading.atividades" class="spinner"></div>
 					</div>
 				</div>
 			</div>
@@ -78,6 +88,7 @@
 				<div class="panel panel-blue">
 					<div class="panel-heading">Oportunidades</div>
 					<div class="panel-body" style="background-color:white">
+						<div v-show="loading.oportunidades" class="spinner"></div>
 					</div>
 				</div>
 			</div>
@@ -86,6 +97,7 @@
 				<div class="panel panel-blue">
 					<div class="panel-heading">Encomendas</div>
 					<div class="panel-body" style="background-color:white">
+						<div v-show="loading.encomendas" class="spinner"></div>
 					</div>
 				</div>
 			</div>
@@ -101,7 +113,7 @@ var clienteTemp;
 export default {
   name: 'Customer',
   data () {
-    return {editing:false,cliente:{}}
+    return {editing:false,cliente:{},loading:{oportunidades:true,atividades:true,encomendas:true},oportunidades:[],atividades:[],encomendas:[]}
   },
   methods:{
 	  toggleEditing: function(){
@@ -124,8 +136,29 @@ export default {
 	  }
   },
 	mounted: function(){
-	  this.$http.get('http://localhost:49559/api/clientes/'+this.$route.params.id)
+	  this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id))
 		.then((response)=>{
+			this.cliente=response.body;
+	  })
+
+		//encomendas
+		this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/encomendas'))
+		.then((response)=>{
+			this.loading.encomendas=false;
+			this.encomendas=response.body;
+	  })
+
+		//oportunidades
+		this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/oportunidades'))
+		.then((response)=>{
+			this.loading.oportunidades=false;
+			this.cliente=response.body;
+	  })
+
+		//atividades
+		this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/atividades'))
+		.then((response)=>{
+			this.loading.atividades=false;
 			this.cliente=response.body;
 	  })
 	}

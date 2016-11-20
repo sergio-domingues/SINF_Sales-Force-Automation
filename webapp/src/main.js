@@ -18,6 +18,10 @@ import VueResource from 'vue-resource'
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
+const store={
+  vendedor:{id:'1',name:''},
+}
+
 const routes = [
   { path: '/', component: Dashboard },
   { path: '/customers', component: CustomerList },
@@ -37,10 +41,12 @@ const router = new VueRouter({
   routes
 })
 
+
 Vue.component('breadcrumb', Breadcrumb)
 
 new Vue({
   router,
+  data:store,
   el: '#app',
   render: h => h(App)
 })

@@ -20,13 +20,20 @@
 									<th>Descrição</th>
 									<th>Valor da Oportunidade</th>
 									<th>Cliente</th>
+									<th>Ações</th>
 								</tr>
 							</thead>
+							<div v-show="loading" class="spinner"></div>
 							<tbody>
 								<router-link tag="tr" class="clicable" :to="'/leads/'+oportunidade.id" v-for="oportunidade in oportunidades">
 									<td>{{oportunidade.descricao}}</td>
 									<td>{{oportunidade.valorTotalOV}} €</td>
 									<td><router-link :to="'/customers/'+oportunidade.entidade">{{oportunidade.entidade}}</router-link></td>
+									<td>
+									<router-link to="">
+										<i v-on:click="deleteOportunity(oportunidade.id)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+									</router-link>
+								</td>
 								</tbody>
 							</table>
 						</div>
@@ -40,18 +47,37 @@
 </template>
 
 	<script>
+	function findById(array,id,idProp){
+		for(var i=0;i<array.length;i++){
+			if(array[i][idProp]===id){
+				return i;
+			}
+		}
+		return null;
+	}
 	import CreateModal from './modal/Lead.vue'
 	export default {
 		name: 'LeadList',
 		data () {
-			return {oportunidades:[]}
+			return {oportunidades:[],loading:true}
 		},
 		components:{CreateModal},
 		mounted: function(){
 			this.$http.get('http://localhost:49559/api/oportunidades/')
 			.then((response)=>{
+				this.loading=false;
 				this.oportunidades=response.body;
 			});
+		},
+		methods:{
+			deleteOportunity:function(id){
+				const URL=encodeURI('http://localhost:49559/api/oportunidades/'+id);
+				this.$http.delete(URL).then((response)=>{
+					this.oportunidades.splice(findById(this.oportunidades,id,'id'),1);
+				},(err)=>{
+					console.log("erro ao eliminar da DB");
+				})
+			}
 		}
 	}
 	</script>
