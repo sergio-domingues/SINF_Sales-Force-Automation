@@ -10,9 +10,9 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="Tipo">Tipo</label>
-            <select class="form-control" id="tipo" v-model="selected">
-              <option v-for="option in options" v-bind:value="option.value">
-                TODO
+            <select class="form-control" id="tipo" v-model="atividade.idTipoAtividade">
+              <option v-for="tipo in tipos" v-bind:value="tipo.value">
+                {{ tipo.text }}
               </option>
             </select>
           </div>
@@ -30,7 +30,7 @@
           </div>
           <div class="form-group">
             <label for="datetime">Data de Fim</label>
-            <input type="datetime-local" class="form-control" id="dataFim" v-model="atividade.dataInicio" placeholder="Data de Fim">
+            <input type="datetime-local" class="form-control" id="dataFim" v-model="atividade.dataFim" placeholder="Data de Fim">
           </div>
           <div class="form-group">
               <label for="local">Local</label>
@@ -55,19 +55,26 @@
   export default {
     name: 'CreateActivityModal',
     data () {
-      return {atividade: {}, options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}]}
+      return {atividade: {}, options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}], tipos: []}
+    },
+    mounted: function(){
+      this.$http.get('http://localhost:49559/api/atividades/tipos')
+      .then((response)=>{
+        for(var tipo of response.body){
+          this.tipos.push({text:tipo.descricao, value:tipo.id});
+        }
+      })
     },
     methods:{
       createActivity: function(e){
-  //TODO: FAZER QUANDO TIPO NAO FOR ID!
-      /*  this.$http.post('http://localhost:49559/api/atividades/', this.atividade)
-          .then((response)=>{
-            console.log(response);
-          },(err)=>{
-            console.log(err)
-  			});*/
-        console.log('yay fez pedido ' + this.atividade.dataInicio)
-      }
+             this.$http.post('http://localhost:49559/api/atividades/', this.atividade)
+                .then((response)=>{
+                  console.log(response);
+                },(err)=>{
+                  console.log(err)
+        			});
+        console.log('yay fez pedido ' + this.atividade.descricao)
+    }
   }
 }
 </script>
