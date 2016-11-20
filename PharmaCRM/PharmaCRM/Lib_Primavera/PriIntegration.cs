@@ -1076,7 +1076,7 @@ namespace PharmaCRM.Lib_Primavera
                     if (PriEngine.Engine.CRM.Actividades.Existe(atividade.id) == false)
                     {
                         erro.Erro = 1;
-                        erro.Descricao = "A atividade não existe";
+                        erro.Descricao = "A tipoAtividade não existe";
                         return erro;
                     }
                     else
@@ -1130,7 +1130,7 @@ namespace PharmaCRM.Lib_Primavera
                     if (PriEngine.Engine.CRM.Actividades.Existe(actividadeID) == false)
                     {
                         erro.Erro = 1;
-                        erro.Descricao = "A atividade não existe";
+                        erro.Descricao = "A tipoAtividade não existe";
                         return erro;
                     }
                     else
@@ -1158,6 +1158,59 @@ namespace PharmaCRM.Lib_Primavera
                 return erro;
             }
 
+        }
+
+        public static List<Model.TipoAtividade> GetListaTiposAtividade()
+        {
+            StdBELista objList;
+            List<Model.TipoAtividade> listTiposAtividades = new List<Model.TipoAtividade>();
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objList = PriEngine.Engine.Consulta("SELECT * FROM TiposTarefa");
+                while (!objList.NoFim())
+                {
+                    Model.TipoAtividade tipoAtividade = new Model.TipoAtividade();
+                    tipoAtividade.id = objList.Valor("Id");
+                    tipoAtividade.descricao = objList.Valor("Descricao");
+                    listTiposAtividades.Add(tipoAtividade);
+                    objList.Seguinte();
+                }
+                return listTiposAtividades;
+            }
+            else
+                return null;
+        }
+
+        public static Lib_Primavera.Model.TipoAtividade getTipoAtividade(string id)
+        {
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            CrmBETipoActividade objTipoAtividade = new CrmBETipoActividade();
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                if (PriEngine.Engine.CRM.TiposActividade.EditaID(id) == null)
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = "O tipo de tipoAtividade não existe";
+                }
+                else
+                {
+                    objTipoAtividade = PriEngine.Engine.CRM.TiposActividade.EditaID(id);
+
+                    Lib_Primavera.Model.TipoAtividade tipoAtividade = new Model.TipoAtividade();
+                    tipoAtividade.id = objTipoAtividade.get_ID();
+                    tipoAtividade.descricao = objTipoAtividade.get_Descricao();
+
+                    erro.Erro = 0;
+                    erro.Descricao = "Sucesso";
+                    return tipoAtividade;
+                }
+            }
+            else
+            {
+                erro.Erro = 1;
+                erro.Descricao = "Erro ao abrir empresa";
+            }
+            return null;
         }
 
         #endregion Actividade;   // -----------------------------  END   Actividade    -----------------------
