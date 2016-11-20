@@ -29,12 +29,6 @@
 									<td>Maria José da Silva</td>
 									<td>José Esteves</td>
 								</router-link>
-								<router-link tag="tr" to="/salesorders/2" class="clicable">
-									<th scope="row">2</th>
-									<td>Energizers 2 </td>
-									<td>Maria José da Silva</td>
-									<td>José Esteves</td>
-								</router-link>
 							</tbody>
 						</table>
 					</div>
@@ -52,6 +46,12 @@ export default {
   name: 'SalesOrderList',
   data () {
     return {salesOrders:[]}
+  },
+  mounted: function(){
+	  this.$http.get('http://localhost:49559/api/encomendas/')
+		.then((response)=>{
+			this.salesOrders=response.body;
+	  });
   }
 }
 </script>

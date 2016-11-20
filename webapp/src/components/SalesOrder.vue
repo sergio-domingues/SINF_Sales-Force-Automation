@@ -56,7 +56,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Lista de Encomendsas
+                    <div class="panel-heading">Lista de Artigos
                     </div>
                     <div class="panel-body">
                         <table class="table table-hover">
@@ -75,13 +75,6 @@
                                     <td>Green Ox</td>
                                     <td>2</td>
                                     <td>0.79 €</td>
-                                    <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true"></i></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Blue AA</td>
-                                    <td>4</td>
-                                    <td>20 €</td>
                                     <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true"></i></td>
                                 </tr>
                             </tbody>
@@ -140,7 +133,7 @@ export default {
 </script>
 
 <style>
-    
+
     .recipt {
         margin-top: 10px;
     }

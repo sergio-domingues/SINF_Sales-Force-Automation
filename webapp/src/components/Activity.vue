@@ -1,10 +1,10 @@
 <template>
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-		<breadcrumb :items="[{path:'activities',name:'Actividades'}]" :current="'Ajuste de Detalhes'"></breadcrumb>
+		<breadcrumb :items="[{path:'activities',name:'Actividades'}]" :current="'Atividade'"></breadcrumb>
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Ajuste de Detalhes</h1>
+				<h1 class="page-header">Atividade</h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -96,9 +96,10 @@ function findById(array,id,idProp){
 	return null;
 }
 export default {
+	name: 'Activity',
   data () {
     return {
-		editing:false, 
+		editing:false,
 		atividade : {},
 		options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}]
 	}
