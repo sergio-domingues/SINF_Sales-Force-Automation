@@ -46,10 +46,10 @@
 </template>
 
 	<script>
-	function deleteById(array,id,idProp){
+	function findById(array,id,idProp){
 		for(var i=0;i<array.length;i++){
 			if(array[i][idProp]===id){
-				return array.splice(i, 1);
+				return i;
 			}
 		}
 		return null;
@@ -71,10 +71,10 @@
 			deleteOportunity:function(id){
 				const URL=encodeURI('http://localhost:49559/api/oportunidades/'+id);
 				this.$http.delete(URL).then((response)=>{
-					this.oportunidades=deleteById(this.oportunidades,id,'id')
-				,(err)=>{
+					this.oportunidades.splice(findById(this.oportunidades,id,'id'),1);
+				},(err)=>{
 					console.log("erro ao eliminar da DB");
-				}})
+				})
 			}
 		}
 	}
