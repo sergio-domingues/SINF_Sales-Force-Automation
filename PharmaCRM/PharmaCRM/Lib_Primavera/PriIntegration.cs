@@ -641,6 +641,13 @@ namespace PharmaCRM.Lib_Primavera
                     myEnc.set_Responsavel(dv.idResponsavel);
                     myEnc.set_Filial("000");
 
+                    if (dv.NumeroDocumento != -1)
+                    {
+                        // EDIÇÃO
+                        myEnc.set_NumDoc(dv.NumeroDocumento);
+                        myEnc.set_ID(dv.idInterno);
+                    }
+
                     // Linhas do documento para a lista de linhas
                     List<Model.LinhaEncomenda> lstlindv = dv.LinhasDocumento;
                     PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);

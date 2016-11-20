@@ -36,7 +36,6 @@ namespace PharmaCRM.Controllers
         {
             "Entidade": "MICROAVI",
             "Data": "2016-10-07T00:00:00",
-            "TotalMercadoria": 1926,
             "idResponsavel": "2",
             "LinhasDocumento": [
                 {

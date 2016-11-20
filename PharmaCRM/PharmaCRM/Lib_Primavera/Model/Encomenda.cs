@@ -7,6 +7,10 @@ namespace PharmaCRM.Lib_Primavera.Model
 {
     public class Encomenda
     {
+        public Encomenda() {
+            NumeroDocumento = -1;
+        }
+
         public string Entidade
         {
             get;
