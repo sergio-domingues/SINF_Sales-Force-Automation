@@ -4,7 +4,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Ajuste de Detalhes</h1>
+                <h1 class="page-header">Detalhes Encomenda</h1>
             </div>
         </div>
         <!--/.row-->
@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Energizers 1
+                    <div class="panel-heading">Info
                         <div class="pull-right">
                             <i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg','clicable']" aria-hidden="true"></i>
                             <i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times clicable" aria-hidden="true"></i>
@@ -21,30 +21,37 @@
                     <div class="panel-body">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Id</label>
+                                <label for="numdoc" class="col-sm-2 control-label">Número Documento</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" placeholder="Id" :value="$route.params.id" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputPassword3" class="col-sm-2 control-label">Cliente</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputPassword3" placeholder="Cliente" value="Maria José da Silva" :disabled="!editing">
+                                    <input type="text" class="form-control" id="numdoc" placeholder="Id" v-model="encomenda.NumeroDocumento" disabled>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="inputPassword2" class="col-sm-2 control-label">Oportunidade</label>
+                                <label for="data" class="col-sm-2 control-label">Data</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputPassword2" placeholder="Oportunidade" value="Projecto de Implementação"
-                                        :disabled="!editing">
+                                    <input type="text" class="form-control" id="data" placeholder="Data" v-model="encomenda.Data" :disabled="!editing">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="inputPassword0" class="col-sm-2 control-label">Rep. de Venda</label>
+                                <label for="cliente" class="col-sm-2 control-label">Cliente</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputPassword0" placeholder="Rep. de Venda" value="José Esteves" :disabled="!editing">
+                                    <input type="text" class="form-control" id="cliente" placeholder="Cliente" v-model="encomenda.Entidade" :disabled="!editing">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="serie" class="col-sm-2 control-label">Série</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="serie" placeholder="Série" v-model="encomenda.Serie" :disabled="!editing">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="valor" class="col-sm-2 control-label">Total Mercadoria</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="valor" placeholder="Valor" v-model="encomenda.TotalMercadoria" :disabled="!editing">
                                 </div>
                             </div>
                         </form>
@@ -62,19 +69,19 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Nome</th>
+                                    <th>CodArtigo</th>
+                                    <th>Descrição</th>
                                     <th>Quantidade</th>
-                                    <th>Preço</th>
+                                    <th>Total</th>
                                     <th>Opções</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Green Ox</td>
-                                    <td>2</td>
-                                    <td>0.79 €</td>
+                                <tr v-for="artigo in artigos">
+                                    <td>{{artigo.CodigoArtigo}}</td>
+                                    <td>{{artigo.DescricaoArtigo}}</td>
+                                    <td>{{artigo.Quantidade}}</td>
+                                    <td>{{artigo.TotalLiquido}}</td>
                                     <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true"></i></td>
                                 </tr>
                             </tbody>
@@ -115,7 +122,7 @@
 export default {
   name: 'SalesOrders',
   data () {
-    return {editing:false}
+    return {editing:false,encomenda:{},artigos:[]}
   },
   methods:{
 	  toggleEditing: function(){
@@ -128,7 +135,14 @@ export default {
 		  //TODO
 		 this.editing = !this.editing;
 	  }
-  }
+  },
+mounted:function(){
+  this.$http.get('http://localhost:49559/api/encomendas/'+this.$route.params.id)
+  .then((response)=>{
+    this.encomenda=response.body;
+    this.artigos=response.body.LinhasDocumento
+  });
+}
 }
 </script>
 
