@@ -39,6 +39,14 @@
 </template>
 
 <script>
+function deleteById(array,id,idProp){
+	for(var elem of array){
+		if(elem[idProp]===id){
+			return elem;
+		}
+	}
+	return null;
+}
 export default {
   name: 'CreateLeadModal',
   data () {
@@ -55,9 +63,9 @@ export default {
   methods:{
     createLead: function(e){
       this.$http.post('http://localhost:49559/api/oportunidades/',{descricao:this.oportunidade.descricao,entidade:this.selected,
-          tipoEntidade:"C",vendedor:thi.$root.vendedor.id,dataExpiracao:oportunidade.data,codigo:oportunidade.identificador})
+          tipoEntidade:"C",vendedor:this.$root.vendedor.id,dataExpiracao:this.oportunidade.data,codigo:this.oportunidade.identificador})
         .then((response)=>{
-          console.log(response)
+          console.log(response);
         },(err)=>{
           console.log(err)
 			});
