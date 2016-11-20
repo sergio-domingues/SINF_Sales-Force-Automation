@@ -15,12 +15,12 @@
           <div class="panel-heading">Atividades</div>
           <div class="panel-body">
             <ul class="todo-list">
-              <router-link tag="li" :to="'/atividade/'+atividade.id" class="todo-list-item" v-for="atividade in atividades">
+              <router-link tag="li" :to="'/activities/'+atividade.id" class="todo-list-item clicable" v-for="atividade in atividades">
                 <div class="checkbox">
                   {{atividade.descricao}}
                 </div>
                 <div class="pull-right">
-                  <i class="fa fa-check"v-bind:class="[editing ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
+                  <i class="fa fa-check"v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
                 </div>
               </router-link>
             </ul>
@@ -50,6 +50,16 @@
         <div class="panel panel-default">
           <div class="panel-heading">Oportunidades</div>
           <div class="panel-body">
+            <ul class="todo-list">
+              <router-link tag="li" :to="'/leads/'+oportunidade.id" class="todo-list-item clicable" v-for="oportunidade in oportunidades">
+                <div class="checkbox">
+                  {{oportunidade.descricao}}
+                </div>
+                <div class="pull-right">
+                  <i class="fa fa-check"v-bind:class="[null ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
+                </div>
+              </router-link>
+            </ul>
           </div>
         </div>
       </div>
@@ -68,13 +78,21 @@
 export default {
   name: 'dashboard',
   data () {
-    return {atividades:[]}
+    return {atividades:[],oportunidades:[]}
   },
   mounted:function(){
     this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15')
 		.then((response)=>{
 			this.atividades=response.body;
-		})
+		});
+
+    this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/oportunidades/')
+		.then((response)=>{
+			this.oportunidades=response.body;
+		});
+
+
+
   }
 }
 </script>
