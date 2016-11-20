@@ -19,7 +19,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 const store={
-  vendedor:{id:'1',name:''}
+  vendedor:{id:'1',name:''},
 }
 
 const routes = [
@@ -40,6 +40,7 @@ const router = new VueRouter({
   linkActiveClass: 'active',
   routes
 })
+
 
 Vue.component('breadcrumb', Breadcrumb)
 
