@@ -23,6 +23,7 @@
 									<th>Ações</th>
 								</tr>
 							</thead>
+							<div v-show="loading" class="spinner"></div>
 							<tbody>
 								<router-link tag="tr" class="clicable" :to="'/leads/'+oportunidade.id" v-for="oportunidade in oportunidades">
 									<td>{{oportunidade.descricao}}</td>
@@ -58,12 +59,13 @@
 	export default {
 		name: 'LeadList',
 		data () {
-			return {oportunidades:[]}
+			return {oportunidades:[],loading:true}
 		},
 		components:{CreateModal},
 		mounted: function(){
 			this.$http.get('http://localhost:49559/api/oportunidades/')
 			.then((response)=>{
+				this.loading=false;
 				this.oportunidades=response.body;
 			});
 		},

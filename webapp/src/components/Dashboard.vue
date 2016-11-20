@@ -14,6 +14,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">Atividades</div>
           <div class="panel-body">
+            <div v-show="loading.atividades" class="spinner"></div>
             <ul class="todo-list">
               <router-link tag="li" :to="'/activities/'+atividade.id" class="todo-list-item clicable" v-for="atividade in atividades">
                 <div class="checkbox">
@@ -50,6 +51,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">Oportunidades</div>
           <div class="panel-body">
+            <div v-show="loading.oportunidades" class="spinner"></div>
             <ul class="todo-list">
               <router-link tag="li" :to="'/leads/'+oportunidade.id" class="todo-list-item clicable" v-for="oportunidade in oportunidades">
                 <div class="checkbox">
@@ -78,16 +80,18 @@
 export default {
   name: 'dashboard',
   data () {
-    return {atividades:[],oportunidades:[]}
+    return {atividades:[],oportunidades:[],loading:{atividades:true,oportunidades:true}}
   },
   mounted:function(){
     this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15')
 		.then((response)=>{
 			this.atividades=response.body;
+      this.loading.atividades=false;
 		});
 
     this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/oportunidades/')
 		.then((response)=>{
+      this.loading.oportunidades=false;
 			this.oportunidades=response.body;
 		});
 
