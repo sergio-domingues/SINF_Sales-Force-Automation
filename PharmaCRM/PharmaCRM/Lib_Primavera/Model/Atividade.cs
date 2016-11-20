@@ -9,8 +9,6 @@ namespace PharmaCRM.Lib_Primavera.Model
 {
     public class Atividade
     {
-        //todo ENUM for attr type
-
         public String id
         {
             get;
@@ -36,6 +34,12 @@ namespace PharmaCRM.Lib_Primavera.Model
         }
 
         public DateTime dataFim
+        {
+            get;
+            set;
+        }
+
+        public string resumo
         {
             get;
             set;

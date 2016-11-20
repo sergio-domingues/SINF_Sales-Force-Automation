@@ -79,6 +79,7 @@
 				<div class="panel panel-blue">
 					<div class="panel-heading">Atividades</div>
 					<div class="panel-body" style="background-color:white">
+						<div v-show="loading.atividades" class="spinner"></div>
 					</div>
 				</div>
 			</div>
@@ -87,6 +88,7 @@
 				<div class="panel panel-blue">
 					<div class="panel-heading">Oportunidades</div>
 					<div class="panel-body" style="background-color:white">
+						<div v-show="loading.oportunidades" class="spinner"></div>
 					</div>
 				</div>
 			</div>
@@ -95,6 +97,7 @@
 				<div class="panel panel-blue">
 					<div class="panel-heading">Encomendas</div>
 					<div class="panel-body" style="background-color:white">
+						<div v-show="loading.encomendas" class="spinner"></div>
 					</div>
 				</div>
 			</div>
@@ -110,7 +113,7 @@ var clienteTemp;
 export default {
   name: 'Customer',
   data () {
-    return {editing:false,cliente:{}}
+    return {editing:false,cliente:{},loading:{oportunidades:true,atividades:true,encomendas:true},oportunidades:[],atividades:[],encomendas:[]}
   },
   methods:{
 	  toggleEditing: function(){
@@ -133,8 +136,29 @@ export default {
 	  }
   },
 	mounted: function(){
-	  this.$http.get('http://localhost:49559/api/clientes/'+this.$route.params.id)
+	  this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id))
 		.then((response)=>{
+			this.cliente=response.body;
+	  })
+
+		//encomendas
+		this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/encomendas'))
+		.then((response)=>{
+			this.loading.encomendas=false;
+			this.encomendas=response.body;
+	  })
+
+		//oportunidades
+		this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/oportunidades'))
+		.then((response)=>{
+			this.loading.oportunidades=false;
+			this.cliente=response.body;
+	  })
+
+		//atividades
+		this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/atividades'))
+		.then((response)=>{
+			this.loading.atividades=false;
 			this.cliente=response.body;
 	  })
 	}
