@@ -49,6 +49,14 @@
 </template>
 
 <script>
+function findById(array,id,idProp){
+	for(var i=0;i<array.length;i++){
+		if(array[i][idProp]===id){
+			return i;
+		}
+	}
+	return null;
+}
 import CreateModal from './modal/Activity.vue'
 export default {
   name: 'ActivityList',
@@ -68,17 +76,16 @@ export default {
 		  	return  d.getDay()+ '-'+ d.getMonth()+ '-' + d.getFullYear()+' '+ d.getHours()+':'+ d.getMinutes()+':'+ d.getSeconds();
 	  },
 	  deleteActivity: function(id){
-				  alert('delete Activity ' + id)
-		/*  	this.$http.delete('http://localhost:49559/api/atividades/', id)
+					const URL = encodeURI('http://localhost:49559/api/atividades/' + id)
+
+	  	this.$http.delete(URL)
 			  .then((res) =>{
-				  alert('success')
+					this.oportunidades.splice(findById(this.atividades,id,'id'),1);
 				  console.log('sucess')
 			  },
 			  (err) => {
-				  alert('error')
 				  console.log('error')
 			  });
-			  */
 	  }
   }
 }
