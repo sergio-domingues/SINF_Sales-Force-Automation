@@ -959,6 +959,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.id = objList.Valor("Id");
                     atividade.idTipoAtividade = objList.Valor("IdTipoActividade");
                     atividade.estado = objList.Valor("Estado");
+                    atividade.resumo = objList.Valor("Resumo");
                     atividade.descricao = objList.Valor("Descricao");
                     atividade.dataInicio = objList.Valor("DataInicio");
                     atividade.dataFim = objList.Valor("DataFim");
@@ -997,6 +998,7 @@ namespace PharmaCRM.Lib_Primavera
                     model_actividade.id = atividade.get_ID();
                     model_actividade.idTipoAtividade = atividade.get_IDTipoActividade();
                     model_actividade.estado = Int32.Parse(atividade.get_Estado());
+                    model_actividade.resumo = atividade.get_Resumo();
                     model_actividade.descricao = atividade.get_Descricao();
                     model_actividade.dataInicio = atividade.get_DataInicio();
                     model_actividade.dataFim = atividade.get_DataFim();
@@ -1032,6 +1034,7 @@ namespace PharmaCRM.Lib_Primavera
                     objAtividade.set_IDTipoActividade(actividade.idTipoAtividade);
                     objAtividade.set_Estado(actividade.estado.ToString());
                     objAtividade.set_Descricao(actividade.descricao);
+                    objAtividade.set_Resumo(actividade.resumo);
                     objAtividade.set_DataInicio(actividade.dataInicio);
                     objAtividade.set_DataFim(actividade.dataFim);
                     objAtividade.set_LocalRealizacao(actividade.local);
@@ -1087,6 +1090,7 @@ namespace PharmaCRM.Lib_Primavera
                         //actualizam-se todos os membros mesmo que so tenham sido editados alguns
                         objAtividade.set_Estado(atividade.estado.ToString());
                         objAtividade.set_Descricao(atividade.descricao);
+                        objAtividade.set_Resumo(atividade.resumo);
                         objAtividade.set_DataInicio(atividade.dataInicio);
                         objAtividade.set_DataFim(atividade.dataFim);
                         objAtividade.set_LocalRealizacao(atividade.local);
@@ -1285,6 +1289,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.id = objList.Valor("Id");
                     atividade.idTipoAtividade = objList.Valor("IdTipoActividade");
                     atividade.estado = objList.Valor("Estado");
+                    atividade.resumo = objList.Valor("Resumo");
                     atividade.descricao = objList.Valor("Descricao");
                     atividade.dataInicio = objList.Valor("DataInicio");
                     atividade.dataFim = objList.Valor("DataFim");
