@@ -67,7 +67,7 @@ namespace PharmaCRM.Lib_Primavera
 
         }
 
-        public static List<Model.Atividade> GetVendedorAtividades(string vendedorID, string dataInicio, string dataFim)
+        public static List<Model.Atividade> GetVendedorAtividades(string vendedorID, string dataInicio = null, string dataFim = null)
         {
             StdBELista objList;
 
@@ -75,14 +75,13 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-
-                //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
-
-                objList = PriEngine.Engine.Consulta("SELECT Tarefas.* FROM Tarefas, CabecOportunidadesVenda WHERE Vendedor = " + "\'" + vendedorID + "\'"
-                        + " AND IdCabecOVenda = CabecOportunidadesVenda.ID"
-                        + " AND DataInicio >= \'" + dataInicio + "\'"
-                        + " AND DataFim <= \'" + dataFim + "\'"
-                    );
+                string query = "SELECT Tarefas.* FROM Tarefas, CabecOportunidadesVenda WHERE Vendedor = " + "\'" + vendedorID + "\'"
+                        + " AND IdCabecOVenda = CabecOportunidadesVenda.ID";
+                if (dataInicio != null)
+                    query += " AND DataInicio >= \'" + dataInicio + "\'";
+                if (dataFim != null)
+                    query += " AND DataFim <= \'" + dataFim + "\'";
+                objList = PriEngine.Engine.Consulta(query);
 
 
                 while (!objList.NoFim())
@@ -629,57 +628,48 @@ namespace PharmaCRM.Lib_Primavera
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             GcpBEDocumentoVenda myEnc = new GcpBEDocumentoVenda();
 
-            GcpBELinhaDocumentoVenda myLin = new GcpBELinhaDocumentoVenda();
-
-            GcpBELinhasDocumentoVenda myLinhas = new GcpBELinhasDocumentoVenda();
-
-            Interop.GcpBE900.PreencheRelacaoVendas rl = new Interop.GcpBE900.PreencheRelacaoVendas();
-            List<Model.LinhaEncomenda> lstlindv = new List<Model.LinhaEncomenda>();
-
             try
             {
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
                     // Atribui valores ao cabecalho do doc
-                    //myEnc.set_DataDoc(dv.Data);
+                    myEnc.set_DataDoc(dv.Data);
                     myEnc.set_Entidade(dv.Entidade);
-                    myEnc.set_Serie(dv.Serie);
+                    myEnc.set_Serie("2016");
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
                     myEnc.set_Responsavel(dv.idResponsavel);
-                    myEnc.set_Filial(dv.Filial);
+                    myEnc.set_Filial("000");
+
                     // Linhas do documento para a lista de linhas
-                    lstlindv = dv.LinhasDocumento;
-                    //PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc, rl);
+                    List<Model.LinhaEncomenda> lstlindv = dv.LinhasDocumento;
                     PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
                     foreach (Model.LinhaEncomenda lin in lstlindv)
                     {
                         PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodigoArtigo, lin.Quantidade, "", "", lin.PrecoUnitario, lin.Desconto);
                     }
 
-
-                    // PriEngine.Engine.Comercial.Compras.TransformaDocumento(
-
                     PriEngine.Engine.IniciaTransaccao();
-                    //PriEngine.Engine.Comercial.Vendas.Edita Actualiza(myEnc, "Teste");
-                    PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc, "Teste");
+                    PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc, "PharmaCRM");
                     PriEngine.Engine.TerminaTransaccao();
+
+                    dv.idInterno = myEnc.get_ID();
+                    dv.NumeroDocumento = myEnc.get_NumDoc();
+
                     erro.Erro = 0;
-                    erro.Descricao = "Sucesso";
+                    erro.Descricao = "Encomenda criada com sucesso.";
                     return erro;
                 }
                 else
                 {
                     erro.Erro = 1;
-                    erro.Descricao = "Erro ao abrir empresa";
+                    erro.Descricao = "Erro a criar encomenda (Não foi possível inicializar a empresa).";
                     return erro;
-
                 }
 
             }
             catch (Exception ex)
             {
-                PriEngine.Engine.DesfazTransaccao();
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;
                 return erro;
@@ -760,6 +750,12 @@ namespace PharmaCRM.Lib_Primavera
             {
                 string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial FROM CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
                 objListCab = PriEngine.Engine.Consulta(st);
+
+                if (objListCab.NoFim())
+                {
+                    return null;
+                }
+
                 dv = new Model.Encomenda();
                 dv.idInterno = objListCab.Valor("id");
                 dv.Entidade = objListCab.Valor("Entidade");
@@ -801,6 +797,7 @@ namespace PharmaCRM.Lib_Primavera
                 
                 return dv;
             }
+
             return null;
         }
 
@@ -916,7 +913,8 @@ namespace PharmaCRM.Lib_Primavera
 
         public static Lib_Primavera.Model.RespostaErro DeleteEncomenda(int numDoc)
         {
-            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            // TOOD
+            /*Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             try
             {
                 Model.Encomenda enc = GetEncomenda(numDoc, false);
@@ -928,7 +926,7 @@ namespace PharmaCRM.Lib_Primavera
                 }
                 else
                 {
-                    PriEngine.Engine.Comercial.Vendas.Remove(enc.Filial, "ENC", enc.Serie, enc.NumeroDocumento);
+                    PriEngine.Engine.Comercial.Vendas.AnulaDocumento("000", "ECL", "2016", enc.NumeroDocumento);
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
                     return erro;
@@ -939,7 +937,11 @@ namespace PharmaCRM.Lib_Primavera
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;
                 return erro;
-            }
+            }*/
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            erro.Erro = 1;
+            erro.Descricao = "Método não implementado (issue #15).";
+            return erro;
         }
 
         #endregion Encomenda
@@ -959,6 +961,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.id = objList.Valor("Id");
                     atividade.idTipoAtividade = objList.Valor("IdTipoActividade");
                     atividade.estado = objList.Valor("Estado");
+                    atividade.resumo = objList.Valor("Resumo");
                     atividade.descricao = objList.Valor("Descricao");
                     atividade.dataInicio = objList.Valor("DataInicio");
                     atividade.dataFim = objList.Valor("DataFim");
@@ -997,6 +1000,7 @@ namespace PharmaCRM.Lib_Primavera
                     model_actividade.id = atividade.get_ID();
                     model_actividade.idTipoAtividade = atividade.get_IDTipoActividade();
                     model_actividade.estado = Int32.Parse(atividade.get_Estado());
+                    model_actividade.resumo = atividade.get_Resumo();
                     model_actividade.descricao = atividade.get_Descricao();
                     model_actividade.dataInicio = atividade.get_DataInicio();
                     model_actividade.dataFim = atividade.get_DataFim();
@@ -1032,6 +1036,7 @@ namespace PharmaCRM.Lib_Primavera
                     objAtividade.set_IDTipoActividade(actividade.idTipoAtividade);
                     objAtividade.set_Estado(actividade.estado.ToString());
                     objAtividade.set_Descricao(actividade.descricao);
+                    objAtividade.set_Resumo(actividade.resumo);
                     objAtividade.set_DataInicio(actividade.dataInicio);
                     objAtividade.set_DataFim(actividade.dataFim);
                     objAtividade.set_LocalRealizacao(actividade.local);
@@ -1076,7 +1081,7 @@ namespace PharmaCRM.Lib_Primavera
                     if (PriEngine.Engine.CRM.Actividades.Existe(atividade.id) == false)
                     {
                         erro.Erro = 1;
-                        erro.Descricao = "A atividade não existe";
+                        erro.Descricao = "A tipoAtividade não existe";
                         return erro;
                     }
                     else
@@ -1087,6 +1092,7 @@ namespace PharmaCRM.Lib_Primavera
                         //actualizam-se todos os membros mesmo que so tenham sido editados alguns
                         objAtividade.set_Estado(atividade.estado.ToString());
                         objAtividade.set_Descricao(atividade.descricao);
+                        objAtividade.set_Resumo(atividade.resumo);
                         objAtividade.set_DataInicio(atividade.dataInicio);
                         objAtividade.set_DataFim(atividade.dataFim);
                         objAtividade.set_LocalRealizacao(atividade.local);
@@ -1130,7 +1136,7 @@ namespace PharmaCRM.Lib_Primavera
                     if (PriEngine.Engine.CRM.Actividades.Existe(actividadeID) == false)
                     {
                         erro.Erro = 1;
-                        erro.Descricao = "A atividade não existe";
+                        erro.Descricao = "A tipoAtividade não existe";
                         return erro;
                     }
                     else
@@ -1158,6 +1164,59 @@ namespace PharmaCRM.Lib_Primavera
                 return erro;
             }
 
+        }
+
+        public static List<Model.TipoAtividade> GetListaTiposAtividade()
+        {
+            StdBELista objList;
+            List<Model.TipoAtividade> listTiposAtividades = new List<Model.TipoAtividade>();
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objList = PriEngine.Engine.Consulta("SELECT * FROM TiposTarefa");
+                while (!objList.NoFim())
+                {
+                    Model.TipoAtividade tipoAtividade = new Model.TipoAtividade();
+                    tipoAtividade.id = objList.Valor("Id");
+                    tipoAtividade.descricao = objList.Valor("Descricao");
+                    listTiposAtividades.Add(tipoAtividade);
+                    objList.Seguinte();
+                }
+                return listTiposAtividades;
+            }
+            else
+                return null;
+        }
+
+        public static Lib_Primavera.Model.TipoAtividade getTipoAtividade(string id)
+        {
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            CrmBETipoActividade objTipoAtividade = new CrmBETipoActividade();
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                if (PriEngine.Engine.CRM.TiposActividade.EditaID(id) == null)
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = "O tipo de tipoAtividade não existe";
+                }
+                else
+                {
+                    objTipoAtividade = PriEngine.Engine.CRM.TiposActividade.EditaID(id);
+
+                    Lib_Primavera.Model.TipoAtividade tipoAtividade = new Model.TipoAtividade();
+                    tipoAtividade.id = objTipoAtividade.get_ID();
+                    tipoAtividade.descricao = objTipoAtividade.get_Descricao();
+
+                    erro.Erro = 0;
+                    erro.Descricao = "Sucesso";
+                    return tipoAtividade;
+                }
+            }
+            else
+            {
+                erro.Erro = 1;
+                erro.Descricao = "Erro ao abrir empresa";
+            }
+            return null;
         }
 
         #endregion Actividade;   // -----------------------------  END   Actividade    -----------------------
@@ -1232,6 +1291,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.id = objList.Valor("Id");
                     atividade.idTipoAtividade = objList.Valor("IdTipoActividade");
                     atividade.estado = objList.Valor("Estado");
+                    atividade.resumo = objList.Valor("Resumo");
                     atividade.descricao = objList.Valor("Descricao");
                     atividade.dataInicio = objList.Valor("DataInicio");
                     atividade.dataFim = objList.Valor("DataFim");

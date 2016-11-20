@@ -22,6 +22,14 @@ namespace PharmaCRM.Controllers
         [HttpGet]
         public Lib_Primavera.Model.StockArtigo Get(string id)
         {
+            Lib_Primavera.Model.Artigo artigo = Lib_Primavera.PriIntegration.GetArtigo(id);
+
+            if (artigo == null)
+            {
+                // Artigo inexistente
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+
             return Lib_Primavera.PriIntegration.GetStockArtigo(id);
         }
 
