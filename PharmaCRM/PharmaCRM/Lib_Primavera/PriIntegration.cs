@@ -1585,7 +1585,49 @@ namespace PharmaCRM.Lib_Primavera
 
         public static Model.KPI getVendedorKPIs(string idVendedor)
         {
-            return null;
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                Model.KPI kpis = new Model.KPI();
+                kpis.IdVendedor = idVendedor;
+
+                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
+                    + "FROM CabecDoc WHERE TipoDoc='ECL' AND [Data] >= DATEADD(MONTH, -3, GETDATE()) "
+                    + "AND Responsavel='" + idVendedor + "'");
+
+                while (!objListCab.NoFim())
+                {
+                    string docID = objListCab.Valor("id");
+
+                    // TOTAL SALES (curr month) //
+                    kpis.TotalSales++;
+
+                    // TOTAL SALES VALUE (curr month) //
+
+                    // TOP SELLING PRODUCTS (last 3 months) //
+
+                    // NUM COMPLETED SALES (curr month) //
+                    if (PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
+                    {
+                        kpis.NumCompletedSales++;
+                    }
+
+                    // NUM PENDING OFFERS (last 3 months) //
+
+                    // NEW LEADS (curr month) //
+
+                    // NUM ACTIVE CUSTOMERS (last 3 months) //
+
+                    // TOP CUSTOMERS (last 3 months) //
+
+                    objListCab.Seguinte();
+                }
+
+                return kpis;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         #endregion

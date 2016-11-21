@@ -14,7 +14,14 @@ namespace PharmaCRM.Controllers
         [HttpGet]
         public IEnumerable<Lib_Primavera.Model.KPI> Get()
         {
-            return Lib_Primavera.PriIntegration.getKPIs();
+            IEnumerable<Lib_Primavera.Model.KPI> kpis = Lib_Primavera.PriIntegration.getKPIs();
+            
+            if (kpis == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+
+            return kpis;
         }
 
         // GET: api/KPI/5
