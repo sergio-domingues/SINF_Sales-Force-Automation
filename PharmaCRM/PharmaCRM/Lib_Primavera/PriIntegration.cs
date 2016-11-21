@@ -476,7 +476,6 @@ namespace PharmaCRM.Lib_Primavera
                 return null;
 
             }
-
         }
 
         public static Lib_Primavera.Model.ArtigoResumo GetArtigoResumo(string codArtigo)
@@ -1516,6 +1515,34 @@ namespace PharmaCRM.Lib_Primavera
             }
             else
                 return null;
+        }
+
+        #endregion
+
+        #region Objetivo
+
+        public static List<Model.Objetivo> GetObjetivos()
+        {
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StdBELista objListCab;
+                Model.Objetivo objetivo;
+                List<Model.Objetivo> listObjs = new List<Model.Objetivo>();
+
+                objListCab = PriEngine.Engine.Consulta("SELECT idVendedor, goal FROM ObjetivoVendedor");
+                while (!objListCab.NoFim())
+                {
+                    
+
+                    objListCab.Seguinte();
+                }
+
+                return listObjs;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         #endregion

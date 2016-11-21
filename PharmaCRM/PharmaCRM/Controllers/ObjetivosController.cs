@@ -10,21 +10,21 @@ namespace PharmaCRM.Controllers
     public class ObjetivosController : ApiController
     {
         // GET: api/Objetivos
-        public IEnumerable<string> Get()
+        public IEnumerable<Lib_Primavera.Model.Objetivo> Get()
         {
             // TODO
             throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
         }
 
         // GET: api/Objetivos/5
-        public string Get(int id)
+        public string Get(string idVendedor)
         {
             // TODO
             throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
         }
 
         // POST: api/Objetivos
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Lib_Primavera.Model.Objetivo objetivo)
         {
             // TODO
             throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
@@ -38,7 +38,7 @@ namespace PharmaCRM.Controllers
         }
 
         // DELETE: api/Objetivos/5
-        public void Delete(int id)
+        public void Delete(string idVendedor)
         {
             // TODO
             throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));

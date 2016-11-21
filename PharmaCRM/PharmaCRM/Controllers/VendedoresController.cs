@@ -52,5 +52,13 @@ namespace PharmaCRM.Controllers
         {
             return Lib_Primavera.PriIntegration.GetVendedorOportunidades(id);
         }
+
+        [Route("api/vendedores/{id}/objetivo")]
+        [HttpGet]
+        public Lib_Primavera.Model.Objetivo GetVendedorObjetivo(string id)
+        {
+            // TODO
+            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+        }
     }
 }
