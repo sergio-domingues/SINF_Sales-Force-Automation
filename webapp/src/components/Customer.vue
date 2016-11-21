@@ -80,16 +80,16 @@
 					<div class="panel-heading">Atividades</div>
 					<div class="panel-body" style="background-color:white">
 						<div v-show="loading.atividades" class="spinner"></div>
-<ul class="todo-list">
-						<router-link tag="li" :to="'/activities/'+atividade.id" class="todo-list-item clicable" v-for="atividade in atividades">
-							<div class="checkbox">
-								{{atividade.descricao}}
-							</div>
-							<div class="pull-right">
-								<i class="fa fa-check"v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
-							</div>
-						</router-link>
-</ul>
+						<ul class="todo-list">
+							<router-link tag="li" :to="'/activities/'+atividade.id" class="todo-list-item clicable" v-for="atividade in atividades">
+								<div class="checkbox">
+									{{atividade.descricao}}
+								</div>
+								<div class="pull-right">
+									<i class="fa fa-check"v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
+								</div>
+							</router-link>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -116,84 +116,85 @@
 			<div class="col-lg-4">
 				<div class="panel panel-blue">
 					<div class="panel-heading">Encomendas</div>
-					<div class="panel-body" style="background-color:white">
+					<div :class="[encomendas.length>4 ? 'overflow-panel' : '' ,'panel-body']" style="background-color:white">
 						<div v-show="loading.encomendas" class="spinner"></div>
 						<ul class="todo-list">
-							<router-link tag="li" :to="'/salesorders/'+encomenda.NumeroEncomenda" class="todo-list-item clicable" v-for="encomenda in encomendas">
+							<router-link tag="li" :to="'/salesorders/'+encomenda.NumeroDocumento" class="todo-list-item clicable" v-for="encomenda in encomendas">
 								<div class="checkbox">
-									{{encomenda.descricao}}
+									{{encomenda.Data}}
 								</div>
-							</router-link>
-						</ul>
+								<div class="pull-right">{{encomenda.TotalMercadoria}}</dic>
+								</router-link>
+							</ul>
+						</div>
 					</div>
 				</div>
+
 			</div>
+			<!--/.row-->
 
 		</div>
-		<!--/.row-->
+	</template>
 
-	</div>
-</template>
-
-<script>
-var clienteTemp;
-export default {
-  name: 'Customer',
-  data () {
-    return {editing:false,cliente:{},loading:{oportunidades:true,atividades:true,encomendas:true},oportunidades:[],atividades:[],encomendas:[]}
-  },
-  methods:{
-	  toggleEditing: function(){
-			clienteTemp=Object.assign({}, this.cliente);
-		  if(this.editing){
-			  this.$http.put('http://localhost:49559/api/clientes/'+this.cliente.CodCliente,this.cliente)
-				.then((response)=>{
+	<script>
+	var clienteTemp;
+	export default {
+		name: 'Customer',
+		data () {
+			return {editing:false,cliente:{},loading:{oportunidades:true,atividades:true,encomendas:true},oportunidades:[],atividades:[],encomendas:[]}
+		},
+		methods:{
+			toggleEditing: function(){
+				clienteTemp=Object.assign({}, this.cliente);
+				if(this.editing){
+					this.$http.put('http://localhost:49559/api/clientes/'+this.cliente.CodCliente,this.cliente)
+					.then((response)=>{
+						this.editing = !this.editing;
+						this.oportunidade=response.body;
+					},(err)=>{
+						console.log(err)
+					})
+				}else{
 					this.editing = !this.editing;
-					this.oportunidade=response.body;
-				},(err)=>{
-					console.log(err)
-				})
-		  }else{
+				}
+			},
+			cancelEditing:function(){
+				this.cliente=Object.assign({}, clienteTemp);
 				this.editing = !this.editing;
 			}
-	  },
-	  cancelEditing:function(){
-		 this.cliente=Object.assign({}, clienteTemp);
-		 this.editing = !this.editing;
-	  }
-  },
-	mounted: function(){
-	  this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id))
-		.then((response)=>{
-			this.cliente=response.body;
-	  })
+		},
+		mounted: function(){
+			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id))
+			.then((response)=>{
+				this.cliente=response.body;
+			})
 
-		//encomendas
-		this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/encomendas'))
-		.then((response)=>{
-			this.loading.encomendas=false;
-			this.encomendas=response.body;
-	  })
+			//encomendas
+			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/encomendas'))
+			.then((response)=>{
+				this.loading.encomendas=false;
+				this.encomendas=response.body;
+			})
 
-		//oportunidades
-		this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/oportunidades'))
-		.then((response)=>{
-			this.loading.oportunidades=false;
-			this.oportunidades=response.body;
-	  })
+			//oportunidades
+			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/oportunidades'))
+			.then((response)=>{
+				this.loading.oportunidades=false;
+				this.oportunidades=response.body;
+			})
 
-		//atividades
-		this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/atividades'))
-		.then((response)=>{
-			this.loading.atividades=false;
-			this.atividades=response.body;
-	  })
+			//atividades
+			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/atividades'))
+			.then((response)=>{
+				this.loading.atividades=false;
+				this.atividades=response.body;
+			})
+		}
 	}
-}
-</script>
+	</script>
 
-<style>
+	<style>
 	textarea {
 		resize: vertical;
 	}
-</style>
+	</style>
