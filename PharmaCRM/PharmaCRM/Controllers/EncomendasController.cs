@@ -55,9 +55,9 @@ namespace PharmaCRM.Controllers
             return editaCriaEncomenda(encomenda);
         }
 
+        // PUT: api/Encomendas/5
         [Route("api/encomendas/{id}")]
         [HttpPut]
-        // PUT: api/Encomendas/5
         public HttpResponseMessage Put(int id, [FromBody]Lib_Primavera.Model.Encomenda encomenda)
         {
             return editaCriaEncomenda(encomenda);

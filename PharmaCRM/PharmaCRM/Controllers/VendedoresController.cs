@@ -66,5 +66,19 @@ namespace PharmaCRM.Controllers
 
             return obj;
         }
+
+        [Route("api/vendedores/{id}/kpi")]
+        [HttpGet]
+        public Lib_Primavera.Model.KPI GetVendedorKPIs(string id)
+        {
+            Lib_Primavera.Model.KPI kpis = Lib_Primavera.PriIntegration.getVendedorKPIs(id);
+
+            if (kpis == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+
+            return kpis;
+        }
     }
 }

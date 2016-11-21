@@ -1575,5 +1575,19 @@ namespace PharmaCRM.Lib_Primavera
         }
 
         #endregion
+
+        #region KPI
+
+        public static List<Model.KPI> getKPIs()
+        {
+            return null;
+        }
+
+        public static Model.KPI getVendedorKPIs(string idVendedor)
+        {
+            return null;
+        }
+
+        #endregion
     }
 }
