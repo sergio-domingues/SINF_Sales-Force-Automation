@@ -4,7 +4,7 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Encomendas</h1>
+				<h1 class="page-header">Lista de Encomendas <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-activity-modal" aria-hidden="true"></i></h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -16,42 +16,44 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>#</th>
-									<th>Nome</th>
+									<th>Data</th>
 									<th>Cliente</th>
-									<th>Rep. de Venda</th>
+									<th>Valor</th>
+									<th>Ações</th>
 								</tr>
 							</thead>
 							<tbody>
-								<router-link tag="tr" to="/salesorders/1" class="clicable">
-									<th scope="row">1</th>
-									<td>Energizers 1 </td>
-									<td>Maria José da Silva</td>
-									<td>José Esteves</td>
-								</router-link>
-							</tbody>
-						</table>
+								<router-link tag="tr" class="clicable" :to="'/salesorders/'+encomenda.NumeroDocumento" v-for="encomenda in encomendas">
+									<td>{{encomenda.Data}}</td>
+									<td><router-link :to="'/customers/'+encomenda.Entidade">{{encomenda.Entidade}}</router-link></td>
+									<td>{{encomenda.TotalMercadoria}} €</td>
+									<td>
+										<router-link to="">
+											<i v-on:click="deleteOportunity(oportunidade.id)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+										</router-link>
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
+
 				</div>
+				<!--/.row-->
+
 			</div>
+		</template>
 
-		</div>
-		<!--/.row-->
-
-	</div>
-</template>
-
-<script>
-export default {
-  name: 'SalesOrderList',
-  data () {
-    return {salesOrders:[]}
-  },
-  mounted: function(){
-	  this.$http.get('http://localhost:49559/api/encomendas/')
-		.then((response)=>{
-			this.salesOrders=response.body;
-	  });
-  }
-}
-</script>
+		<script>
+		export default {
+			name: 'SalesOrderList',
+			data () {
+				return {encomendas:[]}
+			},
+			mounted: function(){
+				this.$http.get('http://localhost:49559/api/encomendas/')
+				.then((response)=>{
+					this.encomendas=response.body;
+				});
+			}
+		}
+		</script>

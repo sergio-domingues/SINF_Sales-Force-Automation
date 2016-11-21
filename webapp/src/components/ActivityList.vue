@@ -18,7 +18,7 @@
 								<tr>
 									<th>Data</th>
 									<th>Tipo</th>
-									<th>Descrição</th>
+									<th>Resumo</th>
 									<th>Estado</th>
 									<th></th>
 								</tr>
@@ -26,14 +26,14 @@
 							<tbody>
 								<router-link tag="tr" v-for="atividade in atividades" :to="'activities/'+ encodeURIComponent(atividade.id)" class="clicable">
 									<th scope="row">{{displayDate(atividade.dataInicio)}}</th>
-									<td>TODO</td>
-									<td>{{atividade.descricao}}</td>
+									<td>{{atividade.tipoAtividade}}</td>
+									<td>{{atividade.resumo}}</td>
 									<td v-if="atividade.estado == 0">INCOMPLETA</td>
 									<td v-else>FEITA</td>
 									<td>
-									<router-link to="">
-										<i v-on:click="deleteActivity(atividade.id)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
-									</router-link>
+										<router-link to="">
+											<i v-on:click="deleteActivity(atividade.id)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+										</router-link>
 									</td>
 								</router-link>
 							</tbody>
@@ -57,36 +57,51 @@ function findById(array,id,idProp){
 	}
 	return null;
 }
+
+function functionequalID(id1, id2) {
+	return id1 == id2;
+}
 import CreateModal from './modal/Activity.vue'
 export default {
-  name: 'ActivityList',
-  data () {
-    return {atividades : []}
-  },
+	name: 'ActivityList',
+	data () {
+		return {atividades : [], tipos: []}
+	},
 	components:{CreateModal},
-  mounted: function(){
-	  this.$http.get('http://localhost:49559/api/atividades/')
-		.then((response)=>{
-			this.atividades=response.body;
-	  });
-  },
-  methods: {
-	  displayDate: function(date){
-		  var d = new Date(date);
-		  	return  d.getDay()+ '-'+ d.getMonth()+ '-' + d.getFullYear()+' '+ d.getHours()+':'+ d.getMinutes()+':'+ d.getSeconds();
-	  },
-	  deleteActivity: function(id){
-					const URL = encodeURI('http://localhost:49559/api/atividades/' + id)
+	mounted: function(){
 
-	  	this.$http.delete(URL)
-			  .then((res) =>{
-					this.oportunidades.splice(findById(this.atividades,id,'id'),1);
-				  console.log('sucess')
-			  },
-			  (err) => {
-				  console.log('error')
-			  });
-	  }
-  }
+		this.$http.get('http://localhost:49559/api/atividades/tipos/')
+		.then((tiposAtividades)=>{
+			this.tipos = tiposAtividades.body;
+
+			this.$http.get('http://localhost:49559/api/atividades/')
+			.then((response)=>{
+				for(let i = 0; i < response.body.length; i++){
+					this.atividades=response.body;
+					var index =	findById(this.tipos, this.atividades[i].idTipoAtividade,'id')
+					this.atividades[i].tipoAtividade = this.tipos[index].descricao;
+				}
+			});
+		});
+
+	},
+	methods: {
+		displayDate: function(date){
+			var d = new Date(date);
+			return  d.getDay()+ '-'+ d.getMonth()+ '-' + d.getFullYear()+' '+ d.getHours()+':'+ d.getMinutes()+':'+ d.getSeconds();
+		},
+		deleteActivity: function(id){
+			const URL = encodeURI('http://localhost:49559/api/atividades/' + id)
+
+			this.$http.delete(URL)
+			.then((res) =>{
+				this.atividades.splice(findById(this.atividades,id,'id'),1);
+				console.log('sucess')
+			},
+			(err) => {
+				console.log('error')
+			});
+		}
+	}
 }
 </script>
