@@ -932,6 +932,7 @@ namespace PharmaCRM.Lib_Primavera
                         dataFim = objListCab.Valor("DataFim"),
                         local = objListCab.Valor("LocalRealizacao"),
                         tipoEntidadePrincipal = objListCab.Valor("TipoEntidadePrincipal"),
+                        entidadePrincipal = objListCab.Valor("EntidadePrincipal"),
                         vendedor = objListCab.Valor("ResponsavelPor"),
                         idContactoPrincipal = objListCab.Valor("IdContactoPrincipal"),
                         idCabecalhoOportunidadeVenda = objListCab.Valor("IdCabecOVenda"),
@@ -1033,6 +1034,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.local = objList.Valor("LocalRealizacao");
                     atividade.vendedor = objList.Valor("Utilizador");
                     atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
+                    atividade.entidadePrincipal = objList.Valor("EntidadePrincipal");
                     atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
                     listAtividades.Add(atividade);
@@ -1072,6 +1074,7 @@ namespace PharmaCRM.Lib_Primavera
                     model_actividade.local = atividade.get_LocalRealizacao();
                     model_actividade.vendedor = atividade.get_CriadoPor();
                     model_actividade.tipoEntidadePrincipal = atividade.get_TipoEntidadePrincipal();
+                    model_actividade.entidadePrincipal = atividade.get_EntidadePrincipal();
                     model_actividade.idContactoPrincipal = atividade.get_IDContactoPrincipal();
                     model_actividade.idCabecalhoOportunidadeVenda = atividade.get_IDCabecOVenda();
 
@@ -1107,6 +1110,7 @@ namespace PharmaCRM.Lib_Primavera
                     objAtividade.set_LocalRealizacao(actividade.local);
                     objAtividade.set_CriadoPor(actividade.vendedor);
                     objAtividade.set_TipoEntidadePrincipal(actividade.tipoEntidadePrincipal);
+                    objAtividade.set_EntidadePrincipal(actividade.entidadePrincipal);
                     objAtividade.set_IDContactoPrincipal(actividade.idContactoPrincipal);
                     objAtividade.set_IDCabecOVenda(actividade.idCabecalhoOportunidadeVenda);
 
@@ -1163,6 +1167,7 @@ namespace PharmaCRM.Lib_Primavera
                         objAtividade.set_LocalRealizacao(atividade.local);
                         objAtividade.set_CriadoPor(atividade.vendedor);
                         objAtividade.set_TipoEntidadePrincipal(atividade.tipoEntidadePrincipal);
+                        objAtividade.set_EntidadePrincipal(atividade.entidadePrincipal);
                         objAtividade.set_IDContactoPrincipal(atividade.idContactoPrincipal);
                         objAtividade.set_IDCabecOVenda(atividade.idCabecalhoOportunidadeVenda);
 
@@ -1363,6 +1368,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.local = objList.Valor("LocalRealizacao");
                     atividade.vendedor = objList.Valor("Utilizador");
                     atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
+                    atividade.entidadePrincipal = objList.Valor("EntidadePrincipal");
                     atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
                     listAtividades.Add(atividade);
