@@ -1,10 +1,10 @@
 <template>
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-		<breadcrumb :items="[{path:'activities',name:'Actividades'}]" :current="'Atividade'"></breadcrumb>
+		<breadcrumb :items="[{path:'activities',name:'Actividades'}]" :current="atividade.resumo"></breadcrumb>
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Atividade</h1>
+				<h1 class="page-header">{{atividade.resumo}}</h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -31,9 +31,20 @@
 							</div>
 
 							<div class="form-group">
+								<label for="resumo" class="col-sm-2 control-label">Resumo</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="resumo" placeholder="resumo atividade" v-model="atividade.resumo" :value="atividade.resumo" :disabled="!editing">
+								</div>
+							</div>
+
+							<div class="form-group">
 								<label for="tipo" class="col-sm-2 control-label">Tipo</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="tipo" placeholder="tipo" value="TODO" :disabled="!editing">
+									<select class="form-control" id="tipo" v-model="atividade.idTipoAtividade" :disabled="!editing">
+		                <option v-for="tipo in tipos" v-bind:value="tipo.value" :selected="atividade.idTipoAtividade==tipo.value">
+		                  {{ tipo.text }}
+		                </option>
+		              </select>
 								</div>
 							</div>
 
@@ -70,13 +81,6 @@
 							</div>
 
 							<div class="form-group">
-								<label for="vendedor" class="col-sm-2 control-label">Vendedor</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" id="vendedor" placeholder="vendedor" v-model="atividade.vendedor" :value="atividade.local" :disabled="!editing">
-								</div>
-							</div>
-
-							<div class="form-group">
 								<label for="descricao" class="col-sm-2 control-label">Descrição</label>
 								<div class="col-sm-10">
 									<textarea class="form-control" rows="3"  v-model="atividade.descricao" :disabled="!editing">
@@ -108,7 +112,8 @@ export default {
     return {
 		editing:false,
 		atividade : {},
-		options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}]
+		options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}],
+		tipos: []
 	}
   },
   methods:{
@@ -135,12 +140,25 @@ export default {
 	  }
   },
 	mounted: function(){
+
+		this.$http.get('http://localhost:49559/api/atividades/tipos')
+		.then((response)=>{
+			for(var tipo of response.body){
+				this.tipos.push({text:tipo.descricao, value:tipo.id});
+			}
+		})
+
 	const URL = encodeURI('http://localhost:49559/api/atividades/'+this.$route.params.id);
 	  this.$http.get(URL)
 		.then((response)=>{
-			this.atividade=response.body;
-	  })
-	}
+			const URL2 = encodeURI('http://localhost:49559/api/atividades/tipos/'+response.body.idTipoAtividade);
+			  this.$http.get(URL2)
+				.then((tipo)=>{
+					this.atividade=response.body;
+					this.atividade.tipoAtividade = tipo.body.descricao;
+			  })
+			});
+		}
 }
 </script>
 

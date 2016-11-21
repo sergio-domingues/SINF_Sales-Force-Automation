@@ -6,6 +6,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">Nova Atividade</h4>
         </div>
+
         <form v-on:submit.prevent="createActivity">
           <div class="modal-body">
             <div class="form-group">
@@ -16,6 +17,12 @@
                 </option>
               </select>
             </div>
+
+            <div class="form-group">
+              <label for="resumo">Resumo</label>
+                <input type="text" class="form-control" id="resumo" placeholder="resumo atividade" v-model="atividade.resumo" :value="atividade.resumo">
+            </div>
+
             <div class="form-group">
               <label for="Tipo">Estado</label>
               <select class="form-control" id="estado" v-model="atividade.estado">
@@ -33,6 +40,16 @@
                 </option>
               </select>
             </div>
+
+            <div class="form-group">
+              <label for="Tipo">Oportunidades</label>
+              <select class="form-control" id="estado" v-model="atividade.idCabecalhoOportunidadeVenda">
+                <option v-for="oportunidade in oportunidades" v-bind:value="oportunidade.id">
+                  {{ oportunidade.descricao }}
+                </option>
+              </select>
+            </div>
+
 
             <div class="form-group">
               <label for="datetime">Data de Inicio</label>
@@ -65,7 +82,7 @@
   export default {
     name: 'CreateActivityModal',
     data () {
-      return {atividade: {}, options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}], tipos: [],clientes:[]}
+      return {atividade: {}, options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}], tipos: [],clientes: [], oportunidades: []}
     },
     mounted: function(){
       this.$http.get('http://localhost:49559/api/atividades/tipos')
@@ -80,16 +97,23 @@
           this.clientes=response.body;
       })
 
+      this.$http.get('http://localhost:49559/api/oportunidades')
+      .then((response)=>{
+          this.oportunidades=response.body;
+      })
+
     },
     methods:{
       createActivity: function(e){
+        this.atividade.tipoEntidadePrincipal = "C";
         this.$http.post('http://localhost:49559/api/atividades/', this.atividade)
         .then((response)=>{
+          console.log(this.atividade)
           console.log(response);
+
         },(err)=>{
           console.log(err)
         });
-        console.log('yay fez pedido ' + this.atividade.descricao)
       }
     }
   }
