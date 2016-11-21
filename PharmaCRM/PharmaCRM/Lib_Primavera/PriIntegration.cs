@@ -1529,10 +1529,14 @@ namespace PharmaCRM.Lib_Primavera
                 Model.Objetivo objetivo;
                 List<Model.Objetivo> listObjs = new List<Model.Objetivo>();
 
-                objListCab = PriEngine.Engine.Consulta("SELECT idVendedor, goal FROM ObjetivoVendedor");
+                objListCab = PriEngine.Engine.Consulta("SELECT idVendedor, valor FROM ObjetivoVendedor");
                 while (!objListCab.NoFim())
                 {
-                    
+                    objetivo = new Model.Objetivo();
+                    objetivo.CodigoVendedor = objListCab.Valor("idVendedor");
+                    objetivo.Valor = objListCab.Valor("valor");
+
+                    listObjs.Add(objetivo);
 
                     objListCab.Seguinte();
                 }

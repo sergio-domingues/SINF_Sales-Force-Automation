@@ -9,14 +9,22 @@ namespace PharmaCRM.Controllers
 {
     public class ObjetivosController : ApiController
     {
-        // GET: api/Objetivos
+        [Route("api/objetivos")]
+        [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Objetivo> Get()
         {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            IEnumerable<Lib_Primavera.Model.Objetivo> objs = Lib_Primavera.PriIntegration.GetObjetivos();
+
+            if(objs == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError));
+            }
+
+            return objs;
         }
 
-        // GET: api/Objetivos/5
+        [Route("api/objetivos/{idVendedor}")]
+        [HttpGet]
         public string Get(string idVendedor)
         {
             // TODO
