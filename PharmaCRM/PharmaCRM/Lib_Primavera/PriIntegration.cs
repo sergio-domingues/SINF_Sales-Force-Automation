@@ -1549,6 +1549,31 @@ namespace PharmaCRM.Lib_Primavera
             }
         }
 
+        public static Model.Objetivo GetObjetivoVendedor(string idVendedor)
+        {
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StdBELista objListCab;
+
+                objListCab = PriEngine.Engine.Consulta("SELECT idVendedor, valor FROM ObjetivoVendedor WHERE idVendedor='" + idVendedor + "'");
+
+                if(objListCab.NoFim())
+                {
+                    return null;
+                }
+
+                Model.Objetivo objetivo = new Model.Objetivo();
+                objetivo.CodigoVendedor = objListCab.Valor("idVendedor");
+                objetivo.Valor = objListCab.Valor("valor");
+
+                return objetivo;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         #endregion
     }
 }

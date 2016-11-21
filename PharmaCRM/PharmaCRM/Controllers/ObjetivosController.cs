@@ -9,6 +9,15 @@ namespace PharmaCRM.Controllers
 {
     public class ObjetivosController : ApiController
     {
+        /*
+        
+         Requires creating table ObjetivoVendedor with columns:
+         * idVendedor VARCHAR(3),
+         * valor FLOAT
+         
+        */
+
+
         [Route("api/objetivos")]
         [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Objetivo> Get()
@@ -25,10 +34,16 @@ namespace PharmaCRM.Controllers
 
         [Route("api/objetivos/{idVendedor}")]
         [HttpGet]
-        public string Get(string idVendedor)
+        public Lib_Primavera.Model.Objetivo Get(string idVendedor)
         {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            Lib_Primavera.Model.Objetivo obj = Lib_Primavera.PriIntegration.GetObjetivoVendedor(idVendedor);
+
+            if (obj == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+
+            return obj;
         }
 
         // POST: api/Objetivos
