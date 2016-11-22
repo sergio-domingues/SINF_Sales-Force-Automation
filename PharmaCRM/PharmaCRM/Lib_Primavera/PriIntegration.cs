@@ -1590,37 +1590,124 @@ namespace PharmaCRM.Lib_Primavera
                 Model.KPI kpis = new Model.KPI();
                 kpis.IdVendedor = idVendedor;
 
-                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
-                    + "FROM CabecDoc WHERE TipoDoc='ECL' AND [Data] >= DATEADD(MONTH, -3, GETDATE()) "
+                // Encomendas último mês
+                StdBELista encomendas1M = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
+                    + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -1, GETDATE()) AND Responsavel=" + idVendedor + "");
+
+                // Encomendas dos 2 meses anteriores ao último
+                StdBELista encomendas2_3M = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
+                    + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -3, GETDATE()) AND [Data] < DATEADD(MONTH, -1, GETDATE()) "
                     + "AND Responsavel='" + idVendedor + "'");
 
-                while (!objListCab.NoFim())
+                Dictionary<string, double> produtosQuantidadeVendida = new Dictionary<string, double>();
+                Dictionary<string, double> clientesValorComprado = new Dictionary<string, double>();
+
+                while (!encomendas1M.NoFim())
                 {
-                    string docID = objListCab.Valor("id");
+                    string docID = encomendas1M.Valor("id");
+                    string cliente = encomendas1M.Valor("Entidade");
 
-                    // TOTAL SALES (curr month) //
-                    kpis.TotalSales++;
+                    kpis.NumTotalVendas++;
 
-                    // TOTAL SALES VALUE (curr month) //
-
-                    // TOP SELLING PRODUCTS (last 3 months) //
-
-                    // NUM COMPLETED SALES (curr month) //
-                    if (PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
+                    if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
                     {
-                        kpis.NumCompletedSales++;
+                        kpis.NumVendasCompletas++;
+
+                        StdBELista linhasDoc = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Quantidade, PrecoLiquido "
+                            + "FROM LinhasDoc WHERE IdCabecDoc='" + docID + "' ORDER BY NumLinha");
+
+                        double precoEncomenda = 0;
+
+                        while (!linhasDoc.NoFim())
+                        {
+                            string artigo = linhasDoc.Valor("Artigo");
+                            double quantidade = linhasDoc.Valor("Quantidade");
+                            double preco = linhasDoc.Valor("PrecoLiquido");
+
+                            precoEncomenda += preco;
+
+                            double qtd;
+                            if (produtosQuantidadeVendida.TryGetValue(artigo, out qtd))
+                            {
+                                produtosQuantidadeVendida[artigo] = qtd + quantidade;
+                            }
+                            else
+                            {
+                                produtosQuantidadeVendida.Add(artigo, quantidade);
+                            }
+
+                            kpis.ValorTotalVendas += preco;
+
+                            linhasDoc.Seguinte();
+                        }
+
+                        double valorCliente;
+                        if (clientesValorComprado.TryGetValue(cliente, out valorCliente))
+                        {
+                            clientesValorComprado[cliente] = valorCliente + precoEncomenda;
+                        }
+                        else
+                        {
+                            clientesValorComprado.Add(cliente, precoEncomenda);
+                        }
                     }
 
-                    // NUM PENDING OFFERS (last 3 months) //
-
-                    // NEW LEADS (curr month) //
-
-                    // NUM ACTIVE CUSTOMERS (last 3 months) //
-
-                    // TOP CUSTOMERS (last 3 months) //
-
-                    objListCab.Seguinte();
+                    encomendas1M.Seguinte();
                 }
+
+                while (!encomendas2_3M.NoFim())
+                {
+                    string docID = encomendas2_3M.Valor("id");
+                    string cliente = encomendas2_3M.Valor("Entidade");
+
+                    if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
+                    {
+                        StdBELista linhasDoc = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Quantidade, PrecoLiquido "
+                            + "FROM LinhasDoc WHERE IdCabecDoc='" + docID + "' ORDER BY NumLinha");
+
+                        double precoEncomenda = 0;
+
+                        while (!linhasDoc.NoFim())
+                        {
+                            string artigo = linhasDoc.Valor("Artigo");
+                            double quantidade = linhasDoc.Valor("Quantidade");
+                            double preco = linhasDoc.Valor("PrecoLiquido");
+
+                            precoEncomenda += preco;
+
+                            double qtd;
+                            if (produtosQuantidadeVendida.TryGetValue(artigo, out qtd))
+                            {
+                                produtosQuantidadeVendida[artigo] = qtd + quantidade;
+                            }
+                            else
+                            {
+                                produtosQuantidadeVendida.Add(artigo, quantidade);
+                            }
+
+                            linhasDoc.Seguinte();
+                        }
+
+                        double valorCliente;
+                        if (clientesValorComprado.TryGetValue(cliente, out valorCliente))
+                        {
+                            clientesValorComprado[cliente] = valorCliente + precoEncomenda;
+                        }
+                        else
+                        {
+                            clientesValorComprado.Add(cliente, precoEncomenda);
+                        }
+                    }
+
+                    encomendas2_3M.Seguinte();
+                }
+
+                kpis.ProdutosMaisVendidos = produtosQuantidadeVendida.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
+                kpis.NumClientesAtivos = clientesValorComprado.Count();
+                kpis.MelhoresClientes = new List<string> (clientesValorComprado.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value).Keys);
+
+                // NUM PENDING OFFERS (last 3 months) //
+                // NEW LEADS (curr month) //
 
                 return kpis;
             }

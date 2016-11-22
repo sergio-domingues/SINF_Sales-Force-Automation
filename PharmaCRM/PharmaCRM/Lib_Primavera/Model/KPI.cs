@@ -7,6 +7,12 @@ namespace PharmaCRM.Lib_Primavera.Model
 {
     public class KPI
     {
+        public KPI()
+        {
+            ProdutosMaisVendidos = new Dictionary<string, double>();
+            MelhoresClientes = new List<string>();
+        }
+
         public string IdVendedor
         {
             get;
@@ -14,56 +20,56 @@ namespace PharmaCRM.Lib_Primavera.Model
         }
 
         // Current month
-        public double TotalSales
+        public double NumTotalVendas
         {
             get;
             set;
         }
 
         // Current month
-        public double TotalSaleValue
+        public double ValorTotalVendas
         {
             get;
             set;
         }
 
-        // Maps product ID to ammount sold
-        public Dictionary<string, double> TopSellingProducts
-        {
-            get;
-            set;
-        }
-
-        // Current month
-        public int NumCompletedSales
-        {
-            get;
-            set;
-        }
-
-        // Last 3 months
-        public int NumPendingOffers
+        // Maps product ID to ammount sold (current month)
+        public Dictionary<string, double> ProdutosMaisVendidos
         {
             get;
             set;
         }
 
         // Current month
-        public int NewLeads
+        public int NumVendasCompletas
         {
             get;
             set;
         }
 
         // Last 3 months
-        public int NumActiveCustomers
+        public int NumOportunidadesPendentes
+        {
+            get;
+            set;
+        }
+
+        // Current month
+        public int NovasOportunidades
         {
             get;
             set;
         }
 
         // Last 3 months
-        public List<string> TopCustomers
+        public int NumClientesAtivos
+        {
+            get;
+            set;
+        }
+
+        // Last 3 months (valor de compra)
+        public List<string> MelhoresClientes
         {
             get;
             set;
