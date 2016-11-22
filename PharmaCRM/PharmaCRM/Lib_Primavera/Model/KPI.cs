@@ -10,7 +10,7 @@ namespace PharmaCRM.Lib_Primavera.Model
         public KPI()
         {
             ProdutosMaisVendidos = new Dictionary<string, double>();
-            MelhoresClientes = new List<string>();
+            MelhoresClientes = new Dictionary<string, double>();
         }
 
         public string IdVendedor
@@ -69,7 +69,7 @@ namespace PharmaCRM.Lib_Primavera.Model
         }
 
         // Last 3 months (valor de compra)
-        public List<string> MelhoresClientes
+        public Dictionary<string, double> MelhoresClientes
         {
             get;
             set;

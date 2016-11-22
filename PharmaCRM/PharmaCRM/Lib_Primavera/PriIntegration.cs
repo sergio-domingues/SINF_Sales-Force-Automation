@@ -1704,10 +1704,10 @@ namespace PharmaCRM.Lib_Primavera
 
                 kpis.ProdutosMaisVendidos = produtosQuantidadeVendida.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
                 kpis.NumClientesAtivos = clientesValorComprado.Count();
-                kpis.MelhoresClientes = new List<string> (clientesValorComprado.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value).Keys);
+                kpis.MelhoresClientes = clientesValorComprado.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
 
-                // NUM PENDING OFFERS (last 3 months) //
-                // NEW LEADS (curr month) //
+                kpis.NovasOportunidades = KPI_getVendedorOportunidades(true, idVendedor);
+                kpis.NumOportunidadesPendentes = KPI_getVendedorOportunidades(false, idVendedor);
 
                 return kpis;
             }
@@ -1715,6 +1715,23 @@ namespace PharmaCRM.Lib_Primavera
             {
                 return null;
             }
+        }
+
+        private static int KPI_getVendedorOportunidades(bool recentes, string idVendedor)
+        {
+            string dataRestricao;
+            if (recentes)
+            {
+                dataRestricao = " AND DataCriacao >= DATEADD(MONTH, -1, GETDATE())";
+            }
+            else
+            {
+                dataRestricao = " AND DataCriacao >= DATEADD(MONTH, -3, GETDATE())";
+            }
+
+            StdBELista oportunidadesLista = PriEngine.Engine.Consulta("SELECT ID FROM CabecOportunidadesVenda WHERE Vendedor='"
+                    + idVendedor + "' AND DataExpiracao < CURRENT_TIMESTAMP" + dataRestricao);
+            return oportunidadesLista.NumLinhas();
         }
 
         #endregion
