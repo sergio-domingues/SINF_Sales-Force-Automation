@@ -34,7 +34,7 @@
                     <i class="fa fa-lg fa-search" aria-hidden="true"></i>
                   </button>
                 </span>
-                <input type="text" class="form-control" placeholder="Adicionar produtos">
+                <input type="text" v-model="pesquisa" class="form-control" placeholder="Adicionar produtos">
               </div>
             </div>
           </div>
@@ -51,11 +51,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="artigo in artigos" v-if="artigo.show">
-                    <td>{{artigosTotais.CodigoArtigo}}</td>
-                    <td>{{artigosTotais.DescricaoArtigo}}</td>
-                    <td>{{artigosTotais.Quantidade}}</td>
-                    <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true"></i></td>
+                  <tr v-for="artigo in pesquisaReturnada">
+                    <td>{{artigo.Codigo}}</td>
+                    <td>{{artigo.Descricao}}</td>
+                    <td v-if="artigo.StockAtual <= 0">indisponivel</td>
+                    <td v-else>{{artigo.StockAtual}} </td>
+                    <td><i class="fa fa-lg fa-plus clicable" v-model="adicionarArtigo(artigo)" aria-hidden="true"></i></td>
                   </tr>
                 </tbody>
               </table>
@@ -69,18 +70,38 @@
 </template>
 
 <script>
+
+
 export default {
   name: 'ArticleListing',
   data () {
-    return {artigosTotais:[],pesquisa:''}
+    return {listaArtigos:[],pesquisa:'', pesquisaReturnada: []}
   },
   props:['artigos'],
   mounted:function(){
     this.$http.get('http://localhost:49559/api/artigos/')
     .then((response)=>{
-      this.artigosTotais=response.body;
-      console.log(response.body);
+      this.listaArtigos=response.body;
     });
+  },
+  watch: {
+    pesquisa: function () {
+      this.pesquisaReturnada = this.listaArtigos.filter(this.findArtigo);
+      console.log(this.pesquisaReturnada);
+    }
+  },
+  methods: {
+
+    findArtigo : function(artigo){
+    		if(artigo['Descricao'].includes(this.pesquisa)){
+    			return true;
+    	}
+    	return false;
+    },
+    adicionarArtigo : function(artigo) {
+        this.listaArtigos.push(artigo);
+      //TODO: fazer pedido put
+    }
   }
 }
 </script>
