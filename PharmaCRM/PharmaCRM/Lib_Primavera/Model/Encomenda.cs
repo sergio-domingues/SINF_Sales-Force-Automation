@@ -18,6 +18,12 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
+        public string idOportunidade
+        {
+            get;
+            set;
+        }
+
         public int NumeroDocumento
         {
             get;

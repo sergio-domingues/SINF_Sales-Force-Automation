@@ -90,6 +90,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.id = objList.Valor("Id");
                     atividade.idTipoAtividade = objList.Valor("IdTipoActividade");
                     atividade.estado = objList.Valor("Estado");
+                    atividade.resumo = objList.Valor("Resumo");
                     atividade.descricao = objList.Valor("Descricao");
                     atividade.dataInicio = objList.Valor("DataInicio");
                     atividade.dataFim = objList.Valor("DataFim");
@@ -167,8 +168,11 @@ namespace PharmaCRM.Lib_Primavera
                     Model.Oportunidade oportunidade = new Model.Oportunidade();
                     oportunidade.id = objList.Valor("ID");
                     oportunidade.descricao = objList.Valor("Descricao");
+                    oportunidade.numEncomenda = objList.Valor("NumEncomenda");
                     oportunidade.entidade = objList.Valor("Entidade");
                     oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
+                    oportunidade.dataCriacao = objList.Valor("DataCriacao");
+                    oportunidade.dataExpiracao = objList.Valor("DataExpiracao");
                     oportunidade.vendedor = objList.Valor("Vendedor");
                     oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
                     oportunidades.Add(oportunidade);
@@ -634,6 +638,7 @@ namespace PharmaCRM.Lib_Primavera
                     // Atribui valores ao cabecalho do doc
                     myEnc.set_DataDoc(dv.Data);
                     myEnc.set_Entidade(dv.Entidade);
+                    myEnc.set_IdOportunidade(dv.idOportunidade);
                     myEnc.set_Serie("2016");
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
@@ -694,12 +699,13 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL'");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
                     dv.idInterno = objListCab.Valor("id");
                     dv.Entidade = objListCab.Valor("Entidade");
+                    dv.idOportunidade = objListCab.Valor("IdOportunidade");
                     dv.NumeroDocumento = objListCab.Valor("NumDoc");
                     dv.Data = objListCab.Valor("Data");
                     dv.TotalMercadoria = objListCab.Valor("TotalMerc");
@@ -757,7 +763,7 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial FROM CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
+                string st = "SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial FROM CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
                 objListCab = PriEngine.Engine.Consulta(st);
 
                 if (objListCab.NoFim())
@@ -768,6 +774,7 @@ namespace PharmaCRM.Lib_Primavera
                 dv = new Model.Encomenda();
                 dv.idInterno = objListCab.Valor("id");
                 dv.Entidade = objListCab.Valor("Entidade");
+                dv.idOportunidade = objListCab.Valor("IdOportunidade");
                 dv.NumeroDocumento = objListCab.Valor("NumDoc");
                 dv.Data = objListCab.Valor("Data");
                 dv.TotalMercadoria = objListCab.Valor("TotalMerc");
@@ -825,12 +832,13 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Responsavel='" + idVendedor + "'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Responsavel='" + idVendedor + "'");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
                     dv.idInterno = objListCab.Valor("id");
                     dv.Entidade = objListCab.Valor("Entidade");
+                    dv.idOportunidade = objListCab.Valor("IdOportunidade");
                     dv.NumeroDocumento = objListCab.Valor("NumDoc");
                     dv.Data = objListCab.Valor("Data");
                     dv.TotalMercadoria = objListCab.Valor("TotalMerc");
@@ -883,12 +891,13 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Entidade='" + idCliente + "'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Entidade='" + idCliente + "'");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
                     dv.idInterno = objListCab.Valor("id");
                     dv.Entidade = objListCab.Valor("Entidade");
+                    dv.idOportunidade = objListCab.Valor("IdOportunidade");
                     dv.NumeroDocumento = objListCab.Valor("NumDoc");
                     dv.Data = objListCab.Valor("Data");
                     dv.TotalMercadoria = objListCab.Valor("TotalMerc");
@@ -1291,6 +1300,7 @@ namespace PharmaCRM.Lib_Primavera
                     oportunidade.id = objList.Valor("ID");
                     oportunidade.codigo = objList.Valor("Oportunidade");
                     oportunidade.descricao = objList.Valor("Descricao");
+                    oportunidade.numEncomenda = objList.Valor("NumEncomenda");
                     oportunidade.entidade = objList.Valor("Entidade");
                     oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
                     oportunidade.dataCriacao = objList.Valor("DataCriacao");
@@ -1315,6 +1325,7 @@ namespace PharmaCRM.Lib_Primavera
                 oportunidade.id = objList.Valor("ID");
                 oportunidade.codigo = objList.Valor("Oportunidade");
                 oportunidade.descricao = objList.Valor("Descricao");
+                oportunidade.numEncomenda = objList.Valor("NumEncomenda");
                 oportunidade.entidade = objList.Valor("Entidade");
                 oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
                 oportunidade.dataCriacao = objList.Valor("DataCriacao");
@@ -1374,6 +1385,7 @@ namespace PharmaCRM.Lib_Primavera
                     oportunidadeVenda.set_ID(Guid.NewGuid().ToString());
                     oportunidadeVenda.set_Oportunidade(oportunidade.codigo);
                     oportunidadeVenda.set_Descricao(oportunidade.descricao);
+                    oportunidadeVenda.set_NumEncomenda(oportunidade.numEncomenda);
                     oportunidadeVenda.set_Entidade(oportunidade.entidade);
                     oportunidadeVenda.set_TipoEntidade(oportunidade.tipoEntidade);
                     oportunidadeVenda.set_DataCriacao(DateTime.Now);
@@ -1457,6 +1469,7 @@ namespace PharmaCRM.Lib_Primavera
                         objOportunidade.set_ID(oportunidade.id);
                         objOportunidade.set_Oportunidade(oportunidade.codigo);
                         objOportunidade.set_Descricao(oportunidade.descricao);
+                        objOportunidade.set_NumEncomenda(oportunidade.numEncomenda);
                         objOportunidade.set_Entidade(oportunidade.entidade);
                         objOportunidade.set_TipoEntidade(oportunidade.tipoEntidade);
                         objOportunidade.set_DataCriacao(DateTime.Now);
@@ -1502,6 +1515,7 @@ namespace PharmaCRM.Lib_Primavera
                     oportunidade.id = objList.Valor("ID");
                     oportunidade.codigo = objList.Valor("Oportunidade");
                     oportunidade.descricao = objList.Valor("Descricao");
+                    oportunidade.numEncomenda = objList.Valor("NumEncomenda");
                     oportunidade.entidade = objList.Valor("Entidade");
                     oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
                     oportunidade.dataCriacao = objList.Valor("DataCriacao");
