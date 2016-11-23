@@ -60,8 +60,15 @@ export default {
   },
   methods:{
     createSalesOrder: function(e){
-      const encomenda={Data:this.encomenda.data,Entidade:this.selected,Filial:"000",LinhasDocumento:this.artigos,Serie:this.encomenda.serie,idResponsavel:"1"}
-      console.log(encomenda);
+      const encomenda =
+      {
+        Data:this.encomenda.data,
+        Entidade:this.selected,
+        Filial:"000",
+        LinhasDocumento:this.artigos,
+        Serie:this.encomenda.serie,
+        idResponsavel:"1"
+      }
       this.$http.post('http://localhost:49559/api/encomendas/',encomenda)
         .then((response)=>{
           console.log(response);
