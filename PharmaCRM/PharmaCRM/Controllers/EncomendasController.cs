@@ -36,7 +36,6 @@ namespace PharmaCRM.Controllers
         {
             "Entidade": "MICROAVI",
             "Data": "2016-10-07T00:00:00",
-            "TotalMercadoria": 1926,
             "idResponsavel": "2",
             "LinhasDocumento": [
                 {
@@ -56,9 +55,9 @@ namespace PharmaCRM.Controllers
             return editaCriaEncomenda(encomenda);
         }
 
+        // PUT: api/Encomendas/5
         [Route("api/encomendas/{id}")]
         [HttpPut]
-        // PUT: api/Encomendas/5
         public HttpResponseMessage Put(int id, [FromBody]Lib_Primavera.Model.Encomenda encomenda)
         {
             return editaCriaEncomenda(encomenda);
@@ -72,7 +71,7 @@ namespace PharmaCRM.Controllers
             if (erro.Erro == 0)
             {
                 var response = Request.CreateResponse(HttpStatusCode.Created, encomenda.idInterno);
-                return Request.CreateResponse(HttpStatusCode.Created, encomenda); ;
+                return Request.CreateResponse(HttpStatusCode.Created, encomenda);
             }
             else
             {
@@ -83,11 +82,16 @@ namespace PharmaCRM.Controllers
         // DELETE: api/Encomendas/5
         [Route("api/encomendas/{numDoc}")]
         [HttpDelete]
-        public void Delete(int numDoc)
+        public HttpResponseMessage Delete(int numDoc)
         {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
-            //Lib_Primavera.PriIntegration.DeleteEncomenda(numDoc);
+            Lib_Primavera.Model.RespostaErro erro = Lib_Primavera.PriIntegration.AnulaEncomenda(numDoc);
+
+            if (erro.Erro != 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
     }
 }

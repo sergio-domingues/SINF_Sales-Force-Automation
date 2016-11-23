@@ -476,7 +476,6 @@ namespace PharmaCRM.Lib_Primavera
                 return null;
 
             }
-
         }
 
         public static Lib_Primavera.Model.ArtigoResumo GetArtigoResumo(string codArtigo)
@@ -641,6 +640,13 @@ namespace PharmaCRM.Lib_Primavera
                     myEnc.set_Responsavel(dv.idResponsavel);
                     myEnc.set_Filial("000");
 
+                    if (dv.NumeroDocumento != -1)
+                    {
+                        // EDIÇÃO
+                        myEnc.set_NumDoc(dv.NumeroDocumento);
+                        myEnc.set_ID(dv.idInterno);
+                    }
+
                     // Linhas do documento para a lista de linhas
                     List<Model.LinhaEncomenda> lstlindv = dv.LinhasDocumento;
                     PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
@@ -700,6 +706,9 @@ namespace PharmaCRM.Lib_Primavera
                     dv.Serie = objListCab.Valor("Serie");
                     dv.idResponsavel = objListCab.Valor("Responsavel");
                     dv.Filial = objListCab.Valor("Filial");
+
+                    dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
+
                     listlindv = new List<Model.LinhaEncomenda>();
 
                     if (incluirLinhas)
@@ -765,6 +774,9 @@ namespace PharmaCRM.Lib_Primavera
                 dv.Serie = objListCab.Valor("Serie");
                 dv.idResponsavel = objListCab.Valor("Responsavel");
                 dv.Filial = objListCab.Valor("Filial");
+
+                dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
+
                 objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
                     + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
@@ -825,6 +837,9 @@ namespace PharmaCRM.Lib_Primavera
                     dv.Serie = objListCab.Valor("Serie");
                     dv.idResponsavel = objListCab.Valor("Responsavel");
                     dv.Filial = objListCab.Valor("Filial");
+
+                    dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
+
                     listlindv = new List<Model.LinhaEncomenda>();
 
                     objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
@@ -880,6 +895,9 @@ namespace PharmaCRM.Lib_Primavera
                     dv.Serie = objListCab.Valor("Serie");
                     dv.idResponsavel = objListCab.Valor("Responsavel");
                     dv.Filial = objListCab.Valor("Filial");
+
+                    dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
+
                     listlindv = new List<Model.LinhaEncomenda>();
 
                     objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
@@ -911,75 +929,9 @@ namespace PharmaCRM.Lib_Primavera
             return listdv;
         }
 
-        public static List<Model.Atividade> GetAtividadesCliente(string idCliente)
+        public static Lib_Primavera.Model.RespostaErro AnulaEncomenda(int numDoc)
         {
-            Model.Atividade atividade = new Model.Atividade();
-            List<Model.Atividade> atividades = new List<Model.Atividade>();
-
-            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
-            {
-                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT * FROM Tarefas WHERE TipoEntidadePrincipal = 'C' AND EntidadePrincipal = '" + idCliente + "'");
-                while (!objListCab.NoFim())
-                {
-                    atividade = new Model.Atividade()
-                    {
-                        id = objListCab.Valor("Id"),
-                        idTipoAtividade = objListCab.Valor("IdTipoActividade"),
-                        estado = objListCab.Valor("Estado"),
-                        descricao = objListCab.Valor("Descricao"),
-                        resumo = objListCab.Valor("Resumo"),
-                        dataInicio = objListCab.Valor("DataInicio"),
-                        dataFim = objListCab.Valor("DataFim"),
-                        local = objListCab.Valor("LocalRealizacao"),
-                        tipoEntidadePrincipal = objListCab.Valor("TipoEntidadePrincipal"),
-                        vendedor = objListCab.Valor("ResponsavelPor"),
-                        idContactoPrincipal = objListCab.Valor("IdContactoPrincipal"),
-                        idCabecalhoOportunidadeVenda = objListCab.Valor("IdCabecOVenda"),
-                    };
-
-                    atividades.Add(atividade);
-                    objListCab.Seguinte();
-                }
-                return atividades;
-            }
-            else
-                return null;
-        }
-
-        public static List<Model.Oportunidade> GetOportunidadesCliente(string idCliente)
-        {
-            StdBELista objList;
-            List<Model.Oportunidade> listLeads = new List<Model.Oportunidade>();
-
-            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
-            {
-                objList = PriEngine.Engine.Consulta("SELECT * FROM CabecOportunidadesVenda WHERE TipoEntidade = 'C' AND Entidade = '" + idCliente + "'");
-
-                while (!objList.NoFim())
-                {
-                    Model.Oportunidade oportunidade = new Model.Oportunidade();
-                    oportunidade.id = objList.Valor("ID");
-                    oportunidade.codigo = objList.Valor("Oportunidade");
-                    oportunidade.descricao = objList.Valor("Descricao");
-                    oportunidade.entidade = objList.Valor("Entidade");
-                    oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
-                    oportunidade.dataCriacao = objList.Valor("DataCriacao");
-                    oportunidade.dataExpiracao = objList.Valor("DataExpiracao");
-                    oportunidade.vendedor = objList.Valor("Vendedor");
-                    oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
-                    listLeads.Add(oportunidade);
-                    objList.Seguinte();
-                }
-                return listLeads;
-            }
-            else
-                return null;
-        }
-
-        public static Lib_Primavera.Model.RespostaErro DeleteEncomenda(int numDoc)
-        {
-            // TOOD
-            /*Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             try
             {
                 Model.Encomenda enc = GetEncomenda(numDoc, false);
@@ -1002,11 +954,7 @@ namespace PharmaCRM.Lib_Primavera
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;
                 return erro;
-            }*/
-            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
-            erro.Erro = 1;
-            erro.Descricao = "Método não implementado (issue #15).";
-            return erro;
+        }
         }
 
         #endregion Encomenda
@@ -1033,6 +981,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.local = objList.Valor("LocalRealizacao");
                     atividade.vendedor = objList.Valor("Utilizador");
                     atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
+                    atividade.entidadePrincipal = objList.Valor("EntidadePrincipal");
                     atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
                     listAtividades.Add(atividade);
@@ -1072,6 +1021,7 @@ namespace PharmaCRM.Lib_Primavera
                     model_actividade.local = atividade.get_LocalRealizacao();
                     model_actividade.vendedor = atividade.get_CriadoPor();
                     model_actividade.tipoEntidadePrincipal = atividade.get_TipoEntidadePrincipal();
+                    model_actividade.entidadePrincipal = atividade.get_EntidadePrincipal();
                     model_actividade.idContactoPrincipal = atividade.get_IDContactoPrincipal();
                     model_actividade.idCabecalhoOportunidadeVenda = atividade.get_IDCabecOVenda();
 
@@ -1107,6 +1057,7 @@ namespace PharmaCRM.Lib_Primavera
                     objAtividade.set_LocalRealizacao(actividade.local);
                     objAtividade.set_CriadoPor(actividade.vendedor);
                     objAtividade.set_TipoEntidadePrincipal(actividade.tipoEntidadePrincipal);
+                    objAtividade.set_EntidadePrincipal(actividade.entidadePrincipal);
                     objAtividade.set_IDContactoPrincipal(actividade.idContactoPrincipal);
                     objAtividade.set_IDCabecOVenda(actividade.idCabecalhoOportunidadeVenda);
 
@@ -1163,6 +1114,7 @@ namespace PharmaCRM.Lib_Primavera
                         objAtividade.set_LocalRealizacao(atividade.local);
                         objAtividade.set_CriadoPor(atividade.vendedor);
                         objAtividade.set_TipoEntidadePrincipal(atividade.tipoEntidadePrincipal);
+                        objAtividade.set_EntidadePrincipal(atividade.entidadePrincipal);
                         objAtividade.set_IDContactoPrincipal(atividade.idContactoPrincipal);
                         objAtividade.set_IDCabecOVenda(atividade.idCabecalhoOportunidadeVenda);
 
@@ -1284,6 +1236,42 @@ namespace PharmaCRM.Lib_Primavera
             return null;
         }
 
+        public static List<Model.Atividade> GetAtividadesCliente(string idCliente)
+        {
+            Model.Atividade atividade = new Model.Atividade();
+            List<Model.Atividade> atividades = new List<Model.Atividade>();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StdBELista objListCab = PriEngine.Engine.Consulta("SELECT * FROM Tarefas WHERE TipoEntidadePrincipal = 'C' AND EntidadePrincipal = '" + idCliente + "'");
+                while (!objListCab.NoFim())
+                {
+                    atividade = new Model.Atividade()
+                    {
+                        id = objListCab.Valor("Id"),
+                        idTipoAtividade = objListCab.Valor("IdTipoActividade"),
+                        estado = objListCab.Valor("Estado"),
+                        descricao = objListCab.Valor("Descricao"),
+                        resumo = objListCab.Valor("Resumo"),
+                        dataInicio = objListCab.Valor("DataInicio"),
+                        dataFim = objListCab.Valor("DataFim"),
+                        local = objListCab.Valor("LocalRealizacao"),
+                        tipoEntidadePrincipal = objListCab.Valor("TipoEntidadePrincipal"),
+                        entidadePrincipal = objListCab.Valor("EntidadePrincipal"),
+                        vendedor = objListCab.Valor("ResponsavelPor"),
+                        idContactoPrincipal = objListCab.Valor("IdContactoPrincipal"),
+                        idCabecalhoOportunidadeVenda = objListCab.Valor("IdCabecOVenda"),
+                    };
+
+                    atividades.Add(atividade);
+                    objListCab.Seguinte();
+                }
+                return atividades;
+            }
+            else
+            return null;
+        }
+
         #endregion Actividade;   // -----------------------------  END   Actividade    -----------------------
 
         #region Oportunidade
@@ -1363,6 +1351,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.local = objList.Valor("LocalRealizacao");
                     atividade.vendedor = objList.Valor("Utilizador");
                     atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
+                    atividade.entidadePrincipal = objList.Valor("EntidadePrincipal");
                     atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
                     listAtividades.Add(atividade);
@@ -1496,6 +1485,253 @@ namespace PharmaCRM.Lib_Primavera
                 respostaErro.Descricao = ex.Message;
                 return respostaErro;
             }
+        }
+
+        public static List<Model.Oportunidade> GetOportunidadesCliente(string idCliente)
+        {
+            StdBELista objList;
+            List<Model.Oportunidade> listLeads = new List<Model.Oportunidade>();
+
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objList = PriEngine.Engine.Consulta("SELECT * FROM CabecOportunidadesVenda WHERE TipoEntidade = 'C' AND Entidade = '" + idCliente + "'");
+
+                while (!objList.NoFim())
+                {
+                    Model.Oportunidade oportunidade = new Model.Oportunidade();
+                    oportunidade.id = objList.Valor("ID");
+                    oportunidade.codigo = objList.Valor("Oportunidade");
+                    oportunidade.descricao = objList.Valor("Descricao");
+                    oportunidade.entidade = objList.Valor("Entidade");
+                    oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
+                    oportunidade.dataCriacao = objList.Valor("DataCriacao");
+                    oportunidade.dataExpiracao = objList.Valor("DataExpiracao");
+                    oportunidade.vendedor = objList.Valor("Vendedor");
+                    oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
+                    listLeads.Add(oportunidade);
+                    objList.Seguinte();
+                }
+                return listLeads;
+            }
+            else
+                return null;
+        }
+
+        #endregion
+
+        #region Objetivo
+
+        public static List<Model.Objetivo> GetObjetivos()
+        {
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StdBELista objListCab;
+                Model.Objetivo objetivo;
+                List<Model.Objetivo> listObjs = new List<Model.Objetivo>();
+
+                objListCab = PriEngine.Engine.Consulta("SELECT idVendedor, valor FROM ObjetivoVendedor");
+                while (!objListCab.NoFim())
+                {
+                    objetivo = new Model.Objetivo();
+                    objetivo.CodigoVendedor = objListCab.Valor("idVendedor");
+                    objetivo.Valor = objListCab.Valor("valor");
+
+                    listObjs.Add(objetivo);
+
+                    objListCab.Seguinte();
+                }
+
+                return listObjs;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static Model.Objetivo GetObjetivoVendedor(string idVendedor)
+        {
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StdBELista objListCab;
+
+                objListCab = PriEngine.Engine.Consulta("SELECT idVendedor, valor FROM ObjetivoVendedor WHERE idVendedor='" + idVendedor + "'");
+
+                if(objListCab.NoFim())
+                {
+                    return null;
+                }
+
+                Model.Objetivo objetivo = new Model.Objetivo();
+                objetivo.CodigoVendedor = objListCab.Valor("idVendedor");
+                objetivo.Valor = objListCab.Valor("valor");
+
+                return objetivo;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region KPI
+
+        public static List<Model.KPI> getKPIs()
+        {
+            return null;
+        }
+
+        public static Model.KPI getVendedorKPIs(string idVendedor)
+        {
+            if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                Model.KPI kpis = new Model.KPI();
+                kpis.IdVendedor = idVendedor;
+
+                // Encomendas último mês
+                StdBELista encomendas1M = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
+                    + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -1, GETDATE()) AND Responsavel=" + idVendedor + "");
+
+                // Encomendas dos 2 meses anteriores ao último
+                StdBELista encomendas2_3M = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
+                    + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -3, GETDATE()) AND [Data] < DATEADD(MONTH, -1, GETDATE()) "
+                    + "AND Responsavel='" + idVendedor + "'");
+
+                Dictionary<string, double> produtosQuantidadeVendida = new Dictionary<string, double>();
+                Dictionary<string, double> clientesValorComprado = new Dictionary<string, double>();
+
+                while (!encomendas1M.NoFim())
+                {
+                    string docID = encomendas1M.Valor("id");
+                    string cliente = encomendas1M.Valor("Entidade");
+
+                    kpis.NumTotalVendas++;
+
+                    if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
+                    {
+                        kpis.NumVendasCompletas++;
+
+                        StdBELista linhasDoc = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Quantidade, PrecoLiquido "
+                            + "FROM LinhasDoc WHERE IdCabecDoc='" + docID + "' ORDER BY NumLinha");
+
+                        double precoEncomenda = 0;
+
+                        while (!linhasDoc.NoFim())
+                        {
+                            string artigo = linhasDoc.Valor("Artigo");
+                            double quantidade = linhasDoc.Valor("Quantidade");
+                            double preco = linhasDoc.Valor("PrecoLiquido");
+
+                            precoEncomenda += preco;
+
+                            double qtd;
+                            if (produtosQuantidadeVendida.TryGetValue(artigo, out qtd))
+                            {
+                                produtosQuantidadeVendida[artigo] = qtd + quantidade;
+                            }
+                            else
+                            {
+                                produtosQuantidadeVendida.Add(artigo, quantidade);
+                            }
+
+                            kpis.ValorTotalVendas += preco;
+
+                            linhasDoc.Seguinte();
+                        }
+
+                        double valorCliente;
+                        if (clientesValorComprado.TryGetValue(cliente, out valorCliente))
+                        {
+                            clientesValorComprado[cliente] = valorCliente + precoEncomenda;
+                        }
+                        else
+                        {
+                            clientesValorComprado.Add(cliente, precoEncomenda);
+                        }
+                    }
+
+                    encomendas1M.Seguinte();
+                }
+
+                while (!encomendas2_3M.NoFim())
+                {
+                    string docID = encomendas2_3M.Valor("id");
+                    string cliente = encomendas2_3M.Valor("Entidade");
+
+                    if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
+                    {
+                        StdBELista linhasDoc = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Quantidade, PrecoLiquido "
+                            + "FROM LinhasDoc WHERE IdCabecDoc='" + docID + "' ORDER BY NumLinha");
+
+                        double precoEncomenda = 0;
+
+                        while (!linhasDoc.NoFim())
+                        {
+                            string artigo = linhasDoc.Valor("Artigo");
+                            double quantidade = linhasDoc.Valor("Quantidade");
+                            double preco = linhasDoc.Valor("PrecoLiquido");
+
+                            precoEncomenda += preco;
+
+                            double qtd;
+                            if (produtosQuantidadeVendida.TryGetValue(artigo, out qtd))
+                            {
+                                produtosQuantidadeVendida[artigo] = qtd + quantidade;
+                            }
+                            else
+                            {
+                                produtosQuantidadeVendida.Add(artigo, quantidade);
+                            }
+
+                            linhasDoc.Seguinte();
+                        }
+
+                        double valorCliente;
+                        if (clientesValorComprado.TryGetValue(cliente, out valorCliente))
+                        {
+                            clientesValorComprado[cliente] = valorCliente + precoEncomenda;
+                        }
+                        else
+                        {
+                            clientesValorComprado.Add(cliente, precoEncomenda);
+                        }
+                    }
+
+                    encomendas2_3M.Seguinte();
+                }
+
+                kpis.ProdutosMaisVendidos = produtosQuantidadeVendida.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
+                kpis.NumClientesAtivos = clientesValorComprado.Count();
+                kpis.MelhoresClientes = clientesValorComprado.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
+
+                kpis.NovasOportunidades = KPI_getVendedorOportunidades(true, idVendedor);
+                kpis.NumOportunidadesPendentes = KPI_getVendedorOportunidades(false, idVendedor);
+
+                return kpis;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private static int KPI_getVendedorOportunidades(bool recentes, string idVendedor)
+        {
+            string dataRestricao;
+            if (recentes)
+            {
+                dataRestricao = " AND DataCriacao >= DATEADD(MONTH, -1, GETDATE())";
+            }
+            else
+            {
+                dataRestricao = " AND DataCriacao >= DATEADD(MONTH, -3, GETDATE())";
+            }
+
+            StdBELista oportunidadesLista = PriEngine.Engine.Consulta("SELECT ID FROM CabecOportunidadesVenda WHERE Vendedor='"
+                    + idVendedor + "' AND DataExpiracao < CURRENT_TIMESTAMP" + dataRestricao);
+            return oportunidadesLista.NumLinhas();
         }
 
         #endregion
