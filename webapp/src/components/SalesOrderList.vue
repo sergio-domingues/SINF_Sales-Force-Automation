@@ -4,7 +4,7 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Encomendas <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-activity-modal" aria-hidden="true"></i></h1>
+				<h1 class="page-header">Lista de Encomendas <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-salesorder-modal" aria-hidden="true"></i></h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -27,10 +27,10 @@
 									<td>{{encomenda.Data}}</td>
 									<td><router-link :to="'/customers/'+encomenda.Entidade">{{encomenda.Entidade}}</router-link></td>
 									<td>{{encomenda.TotalMercadoria}} €</td>
-									<td>
-										<router-link to="">
-											<i v-on:click="deleteOportunity(oportunidade.id)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+									<td><router-link to="">
+											<i v-on:click="anularEncomenda(encomenda.NumeroDocumento)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
 										</router-link>
+										</td>
 									</tbody>
 								</table>
 							</div>
@@ -39,21 +39,41 @@
 
 				</div>
 				<!--/.row-->
-
+				<create-salesorder-modal></create-salesorder-modal>
 			</div>
 		</template>
 
 		<script>
+		import CreateSalesorderModal from './modal/SalesOrder.vue'
+
+		function findById(array,id,idProp){
+			for(var i=0; i<array.length; i++){
+				if(array[i][idProp]===id){
+					return i;
+				}
+			}
+			return null;
+		}
+
 		export default {
 			name: 'SalesOrderList',
 			data () {
 				return {encomendas:[]}
 			},
+			components:{CreateSalesorderModal},
 			mounted: function(){
 				this.$http.get('http://localhost:49559/api/encomendas/')
 				.then((response)=>{
 					this.encomendas=response.body;
 				});
+			},
+			methods:{
+				anularEncomenda:function(encomenda){
+					this.$http.delete('http://localhost:49559/api/encomendas/'+encomenda.NumeroDocumento)
+					.then((response)=>{
+						this.encomendas.splice(findById(this.encomendas,'NumeroDocumento',encomenda.NumeroDocumento),1)
+					});
+				}
 			}
 		}
 		</script>
