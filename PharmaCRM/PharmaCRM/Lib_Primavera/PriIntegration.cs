@@ -637,6 +637,7 @@ namespace PharmaCRM.Lib_Primavera
                     // Atribui valores ao cabecalho do doc
                     myEnc.set_DataDoc(dv.Data);
                     myEnc.set_Entidade(dv.Entidade);
+                    myEnc.set_IdOportunidade(dv.idOportunidade);
                     myEnc.set_Serie("2016");
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
@@ -697,12 +698,13 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL'");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
                     dv.idInterno = objListCab.Valor("id");
                     dv.Entidade = objListCab.Valor("Entidade");
+                    dv.idOportunidade = objListCab.Valor("IdOportunidade");
                     dv.NumeroDocumento = objListCab.Valor("NumDoc");
                     dv.Data = objListCab.Valor("Data");
                     dv.TotalMercadoria = objListCab.Valor("TotalMerc");
@@ -760,7 +762,7 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial FROM CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
+                string st = "SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial FROM CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
                 objListCab = PriEngine.Engine.Consulta(st);
 
                 if (objListCab.NoFim())
@@ -771,6 +773,7 @@ namespace PharmaCRM.Lib_Primavera
                 dv = new Model.Encomenda();
                 dv.idInterno = objListCab.Valor("id");
                 dv.Entidade = objListCab.Valor("Entidade");
+                dv.idOportunidade = objListCab.Valor("IdOportunidade");
                 dv.NumeroDocumento = objListCab.Valor("NumDoc");
                 dv.Data = objListCab.Valor("Data");
                 dv.TotalMercadoria = objListCab.Valor("TotalMerc");
@@ -828,12 +831,13 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Responsavel='" + idVendedor + "'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Responsavel='" + idVendedor + "'");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
                     dv.idInterno = objListCab.Valor("id");
                     dv.Entidade = objListCab.Valor("Entidade");
+                    dv.idOportunidade = objListCab.Valor("IdOportunidade");
                     dv.NumeroDocumento = objListCab.Valor("NumDoc");
                     dv.Data = objListCab.Valor("Data");
                     dv.TotalMercadoria = objListCab.Valor("TotalMerc");
@@ -886,12 +890,13 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Entidade='" + idCliente + "'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Entidade='" + idCliente + "'");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
                     dv.idInterno = objListCab.Valor("id");
                     dv.Entidade = objListCab.Valor("Entidade");
+                    dv.idOportunidade = objListCab.Valor("IdOportunidade");
                     dv.NumeroDocumento = objListCab.Valor("NumDoc");
                     dv.Data = objListCab.Valor("Data");
                     dv.TotalMercadoria = objListCab.Valor("TotalMerc");
