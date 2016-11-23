@@ -167,8 +167,11 @@ namespace PharmaCRM.Lib_Primavera
                     Model.Oportunidade oportunidade = new Model.Oportunidade();
                     oportunidade.id = objList.Valor("ID");
                     oportunidade.descricao = objList.Valor("Descricao");
+                    oportunidade.numEncomenda = objList.Valor("NumEncomenda");
                     oportunidade.entidade = objList.Valor("Entidade");
                     oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
+                    oportunidade.dataCriacao = objList.Valor("DataCriacao");
+                    oportunidade.dataExpiracao = objList.Valor("DataExpiracao");
                     oportunidade.vendedor = objList.Valor("Vendedor");
                     oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
                     oportunidades.Add(oportunidade);
@@ -1291,6 +1294,7 @@ namespace PharmaCRM.Lib_Primavera
                     oportunidade.id = objList.Valor("ID");
                     oportunidade.codigo = objList.Valor("Oportunidade");
                     oportunidade.descricao = objList.Valor("Descricao");
+                    oportunidade.numEncomenda = objList.Valor("NumEncomenda");
                     oportunidade.entidade = objList.Valor("Entidade");
                     oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
                     oportunidade.dataCriacao = objList.Valor("DataCriacao");
@@ -1315,6 +1319,7 @@ namespace PharmaCRM.Lib_Primavera
                 oportunidade.id = objList.Valor("ID");
                 oportunidade.codigo = objList.Valor("Oportunidade");
                 oportunidade.descricao = objList.Valor("Descricao");
+                oportunidade.numEncomenda = objList.Valor("NumEncomenda");
                 oportunidade.entidade = objList.Valor("Entidade");
                 oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
                 oportunidade.dataCriacao = objList.Valor("DataCriacao");
@@ -1374,6 +1379,7 @@ namespace PharmaCRM.Lib_Primavera
                     oportunidadeVenda.set_ID(Guid.NewGuid().ToString());
                     oportunidadeVenda.set_Oportunidade(oportunidade.codigo);
                     oportunidadeVenda.set_Descricao(oportunidade.descricao);
+                    oportunidadeVenda.set_NumEncomenda(oportunidade.numEncomenda);
                     oportunidadeVenda.set_Entidade(oportunidade.entidade);
                     oportunidadeVenda.set_TipoEntidade(oportunidade.tipoEntidade);
                     oportunidadeVenda.set_DataCriacao(DateTime.Now);
@@ -1457,6 +1463,7 @@ namespace PharmaCRM.Lib_Primavera
                         objOportunidade.set_ID(oportunidade.id);
                         objOportunidade.set_Oportunidade(oportunidade.codigo);
                         objOportunidade.set_Descricao(oportunidade.descricao);
+                        objOportunidade.set_NumEncomenda(oportunidade.numEncomenda);
                         objOportunidade.set_Entidade(oportunidade.entidade);
                         objOportunidade.set_TipoEntidade(oportunidade.tipoEntidade);
                         objOportunidade.set_DataCriacao(DateTime.Now);
@@ -1502,6 +1509,7 @@ namespace PharmaCRM.Lib_Primavera
                     oportunidade.id = objList.Valor("ID");
                     oportunidade.codigo = objList.Valor("Oportunidade");
                     oportunidade.descricao = objList.Valor("Descricao");
+                    oportunidade.numEncomenda = objList.Valor("NumEncomenda");
                     oportunidade.entidade = objList.Valor("Entidade");
                     oportunidade.tipoEntidade = objList.Valor("TipoEntidade");
                     oportunidade.dataCriacao = objList.Valor("DataCriacao");
