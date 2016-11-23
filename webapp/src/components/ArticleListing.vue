@@ -22,7 +22,7 @@
                 <td>{{artigo.Quantidade}}</td>
                 <td>{{artigo.TotalLiquido}}</td>
                 <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
-                  <i class="fa fa-lg fa-plus clicable" aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="reduzirQuantidade(artigo)"></i>
+                  <i class="fa fa-lg fa-minus clicable" aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
                 </td>
               </tr>
             </tbody>
@@ -77,7 +77,7 @@ function findById(array,id,idProp){
 			return i;
 		}
 	}
-	return null;
+	return -1;
 }
 
 export default {
@@ -106,18 +106,19 @@ export default {
       return false;
     },
     adicionarArtigo : function(artigo) {
-      const indexArtigo=findById(this.artigos,'CodigoArtigo',artigo.Codigo);
-      if(indexArtigo){
+      const indexArtigo=findById(this.artigos,artigo.Codigo,'CodigoArtigo');
+      if(indexArtigo>=0){
           this.artigos[indexArtigo].Quantidade++;
       }else{
         this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo});
       }
     },
     removerArtigo: function(artigo){
-      this.artigos.splice(findById(this.artigos,'CodigoArtigo',artigo.Codigo),1);
+      this.artigos.splice(findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo'),1);
     },
     diminuirQuantidade:function(artigo){
-      const indexArtigo=findById(this.artigos,'CodigoArtigo',artigo.Codigo);
+      const indexArtigo=findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo');
+      console.log(indexArtigo)
       this.artigos[indexArtigo].Quantidade--;
     }
   }
