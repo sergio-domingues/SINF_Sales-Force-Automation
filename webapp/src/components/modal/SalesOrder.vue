@@ -1,5 +1,4 @@
 <template>
-
   <div class="modal fade" id="create-salesorder-modal" tabindex="-1" role="dialog" aria-labelledby="CreateLeadModal">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -22,6 +21,14 @@
             <select class="form-control" id="cliente" v-model="selected">
               <option v-for="option in options" v-bind:value="option.value">
                 {{ option.text }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="oportunidade">Oportunidade</label>
+            <select class="form-control" id="oportunidade" v-model="selectedOportunidade">
+              <option v-for="option in optionsOportunidades" v-bind:value="option.id">
+                {{ option.value }}
               </option>
             </select>
           </div>
@@ -48,7 +55,7 @@ function deleteById(array,id,idProp){
 export default {
   name: 'CreateSalesOrderModal',
   data () {
-    return {encomenda:{descricao:'',data:Date.now(),serie:''},options:[],selected:'',artigos:[]}
+    return {encomenda:{descricao:'',data:Date.now(),serie:''},options:[],selected:'',artigos:[],optionsOportunidades:[],selectedOportunidade:''}
   },
   components:{ArticleListing},
   mounted: function(){
@@ -59,11 +66,25 @@ export default {
       }
     })
 
+    this.$http.get('http://localhost:49559/api/oportunidades/')
+    .then((response)=>{
+      for(var oportunidade of response.body){
+        this.optionsOportunidades.push({id:oportunidade.id,value:oportunidade.descricao});
+      }
+    })
+
   },
   methods:{
     createSalesOrder: function(e){
-      const encomenda={Data:this.encomenda.data,Entidade:this.selected,Filial:"000",LinhasDocumento:this.artigos,Serie:this.encomenda.serie,idResponsavel:"1"}
-      console.log(encomenda);
+      const encomenda =
+      {
+        Data:this.encomenda.data,
+        Entidade:this.selected,
+        Filial:"000",
+        LinhasDocumento:this.artigos,
+        Serie:this.encomenda.serie,
+        idResponsavel:this.$root.vendendor.id
+      }
       this.$http.post('http://localhost:49559/api/encomendas/',encomenda)
         .then((response)=>{
           console.log(response);

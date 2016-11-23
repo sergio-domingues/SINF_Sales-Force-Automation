@@ -62,10 +62,17 @@
 			},
 			components:{CreateSalesorderModal},
 			mounted: function(){
+				if(this.$root.adminMode){
 				this.$http.get('http://localhost:49559/api/encomendas/')
 				.then((response)=>{
 					this.encomendas=response.body;
 				});
+			}else{
+				this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/encomendas')
+				.then((response)=>{
+					this.encomendas=response.body;
+				});
+			}
 			},
 			methods:{
 				anularEncomenda:function(encomenda){

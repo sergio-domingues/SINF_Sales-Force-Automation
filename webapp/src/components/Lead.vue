@@ -72,7 +72,7 @@
 						<ul class="todo-list">
               <router-link tag="li" :to="'/activities/'+atividade.id" class="todo-list-item clicable" v-for="atividade in atividades">
                 <div class="checkbox">
-                  {{atividade.descricao}}
+                  {{atividade.resumo}}
                 </div>
                 <div class="pull-right">
                   <i class="fa fa-check"v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
@@ -102,7 +102,7 @@ export default {
 			oportunidadeTemp=JSON.parse(JSON.stringify(this.oportunidade));
 		  if(this.editing){
 				const URL = encodeURI('http://localhost:49559/api/oportunidades/'+this.oportunidade.id);
-				this.$http.put('http://localhost:49559/api/oportunidades/'+this.oportunidade.id,this.oportunidade)
+				this.$http.put(URL,this.oportunidade)
 				.then((response)=>{
 					this.editing = !this.editing;
 					this.oportunidade=response.body;

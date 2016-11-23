@@ -9,7 +9,7 @@
     </div>
     <!--/.row-->
 
-    <div class="row">
+    <div v-show="!this.$root.adminMode" class="row">
       <div class="col-lg-4">
         <div class="panel panel-default">
           <div class="panel-heading">Atividades</div>
@@ -18,7 +18,7 @@
             <ul class="todo-list">
               <router-link tag="li" :to="'/activities/'+atividade.id" class="todo-list-item clicable" v-for="atividade in atividades">
                 <div class="checkbox">
-                  {{atividade.descricao}}
+                  {{atividade.resumo}}
                 </div>
                 <div class="pull-right">
                   <i class="fa fa-check"v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div v-show="!this.$root.adminMode" class="row">
       <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">Calendário</div>
@@ -109,25 +109,31 @@ export default {
     return {atividades:[],oportunidades:[],loading:{atividades:true,oportunidades:true,kpi:true},kpi:{}}
   },
   mounted:function(){
-    this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15')
-    .then((response)=>{
-      this.atividades=response.body;
-      this.loading.atividades=false;
-    });
+    if(this.$root.adminMode){
+      /*this.$http.get('http://localhost:49559/api/kpi/').then((response)=>{
+        this.kpi=response.body;
+        this.loading.kpi=false;
+      });*/
+    }else{
+      this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15')
+      .then((response)=>{
+        this.atividades=response.body;
+        this.loading.atividades=false;
+      });
 
-    this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/oportunidades/')
-    .then((response)=>{
-      this.loading.oportunidades=false;
-      this.oportunidades=response.body;
-    });
+      this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/oportunidades/')
+      .then((response)=>{
+        this.loading.oportunidades=false;
+        this.oportunidades=response.body;
+      });
 
-    this.$http.get('http://localhost:49559/api/kpi/'+this.$root.vendedor.id)
-    .then((response)=>{
-      this.loading.kpi=false;
-      this.kpi=response.body;
-    });
-    initMap();
-
+      this.$http.get('http://localhost:49559/api/kpi/'+this.$root.vendedor.id)
+      .then((response)=>{
+        this.loading.kpi=false;
+        this.kpi=response.body;
+      });
+      initMap();
+    }
   }
 }
 </script>

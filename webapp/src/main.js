@@ -19,6 +19,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 const store={
+  adminMode: false,
   vendedor:{id:'1',name:''},
 }
 

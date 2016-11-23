@@ -63,11 +63,19 @@
 		},
 		components:{CreateModal},
 		mounted: function(){
+		if(this.$root.adminMode){
 			this.$http.get('http://localhost:49559/api/oportunidades/')
 			.then((response)=>{
 				this.loading=false;
 				this.oportunidades=response.body;
 			});
+		}else{
+			this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/oportunidades')
+			.then((response)=>{
+				this.loading=false;
+				this.oportunidades=response.body;
+			});
+		}
 		},
 		methods:{
 			deleteOportunity:function(id){
