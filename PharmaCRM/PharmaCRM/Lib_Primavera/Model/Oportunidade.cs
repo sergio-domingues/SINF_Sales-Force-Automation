@@ -27,6 +27,12 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
+        public int numEncomenda
+        {
+            get;
+            set;
+        }
+
         public string entidade
         {
             get;
