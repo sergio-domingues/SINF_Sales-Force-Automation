@@ -90,6 +90,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.id = objList.Valor("Id");
                     atividade.idTipoAtividade = objList.Valor("IdTipoActividade");
                     atividade.estado = objList.Valor("Estado");
+                    atividade.resumo = objList.Valor("Resumo");
                     atividade.descricao = objList.Valor("Descricao");
                     atividade.dataInicio = objList.Valor("DataInicio");
                     atividade.dataFim = objList.Valor("DataFim");
