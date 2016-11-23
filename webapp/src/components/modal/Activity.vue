@@ -42,14 +42,13 @@
             </div>
 
             <div class="form-group">
-              <label for="Tipo">Oportunidades</label>
+              <label for="Tipo">Oportunidade</label>
               <select class="form-control" id="estado" v-model="atividade.idCabecalhoOportunidadeVenda">
                 <option v-for="oportunidade in oportunidades" v-bind:value="oportunidade.id">
                   {{ oportunidade.descricao }}
                 </option>
               </select>
             </div>
-
 
             <div class="form-group">
               <label for="datetime">Data de Inicio</label>
@@ -68,6 +67,7 @@
               <textarea class="form-control" rows="3"  v-model="atividade.descricao">
               </textarea>
             </div>
+
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Confirmar</button>
             </div>
@@ -110,7 +110,6 @@
         .then((response)=>{
           console.log(this.atividade)
           console.log(response);
-
         },(err)=>{
           console.log(err)
         });

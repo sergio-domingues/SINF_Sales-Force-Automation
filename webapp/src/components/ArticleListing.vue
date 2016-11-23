@@ -95,7 +95,6 @@ export default {
   watch: {
     pesquisa: function () {
       this.pesquisaReturnada = this.listaArtigos.filter(this.findArtigo);
-      console.log(this.pesquisaReturnada);
     }
   },
   methods: {
@@ -118,7 +117,6 @@ export default {
     },
     diminuirQuantidade:function(artigo){
       const indexArtigo=findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo');
-      console.log(indexArtigo)
       this.artigos[indexArtigo].Quantidade--;
     }
   }
