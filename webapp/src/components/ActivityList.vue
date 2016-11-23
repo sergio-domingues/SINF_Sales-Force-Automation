@@ -74,26 +74,26 @@ export default {
 		.then((tiposAtividades)=>{
 			this.tipos = tiposAtividades.body;
 
-if(this.$root.adminMode){
-	this.$http.get('http://localhost:49559/api/atividades/')
-	.then((response)=>{
-		for(let i = 0; i < response.body.length; i++){
-			this.atividades=response.body;
-			var index =	findById(this.tipos, this.atividades[i].idTipoAtividade,'id')
-			this.atividades[i].tipoAtividade = this.tipos[index].descricao;
-		}
-	});
-}
-else{
-			this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15')
-			.then((response)=>{
-				for(let i = 0; i < response.body.length; i++){
-					this.atividades=response.body;
-					var index =	findById(this.tipos, this.atividades[i].idTipoAtividade,'id')
-					this.atividades[i].tipoAtividade = this.tipos[index].descricao;
-				}
-			});
-		}
+			if(this.$root.adminMode){
+				this.$http.get('http://localhost:49559/api/atividades/')
+				.then((response)=>{
+					for(let i = 0; i < response.body.length; i++){
+						this.atividades=response.body;
+						var index =	findById(this.tipos, this.atividades[i].idTipoAtividade,'id')
+						this.atividades[i].tipoAtividade = this.tipos[index].descricao;
+					}
+				});
+			}
+			else{
+				this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2017-11-15')
+				.then((response)=>{
+					for(let i = 0; i < response.body.length; i++){
+						this.atividades=response.body;
+						var index =	findById(this.tipos, this.atividades[i].idTipoAtividade,'id')
+						this.atividades[i].tipoAtividade = this.tipos[index].descricao;
+					}
+				});
+			}
 		});
 	},
 	methods: {

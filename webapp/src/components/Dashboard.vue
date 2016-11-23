@@ -110,10 +110,10 @@ export default {
   },
   mounted:function(){
     if(this.$root.adminMode){
-      this.$http.get('http://localhost:49559/api/kpi/').then((response)=>{
+      /*this.$http.get('http://localhost:49559/api/kpi/').then((response)=>{
         this.kpi=response.body;
         this.loading.kpi=false;
-      });
+      });*/
     }else{
       this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15')
       .then((response)=>{
