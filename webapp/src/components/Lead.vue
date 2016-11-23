@@ -102,7 +102,7 @@ export default {
 			oportunidadeTemp=JSON.parse(JSON.stringify(this.oportunidade));
 		  if(this.editing){
 				const URL = encodeURI('http://localhost:49559/api/oportunidades/'+this.oportunidade.id);
-				this.$http.put('http://localhost:49559/api/oportunidades/'+this.oportunidade.id,this.oportunidade)
+				this.$http.put(URL,this.oportunidade)
 				.then((response)=>{
 					this.editing = !this.editing;
 					this.oportunidade=response.body;

@@ -11,10 +11,10 @@
             <a class="navbar-brand" href="#"><span>Pharma</span>CRM</a>
             <ul class="user-menu">
               <li class="dropdown pull-right">
-                <a v-if="!this.$root.type" href="#" class="dropdown-toggle" data-toggle="dropdown">{{name}}<span class="caret"></span></a>
+                <a v-if="!this.$root.adminMode" href="#" class="dropdown-toggle" data-toggle="dropdown">{{name}}<span class="caret"></span></a>
                 <a v-else href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li v-if="!this.$root.type"><a href="#" v-on:click="adminModeOn()">Admin Mode ON</a></li>
+                  <li v-if="!this.$root.adminMode"><a href="#" v-on:click="adminModeOn()">Admin Mode ON</a></li>
                   <li v-else><a href="#" v-on:click="adminModeOn()">Admin Mode OFF</a></li>
                   <li><a href="#">Logout</a></li>
                 </ul>
@@ -43,8 +43,7 @@
     },
     methods:{
       adminModeOn: function() {
-        this.$root.type = !this.$root.type;
-        console.log(this.$root.type)
+        this.$root.adminMode = !this.$root.adminMode;
       }
     }
 }

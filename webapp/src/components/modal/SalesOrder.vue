@@ -1,5 +1,4 @@
 <template>
-
   <div class="modal fade" id="create-salesorder-modal" tabindex="-1" role="dialog" aria-labelledby="CreateLeadModal">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -58,7 +57,6 @@ export default {
         this.options.push({text:cliente.Nome,value:cliente.CodCliente});
       }
     })
-
   },
   methods:{
     createSalesOrder: function(e){
