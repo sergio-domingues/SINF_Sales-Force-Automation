@@ -9,7 +9,7 @@
     </div>
     <!--/.row-->
 
-    <div class="row">
+    <div v-show="!this.$root.type" class="row">
       <div class="col-lg-4">
         <div class="panel panel-default">
           <div class="panel-heading">Atividades</div>
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div v-show="!this.$root.type" class="row">
       <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">Calendário</div>
