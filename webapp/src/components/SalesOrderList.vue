@@ -4,7 +4,7 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Encomendas <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-activity-modal" aria-hidden="true"></i></h1>
+				<h1 class="page-header">Lista de Encomendas <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-salesorder-modal" aria-hidden="true"></i></h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -39,16 +39,18 @@
 
 				</div>
 				<!--/.row-->
-
+				<create-salesorder-modal></create-salesorder-modal>
 			</div>
 		</template>
 
 		<script>
+import CreateSalesorderModal from './modal/SalesOrder.vue'
 		export default {
 			name: 'SalesOrderList',
 			data () {
 				return {encomendas:[]}
 			},
+			components:{CreateSalesorderModal},
 			mounted: function(){
 				this.$http.get('http://localhost:49559/api/encomendas/')
 				.then((response)=>{

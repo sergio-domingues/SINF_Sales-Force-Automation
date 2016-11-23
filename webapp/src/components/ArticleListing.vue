@@ -91,15 +91,14 @@ export default {
     }
   },
   methods: {
-
     findArtigo : function(artigo){
-    		if(artigo['Descricao'].includes(this.pesquisa)){
-    			return true;
-    	}
-    	return false;
+      if(artigo['Descricao'].includes(this.pesquisa)){
+        return true;
+      }
+      return false;
     },
     adicionarArtigo : function(artigo) {
-        this.listaArtigos.push(artigo);
+      this.listaArtigos.push(artigo);
       //TODO: fazer pedido put
     }
   }
