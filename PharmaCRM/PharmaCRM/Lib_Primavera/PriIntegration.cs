@@ -1592,9 +1592,9 @@ namespace PharmaCRM.Lib_Primavera
 
         #region KPI
 
-        public static List<Model.KPI> getKPIs()
+        public static Model.KPI getKPIs()
         {
-            return null;
+            return getVendedorKPIs(null);
         }
 
         public static Model.KPI getVendedorKPIs(string idVendedor)
@@ -1603,15 +1603,23 @@ namespace PharmaCRM.Lib_Primavera
             {
                 Model.KPI kpis = new Model.KPI();
                 kpis.IdVendedor = idVendedor;
+                string restricaoVendedor;
+                if (idVendedor == null)
+                {
+                    restricaoVendedor = "";
+                }
+                else
+                {
+                    restricaoVendedor = " AND Responsavel='" + idVendedor + "'";
+                }
 
                 // Encomendas último mês
                 StdBELista encomendas1M = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
-                    + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -1, GETDATE()) AND Responsavel=" + idVendedor + "");
+                    + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -1, GETDATE())" + restricaoVendedor);
 
                 // Encomendas dos 2 meses anteriores ao último
                 StdBELista encomendas2_3M = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
-                    + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -3, GETDATE()) AND [Data] < DATEADD(MONTH, -1, GETDATE()) "
-                    + "AND Responsavel='" + idVendedor + "'");
+                    + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -3, GETDATE()) AND [Data] < DATEADD(MONTH, -1, GETDATE())" + restricaoVendedor);
 
                 Dictionary<string, double> produtosQuantidadeVendida = new Dictionary<string, double>();
                 Dictionary<string, double> clientesValorComprado = new Dictionary<string, double>();
@@ -1743,8 +1751,18 @@ namespace PharmaCRM.Lib_Primavera
                 dataRestricao = " AND DataCriacao >= DATEADD(MONTH, -3, GETDATE())";
             }
 
-            StdBELista oportunidadesLista = PriEngine.Engine.Consulta("SELECT ID FROM CabecOportunidadesVenda WHERE Vendedor='"
-                    + idVendedor + "' AND DataExpiracao < CURRENT_TIMESTAMP" + dataRestricao);
+            string restricaoVendedor;
+            if (idVendedor == null)
+            {
+                restricaoVendedor = "";
+            }
+            else
+            {
+                restricaoVendedor = " Vendedor='" + idVendedor + "' AND";
+            }
+
+            StdBELista oportunidadesLista = PriEngine.Engine.Consulta("SELECT ID FROM CabecOportunidadesVenda WHERE" +
+                restricaoVendedor + " DataExpiracao < CURRENT_TIMESTAMP" + dataRestricao);
             return oportunidadesLista.NumLinhas();
         }
 
