@@ -33,6 +33,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">Rota </div>
           <div class="panel-body">
+            <div id="map"></div>
           </div>
         </div>
       </div>
@@ -73,30 +74,67 @@
       </div>
     </div>
 
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.NumTotalVendas}}</div>
+            <div class="text-muted">Número Vendas</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+function initMap() {
+  var uluru = {lat:40.6570816, lng:-7.9137786};
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 10,
+    center: uluru
+  });
+  var marker = new google.maps.Marker({
+    position: uluru,
+    map: map
+  });
+}
+
 export default {
   name: 'dashboard',
   data () {
-    return {atividades:[],oportunidades:[],loading:{atividades:true,oportunidades:true}}
+    return {atividades:[],oportunidades:[],loading:{atividades:true,oportunidades:true,kpi:true},kpi:{}}
   },
   mounted:function(){
     this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15')
-		.then((response)=>{
-			this.atividades=response.body;
+    .then((response)=>{
+      this.atividades=response.body;
       this.loading.atividades=false;
-		});
+    });
 
     this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/oportunidades/')
-		.then((response)=>{
+    .then((response)=>{
       this.loading.oportunidades=false;
-			this.oportunidades=response.body;
-		});
+      this.oportunidades=response.body;
+    });
 
-
+    this.$http.get('http://localhost:49559/api/kpi/'+this.$root.vendedor.id)
+    .then((response)=>{
+      this.loading.kpi=false;
+      this.kpi=response.body;
+    });
+    initMap();
 
   }
 }
 </script>
+
+<style>
+#map {
+  height: 250px;
+  width: 100%;
+}
+</style>
