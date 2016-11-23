@@ -27,10 +27,10 @@
 									<td>{{encomenda.Data}}</td>
 									<td><router-link :to="'/customers/'+encomenda.Entidade">{{encomenda.Entidade}}</router-link></td>
 									<td>{{encomenda.TotalMercadoria}} €</td>
-									<td>
-										<router-link to="">
-											<i v-on:click="deleteOportunity(oportunidade.id)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+									<td><router-link to="">
+											<i v-on:click="anularEncomenda(encomenda.NumeroDocumento)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
 										</router-link>
+										</td>
 									</tbody>
 								</table>
 							</div>
@@ -44,7 +44,17 @@
 		</template>
 
 		<script>
-import CreateSalesorderModal from './modal/SalesOrder.vue'
+		import CreateSalesorderModal from './modal/SalesOrder.vue'
+
+		function findById(array,id,idProp){
+			for(var i=0; i<array.length; i++){
+				if(array[i][idProp]===id){
+					return i;
+				}
+			}
+			return null;
+		}
+
 		export default {
 			name: 'SalesOrderList',
 			data () {
@@ -56,6 +66,14 @@ import CreateSalesorderModal from './modal/SalesOrder.vue'
 				.then((response)=>{
 					this.encomendas=response.body;
 				});
+			},
+			methods:{
+				anularEncomenda:function(encomenda){
+					this.$http.delete('http://localhost:49559/api/encomendas/'+encomenda.NumeroDocumento)
+					.then((response)=>{
+						this.encomendas.splice(findById(this.encomendas,'NumeroDocumento',encomenda.NumeroDocumento),1)
+					});
+				}
 			}
 		}
 		</script>

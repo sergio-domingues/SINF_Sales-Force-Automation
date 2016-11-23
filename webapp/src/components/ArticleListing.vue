@@ -21,7 +21,9 @@
                 <td>{{artigo.DescricaoArtigo}}</td>
                 <td>{{artigo.Quantidade}}</td>
                 <td>{{artigo.TotalLiquido}}</td>
-                <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true"></i></td>
+                <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
+                  <i class="fa fa-lg fa-plus clicable" aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="reduzirQuantidade(artigo)"></i>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -56,7 +58,7 @@
                     <td>{{artigo.Descricao}}</td>
                     <td v-if="artigo.StockAtual <= 0">indisponivel</td>
                     <td v-else>{{artigo.StockAtual}} </td>
-                    <td><i class="fa fa-lg fa-plus clicable" v-model="adicionarArtigo(artigo)" aria-hidden="true"></i></td>
+                    <td><i class="fa fa-lg fa-plus clicable" aria-hidden="true" v-show="artigo.StockAtual >0" v-on:click="adicionarArtigo(artigo)"></i></td>
                   </tr>
                 </tbody>
               </table>
@@ -66,11 +68,17 @@
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-
+function findById(array,id,idProp){
+	for(var i=0; i<array.length; i++){
+		if(array[i][idProp]===id){
+			return i;
+		}
+	}
+	return null;
+}
 
 export default {
   name: 'ArticleListing',
@@ -98,8 +106,19 @@ export default {
       return false;
     },
     adicionarArtigo : function(artigo) {
-      this.listaArtigos.push(artigo);
-      //TODO: fazer pedido put
+      const indexArtigo=findById(this.artigos,'CodigoArtigo',artigo.Codigo);
+      if(indexArtigo){
+          this.artigos[indexArtigo].Quantidade++;
+      }else{
+        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo});
+      }
+    },
+    removerArtigo: function(artigo){
+      this.artigos.splice(findById(this.artigos,'CodigoArtigo',artigo.Codigo),1);
+    },
+    diminuirQuantidade:function(artigo){
+      const indexArtigo=findById(this.artigos,'CodigoArtigo',artigo.Codigo);
+      this.artigos[indexArtigo].Quantidade--;
     }
   }
 }
