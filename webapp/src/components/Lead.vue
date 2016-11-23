@@ -72,7 +72,7 @@
 						<ul class="todo-list">
               <router-link tag="li" :to="'/activities/'+atividade.id" class="todo-list-item clicable" v-for="atividade in atividades">
                 <div class="checkbox">
-                  {{atividade.descricao}}
+                  {{atividade.resumo}}
                 </div>
                 <div class="pull-right">
                   <i class="fa fa-check"v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>

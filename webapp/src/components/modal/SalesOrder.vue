@@ -24,6 +24,14 @@
               </option>
             </select>
           </div>
+          <div class="form-group">
+            <label for="oportunidade">Oportunidade</label>
+            <select class="form-control" id="oportunidade" v-model="selectedOportunidade">
+              <option v-for="option in optionsOportunidades" v-bind:value="option.id">
+                {{ option.value }}
+              </option>
+            </select>
+          </div>
           <article-listing :artigos="artigos"></article-listing>
           <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Confirmar</button>
@@ -47,7 +55,7 @@ function deleteById(array,id,idProp){
 export default {
   name: 'CreateSalesOrderModal',
   data () {
-    return {encomenda:{descricao:'',data:Date.now(),serie:''},options:[],selected:'',artigos:[]}
+    return {encomenda:{descricao:'',data:Date.now(),serie:''},options:[],selected:'',artigos:[],optionsOportunidades:[],selectedOportunidade:''}
   },
   components:{ArticleListing},
   mounted: function(){
@@ -57,6 +65,14 @@ export default {
         this.options.push({text:cliente.Nome,value:cliente.CodCliente});
       }
     })
+
+    this.$http.get('http://localhost:49559/api/oportunidades/')
+    .then((response)=>{
+      for(var oportunidade of response.body){
+        this.optionsOportunidades.push({id:oportunidade.id,value:oportunidade.descricao});
+      }
+    })
+
   },
   methods:{
     createSalesOrder: function(e){
@@ -67,7 +83,7 @@ export default {
         Filial:"000",
         LinhasDocumento:this.artigos,
         Serie:this.encomenda.serie,
-        idResponsavel:"1"
+        idResponsavel:this.$root.vendendor.id
       }
       this.$http.post('http://localhost:49559/api/encomendas/',encomenda)
         .then((response)=>{

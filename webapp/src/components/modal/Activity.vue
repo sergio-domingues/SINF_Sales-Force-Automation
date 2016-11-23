@@ -82,7 +82,7 @@
   export default {
     name: 'CreateActivityModal',
     data () {
-      return {atividade: {}, options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}], tipos: [],clientes: [], oportunidades: []}
+      return {atividade: {vendedor:this.$root.vendedor.id}, options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}], tipos: [],clientes: [], oportunidades: []}
     },
     mounted: function(){
       this.$http.get('http://localhost:49559/api/atividades/tipos')

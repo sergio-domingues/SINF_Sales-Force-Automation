@@ -42,6 +42,13 @@
               </div>
 
               <div class="form-group">
+                <label for="oportunidade" class="col-sm-2 control-label">Oportunidade</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="oportunidade" placeholder="Oportunidade" v-model="encomenda.oportunidade" :disabled="!editing">
+                </div>
+              </div>
+
+              <div class="form-group">
                 <label for="serie" class="col-sm-2 control-label">Série</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="serie" placeholder="Série" v-model="encomenda.Serie" :disabled="!editing">
@@ -90,6 +97,15 @@ export default {
     .then((response)=>{
       this.encomenda=response.body;
       this.artigos=response.body.LinhasDocumento
+      if(this.encomenda.idOportunidade){
+        this.$http.get('http://localhost:49559/api/oportunidade/'+encomenda.idOportunidade)
+        .then((response)=>{
+          this.encomenda.oportunidade=response.body.descricao;
+        })
+      }else{
+        this.encomenda.oportunidade="Não existe oportunidade de venda associada"
+      }
+
     });
   }
 }
