@@ -74,13 +74,6 @@
 							</div>
 
 							<div class="form-group">
-								<label for="tipoEntidade" class="col-sm-2 control-label">Tipo de Entidade</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" id="tipoEntidade" placeholder="Tipo de Entidade" v-model="atividade.tipoEntidadePrincipal" :value="atividade.local" :disabled="!editing">
-								</div>
-							</div>
-
-							<div class="form-group">
 								<label for="descricao" class="col-sm-2 control-label">Descrição</label>
 								<div class="col-sm-10">
 									<textarea class="form-control" rows="3"  v-model="atividade.descricao" :disabled="!editing">
