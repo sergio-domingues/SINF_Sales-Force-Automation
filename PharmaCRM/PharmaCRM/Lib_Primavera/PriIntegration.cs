@@ -982,7 +982,7 @@ namespace PharmaCRM.Lib_Primavera
                 }
                 else
                 {
-                    PriEngine.Engine.Comercial.Vendas.AnulaDocumento("000", "ECL", "2016", enc.NumeroDocumento);
+                    PriEngine.Engine.Comercial.Vendas.AnulaDocumento(enc.Filial, "ECL", enc.Serie, enc.NumeroDocumento);
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
                     return erro;
