@@ -639,11 +639,11 @@ namespace PharmaCRM.Lib_Primavera
                     myEnc.set_DataDoc(dv.Data);
                     myEnc.set_Entidade(dv.Entidade);
                     myEnc.set_IdOportunidade(dv.idOportunidade);
-                    myEnc.set_Serie("2016");
+                    myEnc.set_Serie(dv.Serie);
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
                     myEnc.set_Responsavel(dv.idResponsavel);
-                    myEnc.set_Filial("000");
+                    myEnc.set_Filial(dv.Filial);
 
                     if (dv.NumeroDocumento != -1)
                     {
@@ -662,7 +662,7 @@ namespace PharmaCRM.Lib_Primavera
 
                     PriEngine.Engine.IniciaTransaccao();
                     PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc, "PharmaCRM");
-                    PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
+                    //PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
                     PriEngine.Engine.TerminaTransaccao();
 
                     dv.idInterno = myEnc.get_ID();
@@ -700,7 +700,7 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' ORDER BY Data DESC");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
@@ -722,7 +722,7 @@ namespace PharmaCRM.Lib_Primavera
                     {
                         double totalMerc = 0;
 
-                        objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
+                        objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
                             + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                         while (!objListLin.NoFim())
@@ -736,7 +736,8 @@ namespace PharmaCRM.Lib_Primavera
                             lindv.Desconto = objListLin.Valor("Desconto1");
                             lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                             lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                            lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                            lindv.TotalLiquido = objListLin.Valor("PCM");
+                            totalMerc += lindv.TotalLiquido;
 
                             listlindv.Add(lindv);
                             objListLin.Seguinte();
@@ -793,7 +794,7 @@ namespace PharmaCRM.Lib_Primavera
 
                 dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
 
-                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
+                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
                     + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                 if (incluirLinhas)
@@ -812,8 +813,9 @@ namespace PharmaCRM.Lib_Primavera
                         lindv.Desconto = objListLin.Valor("Desconto1");
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                        lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                        lindv.TotalLiquido = objListLin.Valor("PCM");
                         listlindv.Add(lindv);
+                        totalMerc += lindv.TotalLiquido;
                         objListLin.Seguinte();
                     }
 
@@ -848,7 +850,8 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Responsavel='" + idVendedor + "'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Responsavel='"
+                    + idVendedor + "' ORDER BY Data DESC");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
@@ -866,7 +869,7 @@ namespace PharmaCRM.Lib_Primavera
 
                     listlindv = new List<Model.LinhaEncomenda>();
 
-                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
+                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
                         + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                     double totalMerc = 0;
@@ -881,7 +884,8 @@ namespace PharmaCRM.Lib_Primavera
                         lindv.Desconto = objListLin.Valor("Desconto1");
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                        lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                        lindv.TotalLiquido = objListLin.Valor("PCM");
+                        totalMerc += lindv.TotalLiquido;
 
                         listlindv.Add(lindv);
                         objListLin.Seguinte();
@@ -914,7 +918,8 @@ namespace PharmaCRM.Lib_Primavera
 
             if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Entidade='" + idCliente + "'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Entidade='"
+                    + idCliente + "' ORDER BY Data DESC");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.Encomenda();
@@ -932,7 +937,7 @@ namespace PharmaCRM.Lib_Primavera
 
                     listlindv = new List<Model.LinhaEncomenda>();
 
-                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
+                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
                         + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                     double totalMerc = 0;
@@ -947,7 +952,8 @@ namespace PharmaCRM.Lib_Primavera
                         lindv.Desconto = objListLin.Valor("Desconto1");
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                        lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                        lindv.TotalLiquido = objListLin.Valor("PCM");
+                        totalMerc += lindv.TotalLiquido;
 
                         listlindv.Add(lindv);
                         objListLin.Seguinte();
@@ -1021,7 +1027,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.vendedor = objList.Valor("Utilizador");
                     atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
                     atividade.entidadePrincipal = objList.Valor("EntidadePrincipal");
-                    atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
+                    //atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
                     listAtividades.Add(atividade);
                     objList.Seguinte();
@@ -1058,10 +1064,10 @@ namespace PharmaCRM.Lib_Primavera
                     model_actividade.dataInicio = atividade.get_DataInicio();
                     model_actividade.dataFim = atividade.get_DataFim();
                     model_actividade.local = atividade.get_LocalRealizacao();
-                    model_actividade.vendedor = atividade.get_CriadoPor();
+                    model_actividade.vendedor = atividade.get_Utilizador();
                     model_actividade.tipoEntidadePrincipal = atividade.get_TipoEntidadePrincipal();
                     model_actividade.entidadePrincipal = atividade.get_EntidadePrincipal();
-                    model_actividade.idContactoPrincipal = atividade.get_IDContactoPrincipal();
+                    //model_actividade.idContactoPrincipal = atividade.get_IDContactoPrincipal();
                     model_actividade.idCabecalhoOportunidadeVenda = atividade.get_IDCabecOVenda();
 
                     return model_actividade;
@@ -1097,7 +1103,7 @@ namespace PharmaCRM.Lib_Primavera
                     objAtividade.set_CriadoPor(actividade.vendedor);
                     objAtividade.set_TipoEntidadePrincipal(actividade.tipoEntidadePrincipal);
                     objAtividade.set_EntidadePrincipal(actividade.entidadePrincipal);
-                    objAtividade.set_IDContactoPrincipal(actividade.idContactoPrincipal);
+                    //objAtividade.set_IDContactoPrincipal(actividade.idContactoPrincipal);
                     objAtividade.set_IDCabecOVenda(actividade.idCabecalhoOportunidadeVenda);
 
                     PriEngine.Engine.CRM.Actividades.Actualiza(objAtividade);
@@ -1154,7 +1160,7 @@ namespace PharmaCRM.Lib_Primavera
                         objAtividade.set_CriadoPor(atividade.vendedor);
                         objAtividade.set_TipoEntidadePrincipal(atividade.tipoEntidadePrincipal);
                         objAtividade.set_EntidadePrincipal(atividade.entidadePrincipal);
-                        objAtividade.set_IDContactoPrincipal(atividade.idContactoPrincipal);
+                        //objAtividade.set_IDContactoPrincipal(atividade.idContactoPrincipal);
                         objAtividade.set_IDCabecOVenda(atividade.idCabecalhoOportunidadeVenda);
 
                         PriEngine.Engine.CRM.Actividades.Actualiza(objAtividade);
@@ -1298,7 +1304,7 @@ namespace PharmaCRM.Lib_Primavera
                         tipoEntidadePrincipal = objListCab.Valor("TipoEntidadePrincipal"),
                         entidadePrincipal = objListCab.Valor("EntidadePrincipal"),
                         vendedor = objListCab.Valor("ResponsavelPor"),
-                        idContactoPrincipal = objListCab.Valor("IdContactoPrincipal"),
+                        //idContactoPrincipal = objListCab.Valor("IdContactoPrincipal"),
                         idCabecalhoOportunidadeVenda = objListCab.Valor("IdCabecOVenda"),
                     };
 
@@ -1393,7 +1399,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.vendedor = objList.Valor("Utilizador");
                     atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
                     atividade.entidadePrincipal = objList.Valor("EntidadePrincipal");
-                    atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
+                    //atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
                     listAtividades.Add(atividade);
                     objList.Seguinte();
