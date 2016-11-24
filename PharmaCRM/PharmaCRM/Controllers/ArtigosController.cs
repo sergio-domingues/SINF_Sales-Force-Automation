@@ -9,8 +9,12 @@ namespace PharmaCRM.Controllers
 {
     public class ArtigosController : ApiController
     {
-        // GET api/artigos
-        // Lista com detalhes completos dos Artigos
+        /**
+        * GET api/artigos
+        * Lista com detalhes completos dos Artigos
+        *
+        * @return Uma lista de artigos.
+        */
         [Route("api/artigos")]
         [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Artigo> Get()
@@ -18,8 +22,13 @@ namespace PharmaCRM.Controllers
             return Lib_Primavera.PriIntegration.ListaArtigos();
         }
 
-        // GET api/artigos/5
-        // Detalhes completos do Artigo
+        /**
+        * GET api/artigos/<id>
+        * Detalhes completos do Artigo
+        *
+        * @param id ID do artigo
+        * @return O Artigo corresponde ou código 404 em caso de erro.
+        */
         [Route("api/artigos/{id}")]
         [HttpGet]
         public Lib_Primavera.Model.Artigo Get(string id)
@@ -34,6 +43,12 @@ namespace PharmaCRM.Controllers
         }
 
         // POST api/artigos
+        /**
+        * POST api/artigos
+        * Cria um novo artigo.
+        *
+        * @return
+        */
         [Route("api/artigos")]
         [HttpPost]
         public void Post([FromBody]string value)
@@ -42,7 +57,13 @@ namespace PharmaCRM.Controllers
             throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
         }
 
-        // PUT api/artigos/5
+        /**
+        * PUT api/artigos/<id>
+        * Edita um artigo.
+        *
+        * @param id ID do artigo a editar.
+        * @return
+        */
         [Route("api/artigos/{id}")]
         [HttpPut]
         public void Put(string id, [FromBody]string value)
@@ -51,7 +72,13 @@ namespace PharmaCRM.Controllers
             throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
         }
 
-        // DELETE api/artigos/5
+        /**
+        * DELETE api/artigos/<id>
+        * Elimina um artigo
+        *
+        * @param id ID do artigo a eliminar.
+        * @return
+        */
         [Route("api/artigos/{id}")]
         [HttpDelete]
         public void Delete(string id)
