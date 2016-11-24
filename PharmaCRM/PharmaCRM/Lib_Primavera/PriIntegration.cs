@@ -662,6 +662,7 @@ namespace PharmaCRM.Lib_Primavera
 
                     PriEngine.Engine.IniciaTransaccao();
                     PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc, "PharmaCRM");
+                    PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
                     PriEngine.Engine.TerminaTransaccao();
 
                     dv.idInterno = myEnc.get_ID();
@@ -719,6 +720,8 @@ namespace PharmaCRM.Lib_Primavera
 
                     if (incluirLinhas)
                     {
+                        double totalMerc = 0;
+
                         objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
                             + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
@@ -740,6 +743,12 @@ namespace PharmaCRM.Lib_Primavera
                         }
 
                         dv.LinhasDocumento = listlindv;
+
+                        if(dv.TotalMercadoria == 0)
+                        {
+                            // TODO apagar se "preencheDadosRelacionados" atualizar valor
+                            dv.TotalMercadoria = totalMerc;
+                        }
                     }
                     else
                     {
@@ -789,6 +798,7 @@ namespace PharmaCRM.Lib_Primavera
 
                 if (incluirLinhas)
                 {
+                    double totalMerc = 0;
                     listlindv = new List<Model.LinhaEncomenda>();
 
                     while (!objListLin.NoFim())
@@ -808,6 +818,12 @@ namespace PharmaCRM.Lib_Primavera
                     }
 
                     dv.LinhasDocumento = listlindv;
+
+                    if (dv.TotalMercadoria == 0)
+                    {
+                        // TODO apagar se "preencheDadosRelacionados" atualizar valor
+                        dv.TotalMercadoria = totalMerc;
+                    }
                 }
                 else
                 {
@@ -853,6 +869,7 @@ namespace PharmaCRM.Lib_Primavera
                     objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
                         + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
+                    double totalMerc = 0;
                     while (!objListLin.NoFim())
                     {
                         lindv = new Model.LinhaEncomenda();
@@ -871,6 +888,12 @@ namespace PharmaCRM.Lib_Primavera
                     }
 
                     dv.LinhasDocumento = listlindv;
+
+                    if (dv.TotalMercadoria == 0)
+                    {
+                        // TODO apagar se "preencheDadosRelacionados" atualizar valor
+                        dv.TotalMercadoria = totalMerc;
+                    }
 
                     listdv.Add(dv);
                     objListCab.Seguinte();
@@ -912,6 +935,7 @@ namespace PharmaCRM.Lib_Primavera
                     objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
                         + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
+                    double totalMerc = 0;
                     while (!objListLin.NoFim())
                     {
                         lindv = new Model.LinhaEncomenda();
@@ -930,6 +954,12 @@ namespace PharmaCRM.Lib_Primavera
                     }
 
                     dv.LinhasDocumento = listlindv;
+
+                    if (dv.TotalMercadoria == 0)
+                    {
+                        // TODO apagar se "preencheDadosRelacionados" atualizar valor
+                        dv.TotalMercadoria = totalMerc;
+                    }
 
                     listdv.Add(dv);
                     objListCab.Seguinte();
