@@ -63,12 +63,6 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
-        public string idContactoPrincipal
-        {
-            get;
-            set;
-        }
-
         public string idCabecalhoOportunidadeVenda
         {
             get;
