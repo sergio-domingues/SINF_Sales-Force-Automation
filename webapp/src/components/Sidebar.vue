@@ -11,7 +11,7 @@
         </router-link>
         <router-link tag="li" to="/leads"><a>Oportunidades</a></router-link>
         <router-link tag="li" to="/activities"><a>Atividades</a></router-link>
-        <router-link tag="li" to="/salesorders"><a>Encomenda</a></router-link>
+        <router-link tag="li" to="/salesorders"><a>Encomendas</a></router-link>
       </ul>
     </div>
 </template>
