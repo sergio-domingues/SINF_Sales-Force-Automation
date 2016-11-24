@@ -722,7 +722,7 @@ namespace PharmaCRM.Lib_Primavera
                     {
                         double totalMerc = 0;
 
-                        objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
+                        objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
                             + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                         while (!objListLin.NoFim())
@@ -736,7 +736,7 @@ namespace PharmaCRM.Lib_Primavera
                             lindv.Desconto = objListLin.Valor("Desconto1");
                             lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                             lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                            lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                            lindv.TotalLiquido = objListLin.Valor("PCM");
                             totalMerc += lindv.TotalLiquido;
 
                             listlindv.Add(lindv);
@@ -794,7 +794,7 @@ namespace PharmaCRM.Lib_Primavera
 
                 dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
 
-                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
+                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
                     + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                 if (incluirLinhas)
@@ -813,7 +813,7 @@ namespace PharmaCRM.Lib_Primavera
                         lindv.Desconto = objListLin.Valor("Desconto1");
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                        lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                        lindv.TotalLiquido = objListLin.Valor("PCM");
                         listlindv.Add(lindv);
                         totalMerc += lindv.TotalLiquido;
                         objListLin.Seguinte();
@@ -869,7 +869,7 @@ namespace PharmaCRM.Lib_Primavera
 
                     listlindv = new List<Model.LinhaEncomenda>();
 
-                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
+                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
                         + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                     double totalMerc = 0;
@@ -884,7 +884,7 @@ namespace PharmaCRM.Lib_Primavera
                         lindv.Desconto = objListLin.Valor("Desconto1");
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                        lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                        lindv.TotalLiquido = objListLin.Valor("PCM");
                         totalMerc += lindv.TotalLiquido;
 
                         listlindv.Add(lindv);
@@ -937,7 +937,7 @@ namespace PharmaCRM.Lib_Primavera
 
                     listlindv = new List<Model.LinhaEncomenda>();
 
-                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido "
+                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
                         + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                     double totalMerc = 0;
@@ -952,7 +952,7 @@ namespace PharmaCRM.Lib_Primavera
                         lindv.Desconto = objListLin.Valor("Desconto1");
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                        lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                        lindv.TotalLiquido = objListLin.Valor("PCM");
                         totalMerc += lindv.TotalLiquido;
 
                         listlindv.Add(lindv);
