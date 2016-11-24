@@ -29,8 +29,9 @@
 									<td><router-link :to="'/customers/'+encomenda.Entidade">{{encomenda.Entidade}}</router-link></td>
 									<td>{{encomenda.TotalMercadoria}} €</td>
 									<td><router-link to="">
-											<i v-on:click="anularEncomenda(encomenda.NumeroDocumento)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+											<i v-show="!encomenda.Anulada" v-on:click="anularEncomenda(encomenda.NumeroDocumento)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
 										</router-link>
+											<label v-show="encomenda.Anulada">ANULADA</label>
 										</td>
 									</tbody>
 								</table>
@@ -78,10 +79,10 @@
 			}
 			},
 			methods:{
-				anularEncomenda:function(encomenda){
-					this.$http.delete('http://localhost:49559/api/encomendas/'+encomenda.NumeroDocumento)
+				anularEncomenda:function(encNum){
+					this.$http.delete('http://localhost:49559/api/encomendas/'+encNum)
 					.then((response)=>{
-						this.encomendas.splice(findById(this.encomendas,'NumeroDocumento',encomenda.NumeroDocumento),1)
+						this.encomendas.splice(findById(this.encomendas,'NumeroDocumento',encNum),1)
 					});
 				}
 			}

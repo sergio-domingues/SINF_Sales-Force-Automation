@@ -20,7 +20,8 @@
                 <td>{{artigo.CodigoArtigo}}</td>
                 <td>{{artigo.DescricaoArtigo}}</td>
                 <td>{{artigo.Quantidade}}</td>
-                <td>{{artigo.TotalLiquido}}</td>
+                <td v-if="artigo.PrecoUnitario">{{artigo.PrecoUnitario*artigo.Quantidade}}</td>
+                <td v-else>{{artigo.TotalLiquido}}</td>
                 <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
                   <i class="fa fa-lg fa-minus clicable" aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
                 </td>
@@ -109,7 +110,7 @@ export default {
       if(indexArtigo>=0){
           this.artigos[indexArtigo].Quantidade++;
       }else{
-        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo});
+        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0]});
       }
     },
     removerArtigo: function(artigo){

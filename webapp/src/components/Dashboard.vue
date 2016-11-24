@@ -132,6 +132,7 @@ export default {
         this.loading.kpi=false;
         this.kpi=response.body;
       });
+      
       initMap();
     }
   }
