@@ -736,7 +736,7 @@ namespace PharmaCRM.Lib_Primavera
                             lindv.Desconto = objListLin.Valor("Desconto1");
                             lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                             lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                            lindv.TotalLiquido = objListLin.Valor("PCM");
+                            lindv.TotalLiquido = objListLin.Valor("PCM")*lindv.Quantidade;
                             totalMerc += lindv.TotalLiquido;
 
                             listlindv.Add(lindv);
@@ -813,7 +813,7 @@ namespace PharmaCRM.Lib_Primavera
                         lindv.Desconto = objListLin.Valor("Desconto1");
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                        lindv.TotalLiquido = objListLin.Valor("PCM");
+                        lindv.TotalLiquido = objListLin.Valor("PCM") * lindv.Quantidade;
                         listlindv.Add(lindv);
                         totalMerc += lindv.TotalLiquido;
                         objListLin.Seguinte();
@@ -884,7 +884,7 @@ namespace PharmaCRM.Lib_Primavera
                         lindv.Desconto = objListLin.Valor("Desconto1");
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                        lindv.TotalLiquido = objListLin.Valor("PCM");
+                        lindv.TotalLiquido = objListLin.Valor("PCM") * lindv.Quantidade;
                         totalMerc += lindv.TotalLiquido;
 
                         listlindv.Add(lindv);
@@ -952,7 +952,7 @@ namespace PharmaCRM.Lib_Primavera
                         lindv.Desconto = objListLin.Valor("Desconto1");
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                        lindv.TotalLiquido = objListLin.Valor("PCM");
+                        lindv.TotalLiquido = objListLin.Valor("PCM") * lindv.Quantidade;
                         totalMerc += lindv.TotalLiquido;
 
                         listlindv.Add(lindv);
