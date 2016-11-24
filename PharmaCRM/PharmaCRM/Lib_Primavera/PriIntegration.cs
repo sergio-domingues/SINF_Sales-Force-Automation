@@ -867,7 +867,7 @@ namespace PharmaCRM.Lib_Primavera
 
                     dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
 
-                    listlindv = new List<Model.LinhaEncomenda>();
+                    /*listlindv = new List<Model.LinhaEncomenda>();
 
                     objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
                         + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
@@ -898,7 +898,7 @@ namespace PharmaCRM.Lib_Primavera
                         // TODO apagar se "preencheDadosRelacionados" atualizar valor
                         dv.TotalMercadoria = totalMerc;
                     }
-
+                    */
                     listdv.Add(dv);
                     objListCab.Seguinte();
                 }
