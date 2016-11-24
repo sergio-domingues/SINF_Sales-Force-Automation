@@ -108,8 +108,12 @@
         this.atividade.tipoEntidadePrincipal = "C";
         this.$http.post('http://localhost:49559/api/atividades/', this.atividade)
         .then((response)=>{
-          console.log(this.atividade)
-          console.log(response);
+          if(response.status == 201){
+            $('#create-activity-modal').modal('hide');
+          }else{
+              console.log(this.atividade)
+              console.log(response);
+          }
         },(err)=>{
           console.log(err)
         });
