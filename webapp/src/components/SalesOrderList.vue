@@ -23,6 +23,7 @@
 								</tr>
 							</thead>
 							<tbody>
+								<div v-show="loading" class="spinner"></div>
 								<router-link tag="tr" class="clicable" :to="'/salesorders/'+encomenda.NumeroDocumento" v-for="encomenda in encomendas">
 									<td>{{encomenda.Data}}</td>
 									<td><router-link :to="'/customers/'+encomenda.Entidade">{{encomenda.Entidade}}</router-link></td>
@@ -58,7 +59,7 @@
 		export default {
 			name: 'SalesOrderList',
 			data () {
-				return {encomendas:[]}
+				return {encomendas:[],loading:true}
 			},
 			components:{CreateSalesorderModal},
 			mounted: function(){
@@ -66,11 +67,13 @@
 				this.$http.get('http://localhost:49559/api/encomendas/')
 				.then((response)=>{
 					this.encomendas=response.body;
+					this.loading=false;
 				});
 			}else{
 				this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/encomendas')
 				.then((response)=>{
 					this.encomendas=response.body;
+					this.loading=false;
 				});
 			}
 			},

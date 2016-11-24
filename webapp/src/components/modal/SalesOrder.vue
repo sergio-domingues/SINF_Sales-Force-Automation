@@ -10,7 +10,7 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="serie">Serie</label>
-            <input type="text" class="form-control" id="serie" v-model="encomenda.identificador" placeholder="Serie">
+            <input type="text" class="form-control" id="serie" v-model="encomenda.serie" placeholder="Serie">
           </div>
           <div class="form-group">
             <label for="date">Data da Encomenda</label>
@@ -83,7 +83,7 @@ export default {
         Filial:"000",
         LinhasDocumento:this.artigos,
         Serie:this.encomenda.serie,
-        idResponsavel:this.$root.vendendor.id
+        idResponsavel:this.$root.vendedor.id
       }
       this.$http.post('http://localhost:49559/api/encomendas/',encomenda)
         .then((response)=>{

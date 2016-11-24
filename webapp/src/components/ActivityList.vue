@@ -24,6 +24,7 @@
 								</tr>
 							</thead>
 							<tbody>
+								<div v-show="loading" class="spinner"></div>
 								<router-link tag="tr" v-for="atividade in atividades" :to="'activities/'+ encodeURIComponent(atividade.id)" class="clicable">
 									<th scope="row">{{displayDate(atividade.dataInicio)}}</th>
 									<td>{{atividade.tipoAtividade}}</td>
@@ -65,7 +66,7 @@ import CreateModal from './modal/Activity.vue'
 export default {
 	name: 'ActivityList',
 	data () {
-		return {atividades : [], tipos: []}
+		return {atividades : [], tipos: [],loading:true}
 	},
 	components:{CreateModal},
 	mounted: function(){
@@ -81,6 +82,7 @@ export default {
 						this.atividades=response.body;
 						var index =	findById(this.tipos, this.atividades[i].idTipoAtividade,'id')
 						this.atividades[i].tipoAtividade = this.tipos[index].descricao;
+						this.loading=false;
 					}
 				});
 			}
@@ -91,6 +93,7 @@ export default {
 						this.atividades=response.body;
 						var index =	findById(this.tipos, this.atividades[i].idTipoAtividade,'id')
 						this.atividades[i].tipoAtividade = this.tipos[index].descricao;
+						this.loading=false;
 					}
 				});
 			}
