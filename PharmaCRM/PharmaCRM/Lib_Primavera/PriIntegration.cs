@@ -991,7 +991,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.vendedor = objList.Valor("Utilizador");
                     atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
                     atividade.entidadePrincipal = objList.Valor("EntidadePrincipal");
-                    atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
+                    //atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
                     listAtividades.Add(atividade);
                     objList.Seguinte();
@@ -1028,10 +1028,10 @@ namespace PharmaCRM.Lib_Primavera
                     model_actividade.dataInicio = atividade.get_DataInicio();
                     model_actividade.dataFim = atividade.get_DataFim();
                     model_actividade.local = atividade.get_LocalRealizacao();
-                    model_actividade.vendedor = atividade.get_CriadoPor();
+                    model_actividade.vendedor = atividade.get_Utilizador();
                     model_actividade.tipoEntidadePrincipal = atividade.get_TipoEntidadePrincipal();
                     model_actividade.entidadePrincipal = atividade.get_EntidadePrincipal();
-                    model_actividade.idContactoPrincipal = atividade.get_IDContactoPrincipal();
+                    //model_actividade.idContactoPrincipal = atividade.get_IDContactoPrincipal();
                     model_actividade.idCabecalhoOportunidadeVenda = atividade.get_IDCabecOVenda();
 
                     return model_actividade;
@@ -1067,7 +1067,7 @@ namespace PharmaCRM.Lib_Primavera
                     objAtividade.set_CriadoPor(actividade.vendedor);
                     objAtividade.set_TipoEntidadePrincipal(actividade.tipoEntidadePrincipal);
                     objAtividade.set_EntidadePrincipal(actividade.entidadePrincipal);
-                    objAtividade.set_IDContactoPrincipal(actividade.idContactoPrincipal);
+                    //objAtividade.set_IDContactoPrincipal(actividade.idContactoPrincipal);
                     objAtividade.set_IDCabecOVenda(actividade.idCabecalhoOportunidadeVenda);
 
                     PriEngine.Engine.CRM.Actividades.Actualiza(objAtividade);
@@ -1124,7 +1124,7 @@ namespace PharmaCRM.Lib_Primavera
                         objAtividade.set_CriadoPor(atividade.vendedor);
                         objAtividade.set_TipoEntidadePrincipal(atividade.tipoEntidadePrincipal);
                         objAtividade.set_EntidadePrincipal(atividade.entidadePrincipal);
-                        objAtividade.set_IDContactoPrincipal(atividade.idContactoPrincipal);
+                        //objAtividade.set_IDContactoPrincipal(atividade.idContactoPrincipal);
                         objAtividade.set_IDCabecOVenda(atividade.idCabecalhoOportunidadeVenda);
 
                         PriEngine.Engine.CRM.Actividades.Actualiza(objAtividade);
@@ -1268,7 +1268,7 @@ namespace PharmaCRM.Lib_Primavera
                         tipoEntidadePrincipal = objListCab.Valor("TipoEntidadePrincipal"),
                         entidadePrincipal = objListCab.Valor("EntidadePrincipal"),
                         vendedor = objListCab.Valor("ResponsavelPor"),
-                        idContactoPrincipal = objListCab.Valor("IdContactoPrincipal"),
+                        //idContactoPrincipal = objListCab.Valor("IdContactoPrincipal"),
                         idCabecalhoOportunidadeVenda = objListCab.Valor("IdCabecOVenda"),
                     };
 
@@ -1363,7 +1363,7 @@ namespace PharmaCRM.Lib_Primavera
                     atividade.vendedor = objList.Valor("Utilizador");
                     atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
                     atividade.entidadePrincipal = objList.Valor("EntidadePrincipal");
-                    atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
+                    //atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
                     atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
                     listAtividades.Add(atividade);
                     objList.Seguinte();
