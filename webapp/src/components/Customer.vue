@@ -137,6 +137,8 @@
 	</template>
 
 	<script>
+	import config from '../assets/config.json'
+
 	var clienteTemp;
 	export default {
 		name: 'Customer',
@@ -147,7 +149,7 @@
 			toggleEditing: function(){
 				clienteTemp=Object.assign({}, this.cliente);
 				if(this.editing){
-					this.$http.put('http://localhost:49559/api/clientes/'+this.cliente.CodCliente,this.cliente)
+					this.$http.put(config.host+'/api/clientes/'+this.cliente.CodCliente,this.cliente)
 					.then((response)=>{
 						this.editing = !this.editing;
 						this.oportunidade=response.body;
@@ -164,27 +166,27 @@
 			}
 		},
 		mounted: function(){
-			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id))
+			this.$http.get(encodeURI(config.host+'/api/clientes/'+this.$route.params.id))
 			.then((response)=>{
 				this.cliente=response.body;
 			})
 
 			//encomendas
-			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/encomendas'))
+			this.$http.get(encodeURI(config.host+'/api/clientes/'+this.$route.params.id+'/encomendas'))
 			.then((response)=>{
 				this.loading.encomendas=false;
 				this.encomendas=response.body;
 			})
 
 			//oportunidades
-			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/oportunidades'))
+			this.$http.get(encodeURI(config.host+'/api/clientes/'+this.$route.params.id+'/oportunidades'))
 			.then((response)=>{
 				this.loading.oportunidades=false;
 				this.oportunidades=response.body;
 			})
 
 			//atividades
-			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/atividades'))
+			this.$http.get(encodeURI(config.host+'/api/clientes/'+this.$route.params.id+'/atividades'))
 			.then((response)=>{
 				this.loading.atividades=false;
 				this.atividades=response.body;

@@ -47,6 +47,8 @@
 </template>
 
 	<script>
+	import config from '../assets/config.json'
+
 	function findById(array,id,idProp){
 		for(var i=0;i<array.length;i++){
 			if(array[i][idProp]===id){
@@ -64,13 +66,13 @@
 		components:{CreateModal},
 		mounted: function(){
 		if(this.$root.adminMode){
-			this.$http.get('http://localhost:49559/api/oportunidades/')
+			this.$http.get(config.host+'/api/oportunidades/')
 			.then((response)=>{
 				this.loading=false;
 				this.oportunidades=response.body;
 			});
 		}else{
-			this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/oportunidades')
+			this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/oportunidades')
 			.then((response)=>{
 				this.loading=false;
 				this.oportunidades=response.body;
@@ -79,7 +81,7 @@
 		},
 		methods:{
 			deleteOportunity:function(id){
-				const URL=encodeURI('http://localhost:49559/api/oportunidades/'+id);
+				const URL=encodeURI(config.host+'/api/oportunidades/'+id);
 				this.$http.delete(URL).then((response)=>{
 					this.oportunidades.splice(findById(this.oportunidades,id,'id'),1);
 				},(err)=>{

@@ -4,7 +4,8 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Atividades <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-activity-modal" aria-hidden="true"></i></h1>
+				<h1 class="page-header">Lista de Atividades <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-activity-modal"
+						aria-hidden="true"></i></h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -50,6 +51,8 @@
 </template>
 
 <script>
+import config from '../assets/config.json'
+
 function findById(array,id,idProp){
 	for(var i=0;i<array.length;i++){
 		if(array[i][idProp]===id){
@@ -71,12 +74,12 @@ export default {
 	components:{CreateModal},
 	mounted: function(){
 
-		this.$http.get('http://localhost:49559/api/atividades/tipos/')
+		this.$http.get(config.host+'/api/atividades/tipos/')
 		.then((tiposAtividades)=>{
 			this.tipos = tiposAtividades.body;
 
 			if(this.$root.adminMode){
-				this.$http.get('http://localhost:49559/api/atividades/')
+				this.$http.get(config.host+'/api/atividades/')
 				.then((response)=>{
 					for(let i = 0; i < response.body.length; i++){
 						this.atividades=response.body;
@@ -87,7 +90,7 @@ export default {
 				});
 			}
 			else{
-				this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2017-11-15')
+				this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2017-11-15')
 				.then((response)=>{
 					for(let i = 0; i < response.body.length; i++){
 						this.atividades=response.body;
@@ -105,7 +108,7 @@ export default {
 			return  d.getDay()+ '-'+ d.getMonth()+ '-' + d.getFullYear()+' '+ d.getHours()+':'+ d.getMinutes()+':'+ d.getSeconds();
 		},
 		deleteActivity: function(id){
-			const URL = encodeURI('http://localhost:49559/api/atividades/' + id)
+			const URL = encodeURI(config.host+'/api/atividades/' + id)
 
 			this.$http.delete(URL)
 			.then((res) =>{
