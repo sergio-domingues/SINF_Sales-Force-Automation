@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import config from '../assets/config.json'
 import ArticleListing from './ArticleListing.vue'
 
 export default {
@@ -93,12 +94,12 @@ export default {
     }
   },
   mounted:function(){
-    this.$http.get('http://localhost:49559/api/encomendas/'+this.$route.params.id)
+    this.$http.get(config.host+'/api/encomendas/'+this.$route.params.id)
     .then((response)=>{
       this.encomenda=response.body;
       this.artigos=response.body.LinhasDocumento
       if(this.encomenda.idOportunidade){
-        this.$http.get('http://localhost:49559/api/oportunidade/'+encomenda.idOportunidade)
+        this.$http.get(config.host+'/api/oportunidade/'+encomenda.idOportunidade)
         .then((response)=>{
           this.encomenda.oportunidade=response.body.descricao;
         })

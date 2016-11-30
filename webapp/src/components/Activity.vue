@@ -90,6 +90,8 @@
 </template>
 
 <script>
+import config from '../assets/config.json'
+
 var  copy;
 function findById(array,id,idProp){
 	for(var elem of array){
@@ -115,7 +117,7 @@ export default {
 		  if(this.editing){
 				//TODO: idCabecalhoOportunidadeVenda e adicionar idContactoPrincipal
 				//TODO: DEPOIS TROCAR ISTO! 'http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15'
-	const URL = encodeURI('http://localhost:49559/api/atividades/'+this.$route.params.id);
+	const URL = encodeURI(config.host+'/api/atividades/'+this.$route.params.id);
 	  this.$http.put(URL, this.atividade)
 		.then((response)=>{
 		console.log('response ' + response.body)
@@ -134,17 +136,17 @@ export default {
   },
 	mounted: function(){
 
-		this.$http.get('http://localhost:49559/api/atividades/tipos')
+		this.$http.get(config.host+'/api/atividades/tipos')
 		.then((response)=>{
 			for(var tipo of response.body){
 				this.tipos.push({text:tipo.descricao, value:tipo.id});
 			}
 		})
 
-	const URL = encodeURI('http://localhost:49559/api/atividades/'+this.$route.params.id);
+	const URL = encodeURI(config.host+'/api/atividades/'+this.$route.params.id);
 	  this.$http.get(URL)
 		.then((response)=>{
-			const URL2 = encodeURI('http://localhost:49559/api/atividades/tipos/'+response.body.idTipoAtividade);
+			const URL2 = encodeURI(config.host+'/api/atividades/tipos/'+response.body.idTipoAtividade);
 			  this.$http.get(URL2)
 				.then((tipo)=>{
 					this.atividade=response.body;

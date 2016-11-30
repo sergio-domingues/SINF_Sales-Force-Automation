@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import config from '../assets/config.json'
+
 function findById(array,id,idProp){
 	for(var i=0; i<array.length; i++){
 		if(array[i][idProp]===id){
@@ -88,7 +90,7 @@ export default {
   },
   props:['artigos'],
   mounted:function(){
-    this.$http.get('http://localhost:49559/api/artigos/')
+    this.$http.get(config.host+'/api/artigos/')
     .then((response)=>{
       this.listaArtigos=response.body;
     });

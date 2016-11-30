@@ -91,6 +91,8 @@
 </template>
 
 <script>
+import config from '../assets/config.json'
+
 function initMap() {
   var uluru = {lat:40.6570816, lng:-7.9137786};
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -115,19 +117,19 @@ export default {
         this.loading.kpi=false;
       });*/
     }else{
-      this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15')
+      this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15')
       .then((response)=>{
         this.atividades=response.body;
         this.loading.atividades=false;
       });
 
-      this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/oportunidades/')
+      this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/oportunidades/')
       .then((response)=>{
         this.loading.oportunidades=false;
         this.oportunidades=response.body;
       });
 
-      this.$http.get('http://localhost:49559/api/kpi/'+this.$root.vendedor.id)
+      this.$http.get(config.host+'/api/kpi/'+this.$root.vendedor.id)
       .then((response)=>{
         this.loading.kpi=false;
         this.kpi=response.body;
