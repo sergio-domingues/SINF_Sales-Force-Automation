@@ -41,50 +41,5 @@ namespace PharmaCRM.Controllers
 
             return artigo;
         }
-
-        // POST api/artigos
-        /**
-        * POST api/artigos
-        * Cria um novo artigo.
-        *
-        * @return
-        */
-        [Route("api/artigos")]
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
-        }
-
-        /**
-        * PUT api/artigos/<id>
-        * Edita um artigo.
-        *
-        * @param id ID do artigo a editar.
-        * @return
-        */
-        [Route("api/artigos/{id}")]
-        [HttpPut]
-        public void Put(string id, [FromBody]string value)
-        {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
-        }
-
-        /**
-        * DELETE api/artigos/<id>
-        * Elimina um artigo
-        *
-        * @param id ID do artigo a eliminar.
-        * @return
-        */
-        [Route("api/artigos/{id}")]
-        [HttpDelete]
-        public void Delete(string id)
-        {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
-        }
     }
 }
