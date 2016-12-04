@@ -406,8 +406,8 @@ namespace PharmaCRM.Lib_Primavera
 
                 StdBELista objListCab;
 
-                objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6 "
-                    + "FROM Artigo, ArtigoMoeda WHERE Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.Artigo = '" + codArtigo + "'");
+                objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
+                    + "FROM Artigo, ArtigoMoeda, Unidades WHERE Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.Artigo = '" + codArtigo + "' AND Artigo.UnidadeVenda = Unidades.Unidade");
 
                 if (objListCab.NoFim())
                 {
@@ -429,6 +429,8 @@ namespace PharmaCRM.Lib_Primavera
                 art.PVPs.Add(objListCab.Valor("PVP4"));
                 art.PVPs.Add(objListCab.Valor("PVP5"));
                 art.PVPs.Add(objListCab.Valor("PVP6"));
+                art.unidade = objListCab.Valor("Unidade");
+                art.descricaoUnidade = objListCab.Valor("DescricaoUnidade");
 
                 return art;
             }
@@ -447,8 +449,8 @@ namespace PharmaCRM.Lib_Primavera
                 Model.Artigo art;
                 List<Model.Artigo> listArts = new List<Model.Artigo>();
 
-                objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6 "
-                    + "FROM Artigo, ArtigoMoeda WHERE Artigo.Artigo = ArtigoMoeda.Artigo");
+                objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
+                    + "FROM Artigo, ArtigoMoeda, Unidades WHERE Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.UnidadeVenda = Unidades.Unidade");
                 while (!objListCab.NoFim())
                 {
                     art = new Model.Artigo();
@@ -466,6 +468,8 @@ namespace PharmaCRM.Lib_Primavera
                     art.PVPs.Add(objListCab.Valor("PVP4"));
                     art.PVPs.Add(objListCab.Valor("PVP5"));
                     art.PVPs.Add(objListCab.Valor("PVP6"));
+                    art.unidade = objListCab.Valor("Unidade");
+                    art.descricaoUnidade = objListCab.Valor("DescricaoUnidade");
 
                     listArts.Add(art);
 
