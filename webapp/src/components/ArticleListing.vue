@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-default">
@@ -11,6 +11,7 @@
                 <th>CodArtigo</th>
                 <th>Descrição</th>
                 <th>Quantidade</th>
+                <th>Unidade</th>
                 <th>Total</th>
                 <th>Opções</th>
               </tr>
@@ -20,6 +21,7 @@
                 <td>{{artigo.CodigoArtigo}}</td>
                 <td>{{artigo.DescricaoArtigo}}</td>
                 <td>{{artigo.Quantidade}}</td>
+                <td>{{artigo.Unidade}}</td>
                 <td v-if="artigo.PrecoUnitario">{{artigo.PrecoUnitario*artigo.Quantidade}}</td>
                 <td v-else>{{artigo.TotalLiquido}}</td>
                 <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
