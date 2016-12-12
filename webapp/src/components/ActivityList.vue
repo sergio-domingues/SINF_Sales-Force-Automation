@@ -100,12 +100,12 @@ export default {
 					}
 				});
 			}
-		});
+		});	
 	},
 	methods: {
 		displayDate: function(date){
 			var d = new Date(date);
-			return  d.getDay()+ '-'+ d.getMonth()+ '-' + d.getFullYear()+' '+ d.getHours()+':'+ d.getMinutes()+':'+ d.getSeconds();
+			return d.toLocaleString('pt-PT');
 		},
 		deleteActivity: function(id){
 			const URL = encodeURI(config.host+'/api/atividades/' + id)
