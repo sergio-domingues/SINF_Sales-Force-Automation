@@ -21,11 +21,12 @@
                 <td>{{artigo.CodigoArtigo}}</td>
                 <td>{{artigo.DescricaoArtigo}}</td>
                 <td>{{artigo.Quantidade}}</td>
-                <td>{{artigo.Unidade}}</td>
+                <td>{{artigo.unidade}}</td>
                 <td v-if="artigo.PrecoUnitario">{{artigo.PrecoUnitario*artigo.Quantidade}}</td>
                 <td v-else>{{artigo.TotalLiquido}}</td>
                 <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
-                  <i class="fa fa-lg fa-minus clicable" aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
+                  <input type="number" v-show="artigo.Quantidade >1" class="quant-select" v-model="artigo.QuantSelec"><i class="fa fa-lg fa-minus clicable"
+                    aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
                 </td>
               </tr>
             </tbody>
@@ -59,9 +60,10 @@
                   <tr v-for="artigo in pesquisaReturnada">
                     <td>{{artigo.Codigo}}</td>
                     <td>{{artigo.Descricao}}</td>
-                    <td v-if="artigo.StockAtual <= 0">indisponivel</td>
+                    <td v-if="artigo.StockAtual <= 0">INDISPONIVEL</td>
                     <td v-else>{{artigo.StockAtual}} </td>
-                    <td><i class="fa fa-lg fa-plus clicable" aria-hidden="true" v-show="artigo.StockAtual >0" v-on:click="adicionarArtigo(artigo)"></i></td>
+                    <td><input type="number" class="quant-select" v-model="artigo.QuantSelec"><i class="fa fa-lg fa-plus clicable"
+                        aria-hidden="true" v-show="artigo.StockAtual >0" v-on:click="adicionarArtigo(artigo)"></i></td>
                   </tr>
                 </tbody>
               </table>
@@ -112,9 +114,9 @@ export default {
     adicionarArtigo : function(artigo) {
       const indexArtigo=findById(this.artigos,artigo.Codigo,'CodigoArtigo');
       if(indexArtigo>=0){
-          this.artigos[indexArtigo].Quantidade++;
+          this.artigos[indexArtigo].Quantidade=this.artigos[indexArtigo].Quantidade+artigo.QuantSelec;
       }else{
-        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0]});
+        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:artigo.QuantSelec,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0]});
       }
     },
     removerArtigo: function(artigo){
@@ -122,7 +124,12 @@ export default {
     },
     diminuirQuantidade:function(artigo){
       const indexArtigo=findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo');
-      this.artigos[indexArtigo].Quantidade--;
+      let newQuant = this.artigos[indexArtigo].Quantidade-this.artigos[indexArtigo].QuantSelec
+      if( newQuant > 0){
+        this.artigos[indexArtigo].Quantidade=newQuant;
+      }else{
+        this.removerArtigo(artigo) 
+      }
     }
   }
 }
