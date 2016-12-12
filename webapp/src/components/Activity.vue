@@ -62,7 +62,7 @@
 							<div class="form-group">
 								<label for="dataInicio" class="col-sm-2 control-label">Data de Inicio</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="dataInicio" placeholder="data inicio" v-model="atividade.dataInicio" :value="atividade.dataInicio" :disabled="!editing">
+									<input type="text" class="form-control" id="dataInicio" placeholder="data inicio" v-model="atividade.dataInicio" :disabled="!editing">
 								</div>
 							</div>
 
@@ -70,13 +70,6 @@
 								<label for="dataFim" class="col-sm-2 control-label">Data de Fim</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" id="dataFim" placeholder="data fim" v-model="atividade.dataFim" :value="atividade.dataFim" :disabled="!editing">
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label for="tipoEntidade" class="col-sm-2 control-label">Tipo de Entidade</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" id="tipoEntidade" placeholder="Tipo de Entidade" v-model="atividade.tipoEntidadePrincipal" :value="atividade.local" :disabled="!editing">
 								</div>
 							</div>
 
@@ -97,6 +90,8 @@
 </template>
 
 <script>
+import config from '../assets/config.json'
+
 var  copy;
 function findById(array,id,idProp){
 	for(var elem of array){
@@ -122,7 +117,7 @@ export default {
 		  if(this.editing){
 				//TODO: idCabecalhoOportunidadeVenda e adicionar idContactoPrincipal
 				//TODO: DEPOIS TROCAR ISTO! 'http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15'
-	const URL = encodeURI('http://localhost:49559/api/atividades/'+this.$route.params.id);
+	const URL = encodeURI(config.host+'/api/atividades/'+this.$route.params.id);
 	  this.$http.put(URL, this.atividade)
 		.then((response)=>{
 		console.log('response ' + response.body)
@@ -141,17 +136,17 @@ export default {
   },
 	mounted: function(){
 
-		this.$http.get('http://localhost:49559/api/atividades/tipos')
+		this.$http.get(config.host+'/api/atividades/tipos')
 		.then((response)=>{
 			for(var tipo of response.body){
 				this.tipos.push({text:tipo.descricao, value:tipo.id});
 			}
 		})
 
-	const URL = encodeURI('http://localhost:49559/api/atividades/'+this.$route.params.id);
+	const URL = encodeURI(config.host+'/api/atividades/'+this.$route.params.id);
 	  this.$http.get(URL)
 		.then((response)=>{
-			const URL2 = encodeURI('http://localhost:49559/api/atividades/tipos/'+response.body.idTipoAtividade);
+			const URL2 = encodeURI(config.host+'/api/atividades/tipos/'+response.body.idTipoAtividade);
 			  this.$http.get(URL2)
 				.then((tipo)=>{
 					this.atividade=response.body;

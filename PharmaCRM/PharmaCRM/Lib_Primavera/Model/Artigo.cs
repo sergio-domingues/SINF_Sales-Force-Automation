@@ -54,5 +54,17 @@ namespace PharmaCRM.Lib_Primavera.Model
             get;
             set;
         }
+
+        public string unidade
+        {
+            get;
+            set;
+        }
+
+        public string descricaoUnidade
+        {
+            get;
+            set;
+        }
     }
 }

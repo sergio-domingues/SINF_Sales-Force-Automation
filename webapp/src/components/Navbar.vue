@@ -28,13 +28,14 @@
   </template>
 
 <script>
+import config from '../assets/config.json'
   export default {
     name: 'navbar',
     data () {
       return {name:''}
     },
     mounted:function(){
-      this.$http.get('http://localhost:49559/api/vendedores/1')
+      this.$http.get(config.host+'/api/vendedores/1')
         .then((response)=>{
           this.$root.vendedor.id=response.body.cod;
           this.$root.vendedor.name=response.body.nome;

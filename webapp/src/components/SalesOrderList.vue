@@ -4,7 +4,8 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Encomendas <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-salesorder-modal" aria-hidden="true"></i></h1>
+				<h1 class="page-header">Lista de Encomendas <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-salesorder-modal"
+						aria-hidden="true"></i></h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -26,25 +27,31 @@
 								<div v-show="loading" class="spinner"></div>
 								<router-link tag="tr" class="clicable" :to="'/salesorders/'+encomenda.NumeroDocumento" v-for="encomenda in encomendas">
 									<td>{{encomenda.Data}}</td>
-									<td><router-link :to="'/customers/'+encomenda.Entidade">{{encomenda.Entidade}}</router-link></td>
+									<td>
+										<router-link :to="'/customers/'+encomenda.Entidade">{{encomenda.Entidade}}</router-link>
+									</td>
 									<td>{{encomenda.TotalMercadoria}} €</td>
-									<td><router-link to="">
-											<i v-on:click="anularEncomenda(encomenda.NumeroDocumento)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+									<td>
+										<router-link to="">
+											<i v-show="!encomenda.Anulada" v-on:click="anularEncomenda(encomenda.NumeroDocumento)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
 										</router-link>
-										</td>
-									</tbody>
-								</table>
-							</div>
-						</div>
+										<label v-show="encomenda.Anulada">ANULADA</label>
+									</td>
+							</tbody>
+						</table>
 					</div>
-
 				</div>
-				<!--/.row-->
-				<create-salesorder-modal></create-salesorder-modal>
 			</div>
-		</template>
 
-		<script>
+		</div>
+		<!--/.row-->
+		<create-salesorder-modal></create-salesorder-modal>
+	</div>
+</template>
+
+<script>
+import config from '../assets/config.json'
+
 		import CreateSalesorderModal from './modal/SalesOrder.vue'
 
 		function findById(array,id,idProp){
@@ -64,13 +71,13 @@
 			components:{CreateSalesorderModal},
 			mounted: function(){
 				if(this.$root.adminMode){
-				this.$http.get('http://localhost:49559/api/encomendas/')
+				this.$http.get(config.host+'/api/encomendas/')
 				.then((response)=>{
 					this.encomendas=response.body;
 					this.loading=false;
 				});
 			}else{
-				this.$http.get('http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/encomendas')
+				this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/encomendas')
 				.then((response)=>{
 					this.encomendas=response.body;
 					this.loading=false;
@@ -78,10 +85,10 @@
 			}
 			},
 			methods:{
-				anularEncomenda:function(encomenda){
-					this.$http.delete('http://localhost:49559/api/encomendas/'+encomenda.NumeroDocumento)
+				anularEncomenda:function(encNum){
+					this.$http.delete(config.host+'/api/encomendas/'+encNum)
 					.then((response)=>{
-						this.encomendas.splice(findById(this.encomendas,'NumeroDocumento',encomenda.NumeroDocumento),1)
+						this.encomendas.splice(findById(this.encomendas,'NumeroDocumento',encNum),1)
 					});
 				}
 			}

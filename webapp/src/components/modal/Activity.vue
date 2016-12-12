@@ -79,25 +79,26 @@
 
 
   <script>
+  import config from '../../assets/config.json'
   export default {
     name: 'CreateActivityModal',
     data () {
       return {atividade: {vendedor:this.$root.vendedor.id}, options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}], tipos: [],clientes: [], oportunidades: []}
     },
     mounted: function(){
-      this.$http.get('http://localhost:49559/api/atividades/tipos')
+      this.$http.get(config.host+'/api/atividades/tipos')
       .then((response)=>{
         for(var tipo of response.body){
           this.tipos.push({text:tipo.descricao, value:tipo.id});
         }
       })
 
-      this.$http.get('http://localhost:49559/api/clientes')
+      this.$http.get(config.host+'/api/clientes')
       .then((response)=>{
           this.clientes=response.body;
       })
 
-      this.$http.get('http://localhost:49559/api/oportunidades')
+      this.$http.get(config.host+'/api/oportunidades')
       .then((response)=>{
           this.oportunidades=response.body;
       })
@@ -106,10 +107,14 @@
     methods:{
       createActivity: function(e){
         this.atividade.tipoEntidadePrincipal = "C";
-        this.$http.post('http://localhost:49559/api/atividades/', this.atividade)
+        this.$http.post(config.host+'/api/atividades/', this.atividade)
         .then((response)=>{
-          console.log(this.atividade)
-          console.log(response);
+          if(response.status == 201){
+            $('#create-activity-modal').modal('hide');
+          }else{
+              console.log(this.atividade)
+              console.log(response);
+          }
         },(err)=>{
           console.log(err)
         });

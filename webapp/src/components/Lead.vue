@@ -90,6 +90,8 @@
 </template>
 
 <script>
+import config from '../assets/config.json'
+
 var oportunidadeTemp;
 
 export default {
@@ -101,7 +103,7 @@ export default {
 	  toggleEditing: function(){
 			oportunidadeTemp=JSON.parse(JSON.stringify(this.oportunidade));
 		  if(this.editing){
-				const URL = encodeURI('http://localhost:49559/api/oportunidades/'+this.oportunidade.id);
+				const URL = encodeURI(config.host+'/api/oportunidades/'+this.oportunidade.id);
 				this.$http.put(URL,this.oportunidade)
 				.then((response)=>{
 					this.editing = !this.editing;
@@ -119,14 +121,14 @@ export default {
 	  }
   },
 	mounted: function(){
-		var URL = encodeURI('http://localhost:49559/api/oportunidades/'+this.$route.params.id);
+		var URL = encodeURI(config.host+'/api/oportunidades/'+this.$route.params.id);
 		this.$http.get(URL)
 		.then((response)=>{
 			this.oportunidade=response.body;
 			this.oportunidade.data=new Date(this.oportunidade.data);
 		})
 
-		URL=encodeURI('http://localhost:49559/api/oportunidades/'+this.$route.params.id+'/atividades');
+		URL=encodeURI(config.host+'/api/oportunidades/'+this.$route.params.id+'/atividades');
 		this.$http.get(URL).then((response)=>{
 			this.atividades=response.body;
 		},(err)=>{

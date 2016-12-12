@@ -35,3 +35,9 @@
       height: 250px;
       overflow: auto;
     }
+
+.error-msg-panel{
+text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

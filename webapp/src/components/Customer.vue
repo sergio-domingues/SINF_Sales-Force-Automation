@@ -4,7 +4,7 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">{{cliente.Nome}}</h1>
+				<h1 class="page-header">{{creating ? 'Novo Cliente' : cliente.Nome}}</h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -15,7 +15,7 @@
 					<div class="panel-heading">Info
 						<div class="pull-right">
 							<i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg','clicable']" aria-hidden="true"></i>
-							<i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times clicable" aria-hidden="true"></i>
+							<i v-show="editing && !creating" v-on:click="cancelEditing" class="fa fa-lg fa-times clicable" aria-hidden="true"></i>
 						</div>
 					</div>
 					<div class="panel-body">
@@ -24,7 +24,7 @@
 							<div class="form-group">
 								<label for="inputEmail3" class="col-sm-2 control-label">Id</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputEmail3" placeholder="Id" :value="cliente.CodCliente" disabled>
+									<input type="text" class="form-control" id="inputEmail3" placeholder="Id" v-model="cliente.CodCliente" :disabled="!creating">
 								</div>
 							</div>
 							<div class="form-group">
@@ -81,12 +81,13 @@
 					<div class="panel-body" style="background-color:white">
 						<div v-show="loading.atividades" class="spinner"></div>
 						<ul class="todo-list">
+							<div v-if="!atividades.length && !loading.atividades" class="error-msg-panel">Não existem atividades associadas a este cliente</div>
 							<router-link tag="li" :to="'/activities/'+atividade.id" class="todo-list-item clicable" v-for="atividade in atividades">
 								<div class="checkbox">
 									{{atividade.descricao}}
 								</div>
 								<div class="pull-right">
-									<i class="fa fa-check"v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
+									<i class="fa fa-check" v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
 								</div>
 							</router-link>
 						</ul>
@@ -100,12 +101,13 @@
 					<div class="panel-body" style="background-color:white">
 						<div v-show="loading.oportunidades" class="spinner"></div>
 						<ul class="todo-list">
+							<div v-if="!oportunidades.length && !loading.oportunidades" class="error-msg-panel">Não existem oportunidades associadas a este cliente</div>
 							<router-link tag="li" :to="'/leads/'+oportunidade.id" class="todo-list-item clicable" v-for="oportunidade in oportunidades">
 								<div class="checkbox">
 									{{oportunidade.descricao}}
 								</div>
 								<div class="pull-right">
-									<i class="fa fa-check"v-bind:class="[null ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
+									<i class="fa fa-check" v-bind:class="[null ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
 								</div>
 							</router-link>
 						</ul>
@@ -119,13 +121,14 @@
 					<div :class="[encomendas.length>4 ? 'overflow-panel' : '' ,'panel-body']" style="background-color:white">
 						<div v-show="loading.encomendas" class="spinner"></div>
 						<ul class="todo-list">
+							<div v-if="!encomendas.length && !loading.encomendas" class="error-msg-panel">Não existem encomendas associadas a este cliente</div>
 							<router-link tag="li" :to="'/salesorders/'+encomenda.NumeroDocumento" class="todo-list-item clicable" v-for="encomenda in encomendas">
 								<div class="checkbox">
 									{{encomenda.Data}}
 								</div>
 								<div class="pull-right">{{encomenda.TotalMercadoria}}</dic>
-								</router-link>
-							</ul>
+							</router-link>
+						</ul>
 						</div>
 					</div>
 				</div>
@@ -134,25 +137,33 @@
 			<!--/.row-->
 
 		</div>
-	</template>
+</template>
 
-	<script>
+<script>
+	import config from '../assets/config.json'
+
 	var clienteTemp;
 	export default {
 		name: 'Customer',
 		data () {
-			return {editing:false,cliente:{},loading:{oportunidades:true,atividades:true,encomendas:true},oportunidades:[],atividades:[],encomendas:[]}
+			return {editing:false,cliente:{},loading:{oportunidades:true,atividades:true,encomendas:true},oportunidades:[],atividades:[],encomendas:[],creating:false}
 		},
 		methods:{
 			toggleEditing: function(){
 				clienteTemp=Object.assign({}, this.cliente);
-				if(this.editing){
-					this.$http.put('http://localhost:49559/api/clientes/'+this.cliente.CodCliente,this.cliente)
+				if(this.editing && !this.creating){
+					this.$http.put(config.host+'/api/clientes/'+this.cliente.CodCliente,this.cliente)
 					.then((response)=>{
 						this.editing = !this.editing;
 						this.oportunidade=response.body;
 					},(err)=>{
 						console.log(err)
+					})
+				}else if(this.creating){
+					this.$http.post(config.host+'/api/clientes/',this.cliente)
+					.then((response)=>{
+						this.$router.replace('/customers/'+response.body.CodCliente);
+						location.reload();
 					})
 				}else{
 					this.editing = !this.editing;
@@ -164,37 +175,46 @@
 			}
 		},
 		mounted: function(){
-			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id))
-			.then((response)=>{
-				this.cliente=response.body;
-			})
+			if(this.$route.params.id!=="new"){
+				this.$http.get(encodeURI(config.host+'/api/clientes/'+this.$route.params.id))
+				.then((response)=>{
+					this.cliente=response.body;
+				})
 
-			//encomendas
-			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/encomendas'))
-			.then((response)=>{
-				this.loading.encomendas=false;
-				this.encomendas=response.body;
-			})
+				//encomendas
+				this.$http.get(encodeURI(config.host+'/api/clientes/'+this.$route.params.id+'/encomendas'))
+				.then((response)=>{
+					this.loading.encomendas=false;
+					this.encomendas=response.body;
+				})
 
-			//oportunidades
-			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/oportunidades'))
-			.then((response)=>{
-				this.loading.oportunidades=false;
-				this.oportunidades=response.body;
-			})
+                //oportunidades
+                this.$http.get(encodeURI(config.host+'/api/clientes/'+this.$route.params.id+'/oportunidades'))
+                .then((response)=>{
+                    this.loading.oportunidades=false;
+                    this.oportunidades=response.body;
+                })
 
-			//atividades
-			this.$http.get(encodeURI('http://localhost:49559/api/clientes/'+this.$route.params.id+'/atividades'))
-			.then((response)=>{
-				this.loading.atividades=false;
-				this.atividades=response.body;
-			})
+                //atividades
+                this.$http.get(encodeURI(config.host+'/api/clientes/'+this.$route.params.id+'/atividades'))
+                .then((response)=>{
+                    this.loading.atividades=false;
+                    this.atividades=response.body;
+                })
+			}else{
+				this.toggleEditing();
+				this.creating=true;
+                this.loading.atividades=false;
+                this.loading.oportunidades=false;
+                this.loading.encomendas=false;
+			}
+	
 		}
 	}
 	</script>
 
-	<style>
+<style>
 	textarea {
 		resize: vertical;
 	}
-	</style>
+</style>

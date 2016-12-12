@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import config from '../../assets/config.json'
 import ArticleListing from '../ArticleListing.vue'
 function deleteById(array,id,idProp){
 	for(var elem of array){
@@ -59,14 +60,14 @@ export default {
   },
   components:{ArticleListing},
   mounted: function(){
-    this.$http.get('http://localhost:49559/api/clientes/')
+    this.$http.get(config.host+'/api/clientes/')
     .then((response)=>{
       for(var cliente of response.body){
         this.options.push({text:cliente.Nome,value:cliente.CodCliente});
       }
     })
 
-    this.$http.get('http://localhost:49559/api/oportunidades/')
+    this.$http.get(config.host+'/api/oportunidades/')
     .then((response)=>{
       for(var oportunidade of response.body){
         this.optionsOportunidades.push({id:oportunidade.id,value:oportunidade.descricao});
@@ -85,7 +86,7 @@ export default {
         Serie:this.encomenda.serie,
         idResponsavel:this.$root.vendedor.id
       }
-      this.$http.post('http://localhost:49559/api/encomendas/',encomenda)
+      this.$http.post(config.host+'/api/encomendas/',encomenda)
         .then((response)=>{
           console.log(response);
         },(err)=>{

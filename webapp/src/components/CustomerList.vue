@@ -4,7 +4,7 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Clientes</h1>
+				<h1 class="page-header">Lista de Clientes <router-link tag="i" class="fa fa-plus pull-right clicable" :to="'/customers/new'"></router-link></h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-
+import config from '../assets/config.json'
 
 export default {
   name: 'CustomerList',
@@ -54,7 +54,7 @@ export default {
 	}
   },
   mounted: function(){
-	  this.$http.get('http://localhost:49559/api/clientes/')
+	  this.$http.get(config.host+'/api/clientes/')
 		.then((response)=>{
 			this.loading=false;
 			this.clientes=response.body;

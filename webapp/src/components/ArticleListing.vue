@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-default">
@@ -11,6 +11,7 @@
                 <th>CodArtigo</th>
                 <th>Descrição</th>
                 <th>Quantidade</th>
+                <th>Unidade</th>
                 <th>Total</th>
                 <th>Opções</th>
               </tr>
@@ -20,7 +21,9 @@
                 <td>{{artigo.CodigoArtigo}}</td>
                 <td>{{artigo.DescricaoArtigo}}</td>
                 <td>{{artigo.Quantidade}}</td>
-                <td>{{artigo.TotalLiquido}}</td>
+                <td>{{artigo.Unidade}}</td>
+                <td v-if="artigo.PrecoUnitario">{{artigo.PrecoUnitario*artigo.Quantidade}}</td>
+                <td v-else>{{artigo.TotalLiquido}}</td>
                 <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
                   <i class="fa fa-lg fa-minus clicable" aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
                 </td>
@@ -71,6 +74,8 @@
 </template>
 
 <script>
+import config from '../assets/config.json'
+
 function findById(array,id,idProp){
 	for(var i=0; i<array.length; i++){
 		if(array[i][idProp]===id){
@@ -87,7 +92,7 @@ export default {
   },
   props:['artigos'],
   mounted:function(){
-    this.$http.get('http://localhost:49559/api/artigos/')
+    this.$http.get(config.host+'/api/artigos/')
     .then((response)=>{
       this.listaArtigos=response.body;
     });
@@ -109,7 +114,7 @@ export default {
       if(indexArtigo>=0){
           this.artigos[indexArtigo].Quantidade++;
       }else{
-        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo});
+        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0]});
       }
     },
     removerArtigo: function(artigo){

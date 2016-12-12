@@ -358,7 +358,6 @@ namespace PharmaCRM.Lib_Primavera
             {
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
-
                     myCli.set_Cliente(cli.CodCliente);
                     myCli.set_Nome(cli.Nome);
                     myCli.set_NumContribuinte(cli.NumContribuinte);
@@ -366,6 +365,7 @@ namespace PharmaCRM.Lib_Primavera
                     myCli.set_Localidade(cli.Localidade);
                     myCli.set_Observacoes(cli.Notas);
                     myCli.set_Telefone(cli.Telefone);
+                    myCli.set_Moeda("EUR");
 
                     PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
 
@@ -387,8 +387,6 @@ namespace PharmaCRM.Lib_Primavera
                 erro.Descricao = ex.Message;
                 return erro;
             }
-
-
         }
         
         #endregion Cliente;   // -----------------------------  END   CLIENTE    -----------------------
@@ -406,8 +404,8 @@ namespace PharmaCRM.Lib_Primavera
 
                 StdBELista objListCab;
 
-                objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6 "
-                    + "FROM Artigo, ArtigoMoeda WHERE Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.Artigo = '" + codArtigo + "'");
+                objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
+                    + "FROM Artigo, ArtigoMoeda, Unidades WHERE Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.Artigo = '" + codArtigo + "' AND Artigo.UnidadeVenda = Unidades.Unidade");
 
                 if (objListCab.NoFim())
                 {
@@ -429,6 +427,8 @@ namespace PharmaCRM.Lib_Primavera
                 art.PVPs.Add(objListCab.Valor("PVP4"));
                 art.PVPs.Add(objListCab.Valor("PVP5"));
                 art.PVPs.Add(objListCab.Valor("PVP6"));
+                art.unidade = objListCab.Valor("Unidade");
+                art.descricaoUnidade = objListCab.Valor("DescricaoUnidade");
 
                 return art;
             }
@@ -447,8 +447,8 @@ namespace PharmaCRM.Lib_Primavera
                 Model.Artigo art;
                 List<Model.Artigo> listArts = new List<Model.Artigo>();
 
-                objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6 "
-                    + "FROM Artigo, ArtigoMoeda WHERE Artigo.Artigo = ArtigoMoeda.Artigo");
+                objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
+                    + "FROM Artigo, ArtigoMoeda, Unidades WHERE Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.UnidadeVenda = Unidades.Unidade");
                 while (!objListCab.NoFim())
                 {
                     art = new Model.Artigo();
@@ -466,6 +466,8 @@ namespace PharmaCRM.Lib_Primavera
                     art.PVPs.Add(objListCab.Valor("PVP4"));
                     art.PVPs.Add(objListCab.Valor("PVP5"));
                     art.PVPs.Add(objListCab.Valor("PVP6"));
+                    art.unidade = objListCab.Valor("Unidade");
+                    art.descricaoUnidade = objListCab.Valor("DescricaoUnidade");
 
                     listArts.Add(art);
 
@@ -867,7 +869,7 @@ namespace PharmaCRM.Lib_Primavera
 
                     dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
 
-                    listlindv = new List<Model.LinhaEncomenda>();
+                    /*listlindv = new List<Model.LinhaEncomenda>();
 
                     objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
                         + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
@@ -898,7 +900,7 @@ namespace PharmaCRM.Lib_Primavera
                         // TODO apagar se "preencheDadosRelacionados" atualizar valor
                         dv.TotalMercadoria = totalMerc;
                     }
-
+                    */
                     listdv.Add(dv);
                     objListCab.Seguinte();
                 }
