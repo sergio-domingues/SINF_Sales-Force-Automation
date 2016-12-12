@@ -46,16 +46,12 @@ namespace PharmaCRM.Controllers
 
             if (erro.Erro == 0)
             {
-                var response = Request.CreateResponse(
-                   HttpStatusCode.Created, cliente);
-                string uri = Url.Link("DefaultApi", new { CodCliente = cliente.CodCliente });
-                response.Headers.Location = new Uri(uri);
-                return response;
+                return Request.CreateResponse(HttpStatusCode.Created, cliente);
             }
 
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, erro.Descricao);
             }
 
         }
