@@ -62,7 +62,7 @@
 							<div class="form-group">
 								<label for="dataInicio" class="col-sm-2 control-label">Data de Inicio</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="dataInicio" placeholder="data inicio" v-model="atividade.dataInicio" :value="atividade.dataInicio" :disabled="!editing">
+									<input type="text" class="form-control" id="dataInicio" placeholder="data inicio" v-model="atividade.dataInicio" :disabled="!editing">
 								</div>
 							</div>
 

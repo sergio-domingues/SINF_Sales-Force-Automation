@@ -4,7 +4,7 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Clientes</h1>
+				<h1 class="page-header">Lista de Clientes <router-link tag="i" class="fa fa-plus pull-right clicable" :to="'/customers/new'"></router-link></h1>
 			</div>
 		</div>
 		<!--/.row-->
