@@ -358,7 +358,6 @@ namespace PharmaCRM.Lib_Primavera
             {
                 if (PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
                 {
-
                     myCli.set_Cliente(cli.CodCliente);
                     myCli.set_Nome(cli.Nome);
                     myCli.set_NumContribuinte(cli.NumContribuinte);
@@ -366,6 +365,7 @@ namespace PharmaCRM.Lib_Primavera
                     myCli.set_Localidade(cli.Localidade);
                     myCli.set_Observacoes(cli.Notas);
                     myCli.set_Telefone(cli.Telefone);
+                    myCli.set_Moeda("EUR");
 
                     PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
 
@@ -387,8 +387,6 @@ namespace PharmaCRM.Lib_Primavera
                 erro.Descricao = ex.Message;
                 return erro;
             }
-
-
         }
         
         #endregion Cliente;   // -----------------------------  END   CLIENTE    -----------------------
