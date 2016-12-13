@@ -22,11 +22,18 @@
                 <td>{{artigo.DescricaoArtigo}}</td>
                 <td>{{artigo.Quantidade}}</td>
                 <td>{{artigo.Unidade}}</td>
-                <td v-if="artigo.PrecoUnitario">{{artigo.PrecoUnitario*artigo.Quantidade}}</td>
-                <td v-else>{{artigo.TotalLiquido}}</td>
+                <td>{{artigo.PrecoUnitario*artigo.Quantidade}}</td>
                 <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
                   <i class="fa fa-lg fa-minus clicable" aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
                 </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><strong>{{total}}€</strong></td>
+                <td></td>
               </tr>
             </tbody>
           </table>
@@ -52,6 +59,7 @@
                     <th>CodArtigo</th>
                     <th>Descrição</th>
                     <th>Disponibilidade</th>
+                    <th>Unidade</th>
                     <th>Opções</th>
                   </tr>
                 </thead>
@@ -61,6 +69,7 @@
                     <td>{{artigo.Descricao}}</td>
                     <td v-if="artigo.StockAtual <= 0">indisponivel</td>
                     <td v-else>{{artigo.StockAtual}} </td>
+                    <td>{{artigo.Unidade}}</td>
                     <td><i class="fa fa-lg fa-plus clicable" aria-hidden="true" v-show="artigo.StockAtual >0" v-on:click="adicionarArtigo(artigo)"></i></td>
                   </tr>
                 </tbody>
@@ -88,7 +97,7 @@ function findById(array,id,idProp){
 export default {
   name: 'ArticleListing',
   data () {
-    return {listaArtigos:[],pesquisa:'', pesquisaReturnada: []}
+    return {listaArtigos:[],pesquisa:'', pesquisaReturnada: [], total: 0}
   },
   props:['artigos'],
   mounted:function(){
@@ -112,16 +121,21 @@ export default {
     adicionarArtigo : function(artigo) {
       const indexArtigo=findById(this.artigos,artigo.Codigo,'CodigoArtigo');
       if(indexArtigo>=0){
-          this.artigos[indexArtigo].Quantidade++;
+        this.artigos[indexArtigo].Quantidade++;
+        this.total += this.artigos[indexArtigo].PrecoUnitario;
       }else{
         this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0]});
+        this.total += this.artigos[this.artigos.length - 1].PrecoUnitario;
       }
     },
     removerArtigo: function(artigo){
-      this.artigos.splice(findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo'),1);
+      var pos = findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo');
+      this.total -= this.artigos[pos].Quantidade * this.artigos[pos].PrecoUnitario;
+      this.artigos.splice(pos,1);
     },
     diminuirQuantidade:function(artigo){
       const indexArtigo=findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo');
+      this.total -= this.artigos[indexArtigo].PrecoUnitario;
       this.artigos[indexArtigo].Quantidade--;
     }
   }
