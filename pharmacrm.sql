@@ -1,7 +1,7 @@
 -- DROP TABLE [PHARMACRM].[dbo].[Authentication]
 CREATE TABLE [PHARMACRM].[dbo].[Authentication] (
-   Vendedor nchar(3) NOT NULL PRIMARY KEY,
-   Email varchar(254) NOT NULL,
+   Vendedor nchar(3) PRIMARY KEY, -- null é admin
+   Email varchar(254) NOT NULL PRIMARY KEY,
    Password varchar(128) NOT NULL
 );
 
