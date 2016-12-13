@@ -18,7 +18,7 @@
           </div>
           <div class="form-group">
             <label for="cliente">Cliente</label>
-            <select class="form-control" id="cliente" v-model="selected">
+            <select class="form-control selectpicker" id="cliente" v-model="selected" data-live-search="true" required>
               <option v-for="option in options" v-bind:value="option.value">
                 {{ option.text }}
               </option>
@@ -26,7 +26,7 @@
           </div>
           <div class="form-group">
             <label for="oportunidade">Oportunidade</label>
-            <select class="form-control" id="oportunidade" v-model="selectedOportunidade">
+            <select class="form-control selectpicker" id="oportunidade" v-model="selectedOportunidade" data-live-search="true" required>
               <option v-for="option in optionsOportunidades" v-bind:value="option.id">
                 {{ option.value }}
               </option>
@@ -65,6 +65,9 @@ export default {
       for(var cliente of response.body){
         this.options.push({text:cliente.Nome,value:cliente.CodCliente});
       }
+      this.$nextTick(()=>{
+            $('.selectpicker').selectpicker('refresh');
+          })
     })
 
     this.$http.get(config.host+'/api/oportunidades/')
@@ -72,6 +75,9 @@ export default {
       for(var oportunidade of response.body){
         this.optionsOportunidades.push({id:oportunidade.id,value:oportunidade.descricao});
       }
+      this.$nextTick(()=>{
+            $('.selectpicker').selectpicker('refresh');
+          })
     })
 
   },
