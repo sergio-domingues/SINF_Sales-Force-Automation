@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <article-listing :artigos="artigos"></article-listing>
+    <article-listing :artigos="this.artigos"></article-listing>
   </div>
 </template>
 
@@ -97,7 +97,7 @@ export default {
     this.$http.get(config.host+'/api/encomendas/'+this.$route.params.id)
     .then((response)=>{
       this.encomenda=response.body;
-      this.artigos=response.body.LinhasDocumento
+      this.artigos=response.body.LinhasDocumento;
       if(this.encomenda.idOportunidade){
         this.$http.get(config.host+'/api/oportunidade/'+encomenda.idOportunidade)
         .then((response)=>{

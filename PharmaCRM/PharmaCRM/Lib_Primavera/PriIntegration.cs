@@ -388,7 +388,6 @@ namespace PharmaCRM.Lib_Primavera
             }
 
             return listArts;
-
         }
         public static Lib_Primavera.Model.ArtigoResumo GetArtigoResumo(string codArtigo)
         {
