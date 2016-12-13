@@ -305,6 +305,7 @@
     <Compile Include="Lib_Primavera\Model\LinhaEncomenda.cs" />
     <Compile Include="Lib_Primavera\Model\RespostaErro.cs" />
     <Compile Include="Lib_Primavera\PriEngine.cs" />
+    <Compile Include="Lib_Primavera\PharmaCRM.cs" />
     <Compile Include="Lib_Primavera\PriIntegration.cs" />
     <Compile Include="Lib_Primavera\Model\Atividade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
