@@ -9,4 +9,4 @@ INSERT INTO [PHARMACRM].[dbo].[Authentication] VALUES ('1', 'filipedias@gmail.co
 INSERT INTO [PHARMACRM].[dbo].[Authentication] VALUES ('2', 'luisneves@gmail.com', '123456');
 INSERT INTO [PHARMACRM].[dbo].[Authentication] VALUES ('3', 'martacarvalho@gmail.com', '123456');
 INSERT INTO [PHARMACRM].[dbo].[Authentication] VALUES ('5', 'vitorgoncalves@gmail.com', '123456');
-INSERT INTO [PHARMACRM].[dbo].[Authentication] ([Email], [Password]) VALUES ('admin@ad.min', '123456')
+INSERT INTO [PHARMACRM].[dbo].[Authentication] VALUES ('___', 'admin@ad.min', '123456')
