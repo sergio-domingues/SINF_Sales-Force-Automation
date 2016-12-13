@@ -24,7 +24,8 @@
                 <td>{{artigo.Unidade}}</td>
                 <td>{{Math.round(artigo.PrecoUnitario*artigo.Quantidade*100)/100}}</td>
                 <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
-                  <i class="fa fa-lg fa-minus clicable" aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
+                  <input type="number" v-show="artigo.Quantidade >1" class="quant-select" v-model="artigo.QuantSelec"><i class="fa fa-lg fa-minus clicable"
+                    aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
                 </td>
               </tr>
               <tr>
@@ -68,7 +69,7 @@
                   <tr v-for="artigo in pesquisaReturnada">
                     <td>{{artigo.Codigo}}</td>
                     <td>{{artigo.Descricao}}</td>
-                    <td v-if="artigo.StockAtual <= 0">indisponivel</td>
+                    <td v-if="artigo.StockAtual <= 0">INDISPONIVEL</td>
                     <td v-else>{{artigo.StockAtual}} </td>
                     <td>{{artigo.unidade}}</td>
                     <td>{{artigo.PrecoMedio}}€</td>
@@ -109,7 +110,10 @@ export default {
   mounted:function(){
     this.$http.get(config.host+'/api/artigos/')
     .then((response)=>{
-      this.listaArtigos=response.body;
+      for(let artigo of response.body){
+        artigo.QuantSelec=1;
+        this.listaArtigos.push(artigo);
+      }
     });
   },
   watch: {
@@ -141,9 +145,10 @@ export default {
     },
     diminuirQuantidade: function(artigo){
       const indexArtigo=findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo');
+
       this.total = arredondarCentimos(this.total - this.artigos[indexArtigo].PrecoUnitario);
       this.artigos[indexArtigo].Quantidade--;
-    }
+      }
   }
 }
 </script>

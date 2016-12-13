@@ -163,7 +163,8 @@
 					this.$http.post(config.host+'/api/clientes/',this.cliente)
 					.then((response)=>{
 						this.$router.replace('/customers/'+response.body.CodCliente);
-						location.reload();
+						this.creating=false;
+                        this.editing=false;
 					})
 				}else{
 					this.editing = !this.editing;

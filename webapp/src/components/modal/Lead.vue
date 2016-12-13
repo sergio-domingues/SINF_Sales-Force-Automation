@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
               <label for="cliente">Cliente</label>
-              <select class="form-control" id="cliente" v-model="selected">
+              <select class="form-control selectpicker" id="cliente" data-live-search="true" v-model="selected" data-max-options="<10></10>" required>
               <option v-for="option in options" v-bind:value="option.value">
                 {{ option.text }}
               </option>
@@ -59,6 +59,9 @@ export default {
       for(var cliente of response.body){
         this.options.push({text:cliente.Nome,value:cliente.CodCliente});
       }
+      this.$nextTick(()=>{
+        $('.selectpicker').selectpicker('refresh');
+      })
     })
   },
   methods:{
