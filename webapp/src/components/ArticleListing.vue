@@ -130,7 +130,7 @@ export default {
         this.artigos[indexArtigo].Quantidade++;
         this.total = arredondarCentimos(this.total + this.artigos[indexArtigo].PrecoUnitario);
       }else{
-        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0], Unidade:artigo.unidade, PrecoUnitario:artigo.PrecoUltimo, DescricaoUnidade:artigo.DescricaoUnidade});
+        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0], Unidade:artigo.unidade, PrecoUltimo:artigo.PVPs[0], DescricaoUnidade:artigo.DescricaoUnidade});
         this.total = arredondarCentimos(this.artigos[this.artigos.length - 1].PrecoUnitario);
       }
     },

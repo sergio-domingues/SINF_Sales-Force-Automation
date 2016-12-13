@@ -17,25 +17,6 @@ namespace PharmaCRM
     {
         protected void Application_Start()
         {
-			/*string connectionString = "Data Source=USER-PC\\Primavera;Initial Catalog=PHARMACRM;User ID=sa;Password=Feup2014";
-            SqlConnection cnn = new SqlConnection(connectionString);
-            cnn.Open();
-
-            string queryString =
-            "SELECT username, password, email from Users WHERE username = @username";
-
-            SqlCommand command = new SqlCommand(queryString, cnn);
-            command.Parameters.AddWithValue("@username", "testeuser");
-
-            SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                throw new Exception(reader[0] + " " + reader[1] + " " + reader[2]);
-            }
-            reader.Close();
-
-            cnn.Close();*/
-
             if (!Lib_Primavera.PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)
             {
                 throw new ArgumentException("Falha ao iniciar a empresa.");
