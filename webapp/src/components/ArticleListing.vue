@@ -22,7 +22,7 @@
                 <td>{{artigo.DescricaoArtigo}}</td>
                 <td>{{artigo.Quantidade}}</td>
                 <td>{{artigo.Unidade}}</td>
-                <td>{{artigo.PrecoUnitario*artigo.Quantidade}}</td>
+                <td>{{Math.round(artigo.PrecoUnitario*artigo.Quantidade*100)/100}}</td>
                 <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
                   <i class="fa fa-lg fa-minus clicable" aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
                 </td>
@@ -60,6 +60,7 @@
                     <th>Descrição</th>
                     <th>Disponibilidade</th>
                     <th>Unidade</th>
+                    <th>Preço unitário</th>
                     <th>Opções</th>
                   </tr>
                 </thead>
@@ -69,8 +70,9 @@
                     <td>{{artigo.Descricao}}</td>
                     <td v-if="artigo.StockAtual <= 0">indisponivel</td>
                     <td v-else>{{artigo.StockAtual}} </td>
-                    <td>{{artigo.Unidade}}</td>
-                    <td><i class="fa fa-lg fa-plus clicable" aria-hidden="true" v-show="artigo.StockAtual >0" v-on:click="adicionarArtigo(artigo)"></i></td>
+                    <td>{{artigo.unidade}}</td>
+                    <td>{{artigo.PrecoMedio}}€</td>
+                    <td><i class="fa fa-lg fa-plus clicable" aria-hidden="true" v-show="artigo.StockAtual >0 && artigo.PrecoMedio >0" v-on:click="adicionarArtigo(artigo)"></i></td>
                   </tr>
                 </tbody>
               </table>
@@ -92,6 +94,10 @@ function findById(array,id,idProp){
 		}
 	}
 	return -1;
+}
+
+function arredondarCentimos(preco) {
+  return Math.round(preco * 100) / 100;
 }
 
 export default {
@@ -122,20 +128,20 @@ export default {
       const indexArtigo=findById(this.artigos,artigo.Codigo,'CodigoArtigo');
       if(indexArtigo>=0){
         this.artigos[indexArtigo].Quantidade++;
-        this.total += this.artigos[indexArtigo].PrecoUnitario;
+        this.total = arredondarCentimos(this.total + this.artigos[indexArtigo].PrecoUnitario);
       }else{
-        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0]});
-        this.total += this.artigos[this.artigos.length - 1].PrecoUnitario;
+        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0], Unidade:artigo.unidade, PrecoUnitario:artigo.PrecoUltimo, DescricaoUnidade:artigo.DescricaoUnidade});
+        this.total = arredondarCentimos(this.artigos[this.artigos.length - 1].PrecoUnitario);
       }
     },
     removerArtigo: function(artigo){
       var pos = findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo');
-      this.total -= this.artigos[pos].Quantidade * this.artigos[pos].PrecoUnitario;
+      this.total = arredondarCentimos(this.total - this.artigos[pos].Quantidade * this.artigos[pos].PrecoUnitario);
       this.artigos.splice(pos,1);
     },
-    diminuirQuantidade:function(artigo){
+    diminuirQuantidade: function(artigo){
       const indexArtigo=findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo');
-      this.total -= this.artigos[indexArtigo].PrecoUnitario;
+      this.total = arredondarCentimos(this.total - this.artigos[indexArtigo].PrecoUnitario);
       this.artigos[indexArtigo].Quantidade--;
     }
   }
