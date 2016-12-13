@@ -28,6 +28,7 @@ namespace PharmaCRM
 
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             config.EnableSystemDiagnosticsTracing();
+
         }
     }
 }
