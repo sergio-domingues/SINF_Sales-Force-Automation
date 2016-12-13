@@ -1489,7 +1489,14 @@ namespace PharmaCRM.Lib_Primavera
                 encomendas2_3M.Seguinte();
             }
 
-            kpis.ProdutosMaisVendidos = produtosQuantidadeVendida.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
+            Dictionary<string, double> ordenado = produtosQuantidadeVendida.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
+            Dictionary<string, double> artigosQuantidadesVendidas = new Dictionary<string,double>();
+            foreach (KeyValuePair<string, double> entry in ordenado)
+            {
+                artigosQuantidadesVendidas.Add(GetArtigo(entry.Key).Descricao, entry.Value);
+            }
+            kpis.ProdutosMaisVendidos = artigosQuantidadesVendidas;
+
             kpis.NumClientesAtivos = clientesValorComprado.Count();
             kpis.MelhoresClientes = clientesValorComprado.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
 
