@@ -21,13 +21,20 @@
                 <td>{{artigo.CodigoArtigo}}</td>
                 <td>{{artigo.DescricaoArtigo}}</td>
                 <td>{{artigo.Quantidade}}</td>
-                <td>{{artigo.unidade}}</td>
-                <td v-if="artigo.PrecoUnitario">{{artigo.PrecoUnitario*artigo.Quantidade}}</td>
-                <td v-else>{{artigo.TotalLiquido}}</td>
+                <td>{{artigo.Unidade}}</td>
+                <td>{{Math.round(artigo.PrecoUnitario*artigo.Quantidade*100)/100}}</td>
                 <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
                   <input type="number" v-show="artigo.Quantidade >1" class="quant-select" v-model="artigo.QuantSelec"><i class="fa fa-lg fa-minus clicable"
                     aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
                 </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><strong>{{total}}€</strong></td>
+                <td></td>
               </tr>
             </tbody>
           </table>
@@ -53,6 +60,8 @@
                     <th>CodArtigo</th>
                     <th>Descrição</th>
                     <th>Disponibilidade</th>
+                    <th>Unidade</th>
+                    <th>Preço unitário</th>
                     <th>Opções</th>
                   </tr>
                 </thead>
@@ -62,8 +71,9 @@
                     <td>{{artigo.Descricao}}</td>
                     <td v-if="artigo.StockAtual <= 0">INDISPONIVEL</td>
                     <td v-else>{{artigo.StockAtual}} </td>
-                    <td><input type="number" class="quant-select" v-model="artigo.QuantSelec"><i class="fa fa-lg fa-plus clicable"
-                        aria-hidden="true" v-show="artigo.StockAtual >0" v-on:click="adicionarArtigo(artigo)"></i></td>
+                    <td>{{artigo.unidade}}</td>
+                    <td>{{artigo.PrecoMedio}}€</td>
+                    <td><i class="fa fa-lg fa-plus clicable" aria-hidden="true" v-show="artigo.StockAtual >0 && artigo.PrecoMedio >0" v-on:click="adicionarArtigo(artigo)"></i></td>
                   </tr>
                 </tbody>
               </table>
@@ -87,10 +97,14 @@ function findById(array,id,idProp){
 	return -1;
 }
 
+function arredondarCentimos(preco) {
+  return Math.round(preco * 100) / 100;
+}
+
 export default {
   name: 'ArticleListing',
   data () {
-    return {listaArtigos:[],pesquisa:'', pesquisaReturnada: []}
+    return {listaArtigos:[],pesquisa:'', pesquisaReturnada: [], total: 0}
   },
   props:['artigos'],
   mounted:function(){
@@ -117,23 +131,24 @@ export default {
     adicionarArtigo : function(artigo) {
       const indexArtigo=findById(this.artigos,artigo.Codigo,'CodigoArtigo');
       if(indexArtigo>=0){
-          this.artigos[indexArtigo].Quantidade=this.artigos[indexArtigo].Quantidade+artigo.QuantSelec;
+        this.artigos[indexArtigo].Quantidade++;
+        this.total = arredondarCentimos(this.total + this.artigos[indexArtigo].PrecoUnitario);
       }else{
-        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:artigo.QuantSelec,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0],QuantSelec:1});
+        this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:1,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0], Unidade:artigo.unidade, PrecoUnitario:artigo.PrecoUltimo, DescricaoUnidade:artigo.DescricaoUnidade});
+        this.total = arredondarCentimos(this.artigos[this.artigos.length - 1].PrecoUnitario);
       }
     },
     removerArtigo: function(artigo){
-      this.artigos.splice(findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo'),1);
+      var pos = findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo');
+      this.total = arredondarCentimos(this.total - this.artigos[pos].Quantidade * this.artigos[pos].PrecoUnitario);
+      this.artigos.splice(pos,1);
     },
-    diminuirQuantidade:function(artigo){
+    diminuirQuantidade: function(artigo){
       const indexArtigo=findById(this.artigos,artigo.CodigoArtigo,'CodigoArtigo');
-      let newQuant = this.artigos[indexArtigo].Quantidade-this.artigos[indexArtigo].QuantSelec
-      if( newQuant > 0){
-        this.artigos[indexArtigo].Quantidade=newQuant;
-      }else{
-        this.artigos[indexArtigo].Quantidade=1;
+
+      this.total = arredondarCentimos(this.total - this.artigos[indexArtigo].PrecoUnitario);
+      this.artigos[indexArtigo].Quantidade--;
       }
-    }
   }
 }
 </script>
