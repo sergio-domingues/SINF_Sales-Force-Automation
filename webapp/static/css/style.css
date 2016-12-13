@@ -46,3 +46,12 @@ text-align: center;
     width: 20%;
     margin-right: 10px;
 }
+
+.panel-blue .widget-left {
+        line-height: 85px;
+        height: 100px;
+}
+
+.widget-right{
+  height: 100px;
+}
