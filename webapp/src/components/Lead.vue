@@ -30,7 +30,11 @@
 							<div class="form-group">
 								<label for="cliente" class="col-sm-2 control-label">Cliente</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="cliente" placeholder="Cliente" v-model="oportunidade.entidade" :disabled="!editing">
+									<select class="form-control" id="cliente" v-model="oportunidade.entidade" :disabled="!editing">
+										<option v-for="cliente in clientes" v-bind:value="cliente.CodCliente">
+											{{ cliente.CodCliente }}
+										</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -97,7 +101,7 @@ var oportunidadeTemp;
 export default {
   name: 'Lead',
   data () {
-    return {editing:false,oportunidade:{},atividades:[]}
+    return {editing:false,oportunidade:{},atividades:[],clientes:[]}
   },
   methods:{
 	  toggleEditing: function(){
@@ -121,12 +125,18 @@ export default {
 	  }
   },
 	mounted: function(){
+		this.$http.get(config.host+'/api/clientes')
+		.then((response)=>{
+			this.clientes=response.body;
+		})
+		
 		var URL = encodeURI(config.host+'/api/oportunidades/'+this.$route.params.id);
 		this.$http.get(URL)
 		.then((response)=>{
 			this.oportunidade=response.body;
 			this.oportunidade.data=new Date(this.oportunidade.data);
 		})
+
 
 		URL=encodeURI(config.host+'/api/oportunidades/'+this.$route.params.id+'/atividades');
 		this.$http.get(URL).then((response)=>{
