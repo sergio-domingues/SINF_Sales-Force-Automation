@@ -16,7 +16,7 @@
                 <ul class="dropdown-menu" role="menu">
                   <li v-if="!this.$root.adminMode"><a href="#" v-on:click="adminModeOn()">Admin Mode ON</a></li>
                   <li v-else><a href="#" v-on:click="adminModeOn()">Admin Mode OFF</a></li>
-                  <li><a href="#">Logout</a></li>
+                  <li><a href="#" v-on:click="logout">Logout</a></li>
                 </ul>
               </li>
             </ul>
@@ -45,6 +45,10 @@ import config from '../assets/config.json'
     methods:{
       adminModeOn: function() {
         this.$root.adminMode = !this.$root.adminMode;
+      },
+      logout: function(){
+        this.$root.auth=false;
+        this.$emit('loggedOut');
       }
     }
 }

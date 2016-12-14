@@ -21,7 +21,7 @@
                   {{atividade.resumo}}
                 </div>
                 <div class="pull-right">
-                  <i class="fa fa-check"v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
+                  <i class="fa fa-check" v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
                 </div>
               </router-link>
             </ul>
@@ -59,7 +59,7 @@
                   {{oportunidade.descricao}}
                 </div>
                 <div class="pull-right">
-                  <i class="fa fa-check"v-bind:class="[null ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
+                  <i class="fa fa-check" v-bind:class="[null ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
                 </div>
               </router-link>
             </ul>
@@ -82,10 +82,102 @@
           </div>
           <div class="col-sm-9 col-lg-7 widget-right">
             <div class="large">{{kpi.NumTotalVendas}}</div>
-            <div class="text-muted">Número Vendas</div>
+            <div class="text-muted">Vendas Totais</div>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.NumVendasCompletas}}</div>
+            <div class="text-muted">Valor Vendas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.NumOportunidadesPendentes}}</div>
+            <div class="text-muted">Oportunidades Pendentes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.NovasOportunidades}}</div>
+            <div class="text-muted">Novas Oportunidades</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.NumClientesAtivos}}</div>
+            <div class="text-muted">Clientes Ativos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-6">
+        <div class="panel panel-blue">
+          <div class="panel-heading">Melhores Clientes</div>
+          <div class="panel-body overflow-panel" style="background-color: white">
+            <div v-show="loading.kpi" class="spinner"></div>
+            <ul class="todo-list">
+              <router-link tag="li" :to="'/customers/'+key" class="todo-list-item clicable" v-for="(value, key) in kpi.MelhoresClientes">
+                <div class="checkbox">
+                  {{key + '=>' + value}}
+                </div>
+              </router-link>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <div class="col-md-6 col-lg-6">
+        <div class="panel panel-blue">
+          <div class="panel-heading">Produtos Mais Vendidos</div>
+          <div class="panel-body overflow-panel" style="background-color: white">
+            <div v-show="loading.kpi" class="spinner"></div>
+            <ul class="todo-list">
+              <router-link tag="li" :to="'/customers/'+key" class="todo-list-item" v-for="(value, key) in kpi.ProdutosMaisVendidos">
+                <div class="checkbox">
+                  {{key + '=>' + value}}
+                </div>
+              </router-link>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      
+
     </div>
   </div>
 </template>
@@ -93,16 +185,40 @@
 <script>
 import config from '../assets/config.json'
 
-function initMap() {
-  var uluru = {lat:40.6570816, lng:-7.9137786};
+function fillMap(atividades) {
+  var uluru = {lat:41.1785734, lng:-8.5962233};
   var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 10,
+    zoom: 11,
     center: uluru
   });
-  var marker = new google.maps.Marker({
-    position: uluru,
-    map: map
-  });
+  var geocoder = new google.maps.Geocoder();
+  var bounds = new google.maps.LatLngBounds();
+  for (var i = 0; i < atividades.length; i++) {
+  	var atividade = atividades[i];
+	geocoder.geocode({
+	  address: atividades[i].local
+	},
+	function (position) {
+		if (position.length > 0) {
+			var infowindow = new google.maps.InfoWindow({
+			    content: "<p><a href=\"#/activities/" + atividade.id + "\">" + atividade.resumo + "</a></p>" +
+			    	"<p>" + atividade.dataInicio + " - " + atividade.dataFim + "</p>"
+			  });
+		  var marker = new google.maps.Marker({
+		    position: position[0].geometry.location,
+		    map: map
+		  });
+		  marker.addListener('click', function() {
+		    infowindow.open(map, marker);
+		  });
+		  infowindow.open(map, marker);
+		  atividade.position = marker.position;
+		  bounds.extend(marker.position);
+		  map.fitBounds(bounds);
+		  if (map.getZoom() > 16) map.setZoom(16); // Avoid too much zoom
+		}
+    });
+  }
 }
 
 export default {
@@ -121,6 +237,7 @@ export default {
       .then((response)=>{
         this.atividades=response.body;
         this.loading.atividades=false;
+        fillMap(this.atividades);
       });
 
       this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/oportunidades/')
@@ -134,16 +251,14 @@ export default {
         this.loading.kpi=false;
         this.kpi=response.body;
       });
-      
-      initMap();
     }
   }
 }
 </script>
 
 <style>
-#map {
-  height: 250px;
-  width: 100%;
-}
+  #map {
+    height: 250px;
+    width: 100%;
+  }
 </style>

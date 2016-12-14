@@ -176,7 +176,7 @@
 			}
 		},
 		mounted: function(){
-			if(this.$route.params.id!=="new"){
+			if(this.$route.params.id!=="new" ){
 				this.$http.get(encodeURI(config.host+'/api/clientes/'+this.$route.params.id))
 				.then((response)=>{
 					this.cliente=response.body;
@@ -202,12 +202,14 @@
                     this.loading.atividades=false;
                     this.atividades=response.body;
                 })
-			}else{
+			}else if(!this.$root.adminMode){
 				this.toggleEditing();
 				this.creating=true;
                 this.loading.atividades=false;
                 this.loading.oportunidades=false;
                 this.loading.encomendas=false;
+			}else{
+				this.$router.replace('/customers');
 			}
 	
 		}
