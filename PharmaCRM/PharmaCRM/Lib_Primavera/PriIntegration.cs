@@ -8,12 +8,23 @@ using Interop.StdBE900;
 using Interop.GcpBE900;
 using Interop.CrmBE900;
 using ADODB;
+using PharmaCRM.Lib_Primavera.Model;
 
 namespace PharmaCRM.Lib_Primavera
 {
     public class PriIntegration
     {
         #region Vendedor
+
+        public static int NumVendedores()
+        {
+            StdBELista objList = PriEngine.Engine.Consulta("SELECT COUNT(Vendedor) AS num FROM vendedores");
+            if (!objList.NoFim())
+            {
+                return objList.Valor("num");
+            }
+            return -1;
+        }
 
         public static List<Model.Vendedor> ListaVendedores()
         {
@@ -1388,11 +1399,13 @@ namespace PharmaCRM.Lib_Primavera
 
             Dictionary<string, double> produtosQuantidadeVendida = new Dictionary<string, double>();
             Dictionary<string, double> clientesValorComprado = new Dictionary<string, double>();
+            Dictionary<string, double> vendedoresQuantidadeVendida = new Dictionary<string, double>();
 
             while (!encomendas1M.NoFim())
             {
                 string docID = encomendas1M.Valor("id");
                 string cliente = encomendas1M.Valor("Entidade");
+                string vendedor = encomendas1M.Valor("Responsavel");
 
                 kpis.NumTotalVendas++;
 
@@ -1437,6 +1450,18 @@ namespace PharmaCRM.Lib_Primavera
                     {
                         clientesValorComprado.Add(cliente, precoEncomenda);
                     }
+
+                    double valorVendedor;
+                    if (vendedoresQuantidadeVendida.TryGetValue(vendedor, out valorVendedor))
+                    {
+                        vendedoresQuantidadeVendida[vendedor] = valorVendedor + precoEncomenda;
+                    }
+                    else
+                    {
+                        vendedoresQuantidadeVendida.Add(vendedor, precoEncomenda);
+                    }
+
+                    kpis.ValorTotalVendas += precoEncomenda;
                 }
 
                 encomendas1M.Seguinte();
@@ -1446,6 +1471,7 @@ namespace PharmaCRM.Lib_Primavera
             {
                 string docID = encomendas2_3M.Valor("id");
                 string cliente = encomendas2_3M.Valor("Entidade");
+                string vendedor = encomendas2_3M.Valor("Responsavel");
 
                 if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
                 {
@@ -1484,17 +1510,54 @@ namespace PharmaCRM.Lib_Primavera
                     {
                         clientesValorComprado.Add(cliente, precoEncomenda);
                     }
+
+                    double valorVendedor;
+                    if (vendedoresQuantidadeVendida.TryGetValue(vendedor, out valorVendedor))
+                    {
+                        vendedoresQuantidadeVendida[vendedor] = valorVendedor + precoEncomenda;
+                    }
+                    else
+                    {
+                        vendedoresQuantidadeVendida.Add(vendedor, precoEncomenda);
+                    }
                 }
 
                 encomendas2_3M.Seguinte();
             }
 
-            kpis.ProdutosMaisVendidos = produtosQuantidadeVendida.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
+            Dictionary<string, double> ordenado = produtosQuantidadeVendida.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
+            Dictionary<string, double> artigosQuantidadesVendidas = new Dictionary<string,double>();
+            foreach (KeyValuePair<string, double> entry in ordenado)
+            {
+                artigosQuantidadesVendidas.Add(GetArtigo(entry.Key).Descricao, entry.Value);
+            }
+            kpis.ProdutosMaisVendidos = artigosQuantidadesVendidas;
+
             kpis.NumClientesAtivos = clientesValorComprado.Count();
             kpis.MelhoresClientes = clientesValorComprado.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
 
             kpis.NovasOportunidades = KPI_getVendedorOportunidades(true, idVendedor);
             kpis.NumOportunidadesPendentes = KPI_getVendedorOportunidades(false, idVendedor);
+
+            if (idVendedor == null)
+            {
+                Model.GlobalKPI kpi = new GlobalKPI();
+                kpi.IdVendedor = kpis.IdVendedor;
+                kpi.NumTotalVendas = kpis.NumTotalVendas;
+                kpi.ValorTotalVendas = kpis.ValorTotalVendas;
+                kpi.ProdutosMaisVendidos = kpis.ProdutosMaisVendidos;
+                kpi.NumVendasCompletas = kpis.NumVendasCompletas;
+                kpi.NumOportunidadesPendentes = kpis.NumOportunidadesPendentes;
+                kpi.NumClientesAtivos = kpis.NumClientesAtivos;
+                kpi.MelhoresClientes = kpis.MelhoresClientes;
+                kpi.MelhoresVendedores = vendedoresQuantidadeVendida;
+                int numVendedores = NumVendedores();
+                if (numVendedores > 0)
+                {
+                    kpi.ValorMedioVendasPorVendedor = kpi.ValorTotalVendas / numVendedores;
+                }
+                return kpi;
+            }
 
             return kpis;
         }

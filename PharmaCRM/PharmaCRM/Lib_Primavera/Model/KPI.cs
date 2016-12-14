@@ -33,7 +33,7 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
-        // Maps product ID to ammount sold (current month)
+        // Maps product name to ammount sold (current month)
         public Dictionary<string, double> ProdutosMaisVendidos
         {
             get;

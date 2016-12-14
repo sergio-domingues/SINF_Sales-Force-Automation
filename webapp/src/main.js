@@ -21,6 +21,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 const store={
+  auth:false,
   adminMode: false,
   vendedor:{id:'1',name:''},
 }
@@ -44,7 +45,7 @@ const router = new VueRouter({
   routes
 })
 
-Vue.component('v-select',vSelect);
+//resgiter component globally
 Vue.component('breadcrumb', Breadcrumb)
 
 new Vue({

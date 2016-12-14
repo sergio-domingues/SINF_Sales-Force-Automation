@@ -83,7 +83,13 @@ export default {
   },
   methods:{
     createSalesOrder: function(e){
-      const encomenda =
+        
+         if(this.$root.adminMode){
+          this.$nextTick(()=>{
+            $('#create-salesorder-modall').modal('hide');
+          })
+        }else{
+          const encomenda =
       {
         Data:this.encomenda.data,
         Entidade:this.selected,
@@ -98,6 +104,7 @@ export default {
         },(err)=>{
           console.log(err)
 			});
+        }
     }
   }
 }

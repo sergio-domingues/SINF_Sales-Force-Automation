@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade"  id="create-activity-modal" tabindex="-1" role="dialog" aria-labelledby="CreateActivityModal">
+  <div class="modal fade" id="create-activity-modal" tabindex="-1" role="dialog" aria-labelledby="CreateActivityModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -20,7 +20,7 @@
 
             <div class="form-group">
               <label for="resumo">Resumo</label>
-                <input type="text" class="form-control" id="resumo" placeholder="resumo atividade" v-model="atividade.resumo" :value="atividade.resumo">
+              <input type="text" class="form-control" id="resumo" placeholder="resumo atividade" v-model="atividade.resumo" :value="atividade.resumo">
             </div>
 
             <div class="form-group">
@@ -43,7 +43,8 @@
 
             <div class="form-group">
               <label for="Tipo">Oportunidade</label>
-              <select class="form-control selectpicker" id="estado" v-model="atividade.idCabecalhoOportunidadeVenda" data-live-search="true" required>
+              <select class="form-control selectpicker" id="estado" v-model="atividade.idCabecalhoOportunidadeVenda" data-live-search="true"
+                required>
                 <option v-for="oportunidade in oportunidades" v-bind:value="oportunidade.id">
                   {{ oportunidade.descricao }}
                 </option>
@@ -64,21 +65,24 @@
             </div>
             <div class="form-group">
               <label for="descricao">Descrição</label>
-              <textarea class="form-control" rows="3"  v-model="atividade.descricao">
+              <textarea class="form-control" rows="3" v-model="atividade.descricao">
               </textarea>
             </div>
 
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Confirmar</button>
             </div>
-          </form>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-  </template>
+        </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</template>
 
 
-  <script>
+<script>
   import config from '../../assets/config.json'
   export default {
     name: 'CreateActivityModal',
@@ -86,6 +90,7 @@
       return {atividade: {vendedor:this.$root.vendedor.id}, options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}], tipos: [],clientes: [], oportunidades: []}
     },
     mounted: function(){
+
       this.$http.get(config.host+'/api/atividades/tipos')
       .then((response)=>{
         for(var tipo of response.body){
@@ -120,13 +125,22 @@
         .then((response)=>{
           if(response.status == 201){
             $('#create-activity-modal').modal('hide');
-          }else{
+          })
+        }else{
+          this.atividade.tipoEntidadePrincipal = "C";
+          this.$http.post(config.host+'/api/atividades/', this.atividade)
+          .then((response)=>{
+            if(response.status == 201){
+             $('#create-activity-modal').modal('hide');
+            }else{
               console.log(this.atividade)
               console.log(response);
-          }
-        },(err)=>{
-          console.log(err)
-        });
+            }
+            },(err)=>{
+              console.log(err)
+          });
+        }
+        
       }
     }
   }

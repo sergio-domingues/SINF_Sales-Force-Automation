@@ -66,13 +66,20 @@ export default {
   },
   methods:{
     createLead: function(e){
-      this.$http.post(config.host+'/api/oportunidades/',{descricao:this.oportunidade.descricao,entidade:this.selected,
-          tipoEntidade:"C",vendedor:this.$root.vendedor.id,dataExpiracao:this.oportunidade.data,codigo:this.oportunidade.identificador})
-        .then((response)=>{
-          console.log(response);
-        },(err)=>{
-          console.log(err)
-			});
+       if(this.$root.adminMode){
+          this.$nextTick(()=>{
+            $('#create-modal').modal('hide');
+          })
+        }else{
+          this.$http.post(config.host+'/api/oportunidades/',{descricao:this.oportunidade.descricao,entidade:this.selected,
+            tipoEntidade:"C",vendedor:this.$root.vendedor.id,dataExpiracao:this.oportunidade.data,codigo:this.oportunidade.identificador})
+            .then((response)=>{
+              console.log(response);
+            },(err)=>{
+              console.log(err)
+			      });
+        }
+      
     }
   }
 }
