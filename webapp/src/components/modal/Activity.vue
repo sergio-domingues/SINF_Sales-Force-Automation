@@ -34,7 +34,7 @@
 
             <div class="form-group">
               <label for="Tipo">Cliente</label>
-              <select class="form-control" id="estado" v-model="atividade.idContactoPrincipal">
+              <select class="form-control selectpicker" id="estado" v-model="atividade.idContactoPrincipal" data-live-search="true" required>
                 <option v-for="cliente in clientes" v-bind:value="cliente.CodCliente">
                   {{ cliente.Nome }}
                 </option>
@@ -43,7 +43,7 @@
 
             <div class="form-group">
               <label for="Tipo">Oportunidade</label>
-              <select class="form-control" id="estado" v-model="atividade.idCabecalhoOportunidadeVenda">
+              <select class="form-control selectpicker" id="estado" v-model="atividade.idCabecalhoOportunidadeVenda" data-live-search="true" required>
                 <option v-for="oportunidade in oportunidades" v-bind:value="oportunidade.id">
                   {{ oportunidade.descricao }}
                 </option>
@@ -96,12 +96,19 @@
       this.$http.get(config.host+'/api/clientes')
       .then((response)=>{
           this.clientes=response.body;
+          this.$nextTick(()=>{
+            $('.selectpicker').selectpicker('refresh');
+          })
       })
 
       this.$http.get(config.host+'/api/oportunidades')
       .then((response)=>{
           this.oportunidades=response.body;
+          this.$nextTick(()=>{
+            $('.selectpicker').selectpicker('refresh');
+          })
       })
+      
 
     },
     methods:{

@@ -278,6 +278,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AtividadesController.cs" />
     <Compile Include="Controllers\ArtigosController.cs" />
+    <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\CatalogoController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\EncomendasController.cs" />
@@ -291,6 +292,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Lib_Primavera\Model\AuthPair.cs" />
+    <Compile Include="Lib_Primavera\Model\GlobalKPI.cs" />
     <Compile Include="Lib_Primavera\Model\KPI.cs" />
     <Compile Include="Lib_Primavera\Model\Objetivo.cs" />
     <Compile Include="Lib_Primavera\Model\TipoAtividade.cs" />
@@ -305,6 +308,7 @@
     <Compile Include="Lib_Primavera\Model\LinhaEncomenda.cs" />
     <Compile Include="Lib_Primavera\Model\RespostaErro.cs" />
     <Compile Include="Lib_Primavera\PriEngine.cs" />
+    <Compile Include="Lib_Primavera\PharmaCRM.cs" />
     <Compile Include="Lib_Primavera\PriIntegration.cs" />
     <Compile Include="Lib_Primavera\Model\Atividade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
