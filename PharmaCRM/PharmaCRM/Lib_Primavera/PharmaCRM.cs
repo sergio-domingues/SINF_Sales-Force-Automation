@@ -35,7 +35,7 @@ namespace PharmaCRM.Lib_Primavera
             return result;
         }
 
-        public static Objetivo getObjetivoVendedor(string idVendedor)
+        public static ObjetivoEstado getObjetivoVendedor(string idVendedor)
         {
             SqlConnection cnn = new SqlConnection(connectionString);
             cnn.Open();
@@ -46,13 +46,14 @@ namespace PharmaCRM.Lib_Primavera
             command.Parameters.AddWithValue("@vendedor", idVendedor);
 
             SqlDataReader reader = command.ExecuteReader();
-            Objetivo obj = null;
+            ObjetivoEstado obj = null;
 
             if (reader.Read())
             {
-                obj = new Objetivo();
+                obj = new ObjetivoEstado();
                 obj.Vendedor = idVendedor;
                 obj.Valor = reader.GetFloat(0);
+                obj.ValorCumprido = PriIntegration.getVendedorVendasMes(idVendedor);
             }
 
             reader.Close();
@@ -61,7 +62,7 @@ namespace PharmaCRM.Lib_Primavera
             return obj;
         }
 
-        public static List<Objetivo> getObjetivosVendedores()
+        public static List<ObjetivoEstado> getObjetivosVendedores()
         {
             SqlConnection cnn = new SqlConnection(connectionString);
             cnn.Open();
@@ -71,13 +72,14 @@ namespace PharmaCRM.Lib_Primavera
             SqlCommand command = new SqlCommand(queryString, cnn);
 
             SqlDataReader reader = command.ExecuteReader();
-            List<Objetivo> result = new List<Objetivo>();
+            List<ObjetivoEstado> result = new List<ObjetivoEstado>();
 
             while (reader.Read())
             {
-                Objetivo obj = new Objetivo();
+                ObjetivoEstado obj = new ObjetivoEstado();
                 obj.Vendedor = reader.GetString(0);
                 obj.Valor = reader.GetFloat(1);
+                obj.ValorCumprido = Lib_Primavera.PriIntegration.getVendedorVendasMes(obj.Vendedor);
                 result.Add(obj);
             }
 

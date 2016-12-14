@@ -1546,6 +1546,34 @@ namespace PharmaCRM.Lib_Primavera
             return oportunidadesLista.NumLinhas();
         }
 
+        public static double getVendedorVendasMes(string idVendedor)
+        {
+            // Encomendas último mês
+            StdBELista encomendas = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
+                + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -1, GETDATE()) AND Responsavel='" + idVendedor + "'");
+
+            double valorEncomendas = 0;
+            while (!encomendas.NoFim())
+            {
+                string docID = encomendas.Valor("id");
+
+                if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
+                {
+                    StdBELista linhasDoc = PriEngine.Engine.Consulta("SELECT PrecoLiquido FROM LinhasDoc WHERE IdCabecDoc='" + docID + "' ORDER BY NumLinha");
+
+                    while (!linhasDoc.NoFim())
+                    {
+                        double preco = linhasDoc.Valor("PrecoLiquido");
+                        valorEncomendas += preco;
+                        linhasDoc.Seguinte();
+                    }
+                }
+                encomendas.Seguinte();
+            }
+
+            return valorEncomendas;
+        }
+
         #endregion
     }
 }
