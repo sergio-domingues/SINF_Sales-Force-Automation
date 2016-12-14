@@ -21,7 +21,7 @@
                   {{atividade.resumo}}
                 </div>
                 <div class="pull-right">
-                  <i class="fa fa-check"v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
+                  <i class="fa fa-check" v-bind:class="[atividade.estado ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
                 </div>
               </router-link>
             </ul>
@@ -59,7 +59,7 @@
                   {{oportunidade.descricao}}
                 </div>
                 <div class="pull-right">
-                  <i class="fa fa-check"v-bind:class="[null ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
+                  <i class="fa fa-check" v-bind:class="[null ? 'fa-check' : 'fa-spinner', 'fa']" aria-hidden="true"></i>
                 </div>
               </router-link>
             </ul>
@@ -82,10 +82,102 @@
           </div>
           <div class="col-sm-9 col-lg-7 widget-right">
             <div class="large">{{kpi.NumTotalVendas}}</div>
-            <div class="text-muted">Número Vendas</div>
+            <div class="text-muted">Vendas Totais</div>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.NumVendasCompletas}}</div>
+            <div class="text-muted">Valor Vendas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.NumOportunidadesPendentes}}</div>
+            <div class="text-muted">Oportunidades Pendentes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.NovasOportunidades}}</div>
+            <div class="text-muted">Novas Oportunidades</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.NumClientesAtivos}}</div>
+            <div class="text-muted">Clientes Ativos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-6">
+        <div class="panel panel-blue">
+          <div class="panel-heading">Melhores Clientes</div>
+          <div class="panel-body overflow-panel" style="background-color: white">
+            <div v-show="loading.kpi" class="spinner"></div>
+            <ul class="todo-list">
+              <router-link tag="li" :to="'/customers/'+key" class="todo-list-item clicable" v-for="(value, key) in kpi.MelhoresClientes">
+                <div class="checkbox">
+                  {{key + '=>' + value}}
+                </div>
+              </router-link>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <div class="col-md-6 col-lg-6">
+        <div class="panel panel-blue">
+          <div class="panel-heading">Produtos Mais Vendidos</div>
+          <div class="panel-body overflow-panel" style="background-color: white">
+            <div v-show="loading.kpi" class="spinner"></div>
+            <ul class="todo-list">
+              <router-link tag="li" :to="'/customers/'+key" class="todo-list-item" v-for="(value, key) in kpi.ProdutosMaisVendidos">
+                <div class="checkbox">
+                  {{key + '=>' + value}}
+                </div>
+              </router-link>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      
+
     </div>
   </div>
 </template>
@@ -142,8 +234,8 @@ export default {
 </script>
 
 <style>
-#map {
-  height: 250px;
-  width: 100%;
-}
+  #map {
+    height: 250px;
+    width: 100%;
+  }
 </style>

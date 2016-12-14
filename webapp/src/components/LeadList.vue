@@ -4,7 +4,7 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Oportunidades <i class="fa fa-plus pull-right clicable" data-toggle="modal" data-target="#create-modal" aria-hidden="true"></i></h1>
+				<h1 class="page-header">Lista de Oportunidades <i class="fa fa-plus pull-right clicable" v-show="!$root.adminMode" data-toggle="modal" data-target="#create-modal" aria-hidden="true"></i></h1>
 
 			</div>
 		</div>
