@@ -335,7 +335,7 @@ namespace PharmaCRM.Lib_Primavera
 
             StdBELista objListCab;
 
-            objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
+            objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Desconto, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
                 + "FROM Artigo, ArtigoMoeda, Unidades WHERE Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.Artigo = '" + codArtigo + "' AND Artigo.UnidadeVenda = Unidades.Unidade");
 
             if (objListCab.NoFim())
@@ -360,6 +360,7 @@ namespace PharmaCRM.Lib_Primavera
             art.PVPs.Add(objListCab.Valor("PVP6"));
             art.unidade = objListCab.Valor("Unidade");
             art.descricaoUnidade = objListCab.Valor("DescricaoUnidade");
+            art.desconto = objListCab.Valor("Desconto");
 
             return art;
 
@@ -371,7 +372,7 @@ namespace PharmaCRM.Lib_Primavera
             Model.Artigo art;
             List<Model.Artigo> listArts = new List<Model.Artigo>();
 
-            objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
+            objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Desconto, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
                 + "FROM Artigo, ArtigoMoeda, Unidades WHERE Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.UnidadeVenda = Unidades.Unidade");
             while (!objListCab.NoFim())
             {
@@ -392,6 +393,7 @@ namespace PharmaCRM.Lib_Primavera
                 art.PVPs.Add(objListCab.Valor("PVP6"));
                 art.unidade = objListCab.Valor("Unidade");
                 art.descricaoUnidade = objListCab.Valor("DescricaoUnidade");
+                art.desconto = objListCab.Valor("Desconto");
 
                 listArts.Add(art);
 
