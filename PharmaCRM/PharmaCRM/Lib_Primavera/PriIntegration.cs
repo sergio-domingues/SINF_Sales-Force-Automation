@@ -77,6 +77,7 @@ namespace PharmaCRM.Lib_Primavera
                 query += " AND DataInicio >= \'" + dataInicio + "\'";
             if (dataFim != null)
                 query += " AND DataFim <= \'" + dataFim + "\'";
+            query += " ORDER BY DataInicio ASC";
             objList = PriEngine.Engine.Consulta(query);
 
 

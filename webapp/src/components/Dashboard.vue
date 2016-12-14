@@ -185,16 +185,40 @@
 <script>
 import config from '../assets/config.json'
 
-function initMap() {
-  var uluru = {lat:40.6570816, lng:-7.9137786};
+function fillMap(atividades) {
+  var uluru = {lat:41.1785734, lng:-8.5962233};
   var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 10,
+    zoom: 11,
     center: uluru
   });
-  var marker = new google.maps.Marker({
-    position: uluru,
-    map: map
-  });
+  var geocoder = new google.maps.Geocoder();
+  var bounds = new google.maps.LatLngBounds();
+  for (var i = 0; i < atividades.length; i++) {
+  	var atividade = atividades[i];
+	geocoder.geocode({
+	  address: atividades[i].local
+	},
+	function (position) {
+		if (position.length > 0) {
+			var infowindow = new google.maps.InfoWindow({
+			    content: "<p><a href=\"#/activities/" + atividade.id + "\">" + atividade.resumo + "</a></p>" +
+			    	"<p>" + atividade.dataInicio + " - " + atividade.dataFim + "</p>"
+			  });
+		  var marker = new google.maps.Marker({
+		    position: position[0].geometry.location,
+		    map: map
+		  });
+		  marker.addListener('click', function() {
+		    infowindow.open(map, marker);
+		  });
+		  infowindow.open(map, marker);
+		  atividade.position = marker.position;
+		  bounds.extend(marker.position);
+		  map.fitBounds(bounds);
+		  if (map.getZoom() > 16) map.setZoom(16); // Avoid too much zoom
+		}
+    });
+  }
 }
 
 export default {
@@ -213,6 +237,7 @@ export default {
       .then((response)=>{
         this.atividades=response.body;
         this.loading.atividades=false;
+        fillMap(this.atividades);
       });
 
       this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/oportunidades/')
@@ -226,8 +251,6 @@ export default {
         this.loading.kpi=false;
         this.kpi=response.body;
       });
-      
-      initMap();
     }
   }
 }
