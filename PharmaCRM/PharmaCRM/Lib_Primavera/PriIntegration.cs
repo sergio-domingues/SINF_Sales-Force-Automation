@@ -1325,49 +1325,6 @@ namespace PharmaCRM.Lib_Primavera
 
         #endregion
 
-        #region Objetivo
-
-        public static List<Model.Objetivo> GetObjetivos()
-        {
-            StdBELista objListCab;
-            Model.Objetivo objetivo;
-            List<Model.Objetivo> listObjs = new List<Model.Objetivo>();
-
-            objListCab = PriEngine.Engine.Consulta("SELECT idVendedor, valor FROM ObjetivoVendedor");
-            while (!objListCab.NoFim())
-            {
-                objetivo = new Model.Objetivo();
-                objetivo.CodigoVendedor = objListCab.Valor("idVendedor");
-                objetivo.Valor = objListCab.Valor("valor");
-
-                listObjs.Add(objetivo);
-
-                objListCab.Seguinte();
-            }
-
-            return listObjs;
-        }
-
-        public static Model.Objetivo GetObjetivoVendedor(string idVendedor)
-        {
-            StdBELista objListCab;
-
-            objListCab = PriEngine.Engine.Consulta("SELECT idVendedor, valor FROM ObjetivoVendedor WHERE idVendedor='" + idVendedor + "'");
-
-            if (objListCab.NoFim())
-            {
-                return null;
-            }
-
-            Model.Objetivo objetivo = new Model.Objetivo();
-            objetivo.CodigoVendedor = objListCab.Valor("idVendedor");
-            objetivo.Valor = objListCab.Valor("valor");
-
-            return objetivo;
-        }
-
-        #endregion
-
         #region KPI
 
         public static Model.KPI getKPIs()

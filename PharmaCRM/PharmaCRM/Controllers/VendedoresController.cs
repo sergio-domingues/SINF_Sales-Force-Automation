@@ -57,7 +57,7 @@ namespace PharmaCRM.Controllers
         [HttpGet]
         public Lib_Primavera.Model.Objetivo GetVendedorObjetivo(string id)
         {
-            Lib_Primavera.Model.Objetivo obj = Lib_Primavera.PriIntegration.GetObjetivoVendedor(id);
+            Lib_Primavera.Model.Objetivo obj = Lib_Primavera.PharmaCRM.getObjetivoVendedor(id);
 
             if (obj == null)
             {

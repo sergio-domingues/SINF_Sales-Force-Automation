@@ -15,6 +15,8 @@ namespace PharmaCRM
 
     public class WebApiApplication : System.Web.HttpApplication
     {
+        public static SqlConnection conn;
+
         protected void Application_Start()
         {
             if (!Lib_Primavera.PriEngine.InitializeCompany(PharmaCRM.Properties.Settings.Default.Company.Trim(), PharmaCRM.Properties.Settings.Default.User.Trim(), PharmaCRM.Properties.Settings.Default.Password.Trim()) == true)

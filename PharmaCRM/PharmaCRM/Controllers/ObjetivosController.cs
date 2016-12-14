@@ -9,20 +9,11 @@ namespace PharmaCRM.Controllers
 {
     public class ObjetivosController : ApiController
     {
-        /*
-        
-         Requires creating table ObjetivoVendedor with columns:
-         * idVendedor VARCHAR(3),
-         * valor FLOAT
-         
-        */
-
-
         [Route("api/objetivos")]
         [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Objetivo> Get()
         {
-            IEnumerable<Lib_Primavera.Model.Objetivo> objs = Lib_Primavera.PriIntegration.GetObjetivos();
+            IEnumerable<Lib_Primavera.Model.Objetivo> objs = Lib_Primavera.PharmaCRM.getObjetivosVendedores();
 
             if(objs == null)
             {
@@ -36,7 +27,7 @@ namespace PharmaCRM.Controllers
         [HttpGet]
         public Lib_Primavera.Model.Objetivo Get(string idVendedor)
         {
-            Lib_Primavera.Model.Objetivo obj = Lib_Primavera.PriIntegration.GetObjetivoVendedor(idVendedor);
+            Lib_Primavera.Model.Objetivo obj = Lib_Primavera.PharmaCRM.getObjetivoVendedor(idVendedor);
 
             if (obj == null)
             {

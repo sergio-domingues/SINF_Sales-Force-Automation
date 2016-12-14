@@ -7,7 +7,7 @@ namespace PharmaCRM.Lib_Primavera.Model
 {
     public class Objetivo
     {
-        public string CodigoVendedor
+        public string Vendedor
         {
             get;
             set;
