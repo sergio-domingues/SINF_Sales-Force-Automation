@@ -106,22 +106,25 @@
           })
       })
 
-      this.$http.get(config.host+'/api/oportunidades')
+      this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/oportunidades')
       .then((response)=>{
           this.oportunidades=response.body;
           this.$nextTick(()=>{
             $('.selectpicker').selectpicker('refresh');
           })
       })
-      
+
 
     },
     methods:{
       createActivity: function(e){
-        if(this.$root.adminMode){
-          this.$nextTick(()=>{
+        this.atividade.tipoEntidadePrincipal = "C";
+        console.log('Infos antes de criar atividade');
+        console.log(this.atividade);
+        this.$http.post(config.host+'/api/atividades/', this.atividade)
+        .then((response)=>{
+          if(response.status == 201){
             $('#create-activity-modal').modal('hide');
-          })
         }else{
           this.atividade.tipoEntidadePrincipal = "C";
           this.$http.post(config.host+'/api/atividades/', this.atividade)
@@ -136,8 +139,9 @@
               console.log(err)
           });
         }
-        
-      }
+
+      });
     }
   }
+}
   </script>

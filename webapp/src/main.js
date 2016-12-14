@@ -13,6 +13,8 @@ import SalesOrderList from './components/SalesOrderList.vue'
 import NotFound from './components/NotFound.vue'
 import Breadcrumb from './components/Breadcrumb.vue'
 import VueResource from 'vue-resource'
+import vSelect from 'vue-select'
+
 
 
 Vue.use(VueRouter);
