@@ -9,20 +9,11 @@ namespace PharmaCRM.Controllers
 {
     public class ObjetivosController : ApiController
     {
-        /*
-        
-         Requires creating table ObjetivoVendedor with columns:
-         * idVendedor VARCHAR(3),
-         * valor FLOAT
-         
-        */
-
-
         [Route("api/objetivos")]
         [HttpGet]
         public IEnumerable<Lib_Primavera.Model.Objetivo> Get()
         {
-            IEnumerable<Lib_Primavera.Model.Objetivo> objs = Lib_Primavera.PriIntegration.GetObjetivos();
+            IEnumerable<Lib_Primavera.Model.Objetivo> objs = Lib_Primavera.PharmaCRM.getObjetivosVendedores();
 
             if(objs == null)
             {
@@ -36,7 +27,7 @@ namespace PharmaCRM.Controllers
         [HttpGet]
         public Lib_Primavera.Model.Objetivo Get(string idVendedor)
         {
-            Lib_Primavera.Model.Objetivo obj = Lib_Primavera.PriIntegration.GetObjetivoVendedor(idVendedor);
+            Lib_Primavera.Model.Objetivo obj = Lib_Primavera.PharmaCRM.getObjetivoVendedor(idVendedor);
 
             if (obj == null)
             {
@@ -47,17 +38,28 @@ namespace PharmaCRM.Controllers
         }
 
         // POST: api/Objetivos
+        [Route("api/objetivos")]
+        [HttpPost]
         public void Post([FromBody]Lib_Primavera.Model.Objetivo objetivo)
         {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            if (!Lib_Primavera.PharmaCRM.updateCreateObjetivo(objetivo))
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
         }
 
         // PUT: api/Objetivos/5
-        public void Put(int id, [FromBody]string value)
+        [Route("api/objetivos/{id}")]
+        [HttpPut]
+        public void Put(string id, [FromBody]double value)
         {
-            // TODO
-            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            Lib_Primavera.Model.Objetivo obj = new Lib_Primavera.Model.Objetivo();
+            obj.Vendedor = id;
+            obj.Valor = value;
+            if (!Lib_Primavera.PharmaCRM.updateCreateObjetivo(obj))
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
         }
 
         // DELETE: api/Objetivos/5

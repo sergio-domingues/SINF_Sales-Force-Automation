@@ -335,7 +335,7 @@ namespace PharmaCRM.Lib_Primavera
 
             StdBELista objListCab;
 
-            objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
+            objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Desconto, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
                 + "FROM Artigo, ArtigoMoeda, Unidades WHERE Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.Artigo = '" + codArtigo + "' AND Artigo.UnidadeVenda = Unidades.Unidade");
 
             if (objListCab.NoFim())
@@ -360,6 +360,7 @@ namespace PharmaCRM.Lib_Primavera
             art.PVPs.Add(objListCab.Valor("PVP6"));
             art.unidade = objListCab.Valor("Unidade");
             art.descricaoUnidade = objListCab.Valor("DescricaoUnidade");
+            art.desconto = objListCab.Valor("Desconto");
 
             return art;
 
@@ -371,7 +372,7 @@ namespace PharmaCRM.Lib_Primavera
             Model.Artigo art;
             List<Model.Artigo> listArts = new List<Model.Artigo>();
 
-            objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
+            objListCab = PriEngine.Engine.Consulta("SELECT Artigo.Artigo, Artigo.Desconto, Artigo.Descricao, STKActual, PCUltimo, PCMedio, Iva, PrazoEntrega, PVP1, PVP2, PVP3, PVP4, PVP5, PVP6, Unidades.Unidade, Unidades.Descricao AS DescricaoUnidade "
                 + "FROM Artigo, ArtigoMoeda, Unidades WHERE Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.UnidadeVenda = Unidades.Unidade");
             while (!objListCab.NoFim())
             {
@@ -392,6 +393,7 @@ namespace PharmaCRM.Lib_Primavera
                 art.PVPs.Add(objListCab.Valor("PVP6"));
                 art.unidade = objListCab.Valor("Unidade");
                 art.descricaoUnidade = objListCab.Valor("DescricaoUnidade");
+                art.desconto = objListCab.Valor("Desconto");
 
                 listArts.Add(art);
 
@@ -1325,49 +1327,6 @@ namespace PharmaCRM.Lib_Primavera
 
         #endregion
 
-        #region Objetivo
-
-        public static List<Model.Objetivo> GetObjetivos()
-        {
-            StdBELista objListCab;
-            Model.Objetivo objetivo;
-            List<Model.Objetivo> listObjs = new List<Model.Objetivo>();
-
-            objListCab = PriEngine.Engine.Consulta("SELECT idVendedor, valor FROM ObjetivoVendedor");
-            while (!objListCab.NoFim())
-            {
-                objetivo = new Model.Objetivo();
-                objetivo.CodigoVendedor = objListCab.Valor("idVendedor");
-                objetivo.Valor = objListCab.Valor("valor");
-
-                listObjs.Add(objetivo);
-
-                objListCab.Seguinte();
-            }
-
-            return listObjs;
-        }
-
-        public static Model.Objetivo GetObjetivoVendedor(string idVendedor)
-        {
-            StdBELista objListCab;
-
-            objListCab = PriEngine.Engine.Consulta("SELECT idVendedor, valor FROM ObjetivoVendedor WHERE idVendedor='" + idVendedor + "'");
-
-            if (objListCab.NoFim())
-            {
-                return null;
-            }
-
-            Model.Objetivo objetivo = new Model.Objetivo();
-            objetivo.CodigoVendedor = objListCab.Valor("idVendedor");
-            objetivo.Valor = objListCab.Valor("valor");
-
-            return objetivo;
-        }
-
-        #endregion
-
         #region KPI
 
         public static Model.KPI getKPIs()
@@ -1390,12 +1349,12 @@ namespace PharmaCRM.Lib_Primavera
             }
 
             // Encomendas último mês
-            StdBELista encomendas1M = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
-                + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -1, GETDATE())" + restricaoVendedor);
+            StdBELista encomendas1M = PriEngine.Engine.Consulta("SELECT CabecDoc.id, CabecDoc.Entidade, CabecDoc.NumDoc, CabecDoc.Responsavel, Vendedores.Nome "
+                + "FROM CabecDoc INNER JOIN Vendedores ON Vendedores.Vendedor = CabecDoc.Responsavel WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -1, GETDATE())" + restricaoVendedor);
 
             // Encomendas dos 2 meses anteriores ao último
-            StdBELista encomendas2_3M = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
-                + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -3, GETDATE()) AND [Data] < DATEADD(MONTH, -1, GETDATE())" + restricaoVendedor);
+            StdBELista encomendas2_3M = PriEngine.Engine.Consulta("SELECT CabecDoc.id, CabecDoc.Entidade, CabecDoc.NumDoc, CabecDoc.Responsavel, Vendedores.Nome "
+                + "FROM CabecDoc INNER JOIN Vendedores ON Vendedores.Vendedor = CabecDoc.Responsavel WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -3, GETDATE()) AND [Data] < DATEADD(MONTH, -1, GETDATE())" + restricaoVendedor);
 
             Dictionary<string, double> produtosQuantidadeVendida = new Dictionary<string, double>();
             Dictionary<string, double> clientesValorComprado = new Dictionary<string, double>();
@@ -1406,6 +1365,7 @@ namespace PharmaCRM.Lib_Primavera
                 string docID = encomendas1M.Valor("id");
                 string cliente = encomendas1M.Valor("Entidade");
                 string vendedor = encomendas1M.Valor("Responsavel");
+                string vendedorNome = encomendas1M.Valor("Nome");
 
                 kpis.NumTotalVendas++;
 
@@ -1452,13 +1412,13 @@ namespace PharmaCRM.Lib_Primavera
                     }
 
                     double valorVendedor;
-                    if (vendedoresQuantidadeVendida.TryGetValue(vendedor, out valorVendedor))
+                    if (vendedoresQuantidadeVendida.TryGetValue(vendedorNome, out valorVendedor))
                     {
-                        vendedoresQuantidadeVendida[vendedor] = valorVendedor + precoEncomenda;
+                        vendedoresQuantidadeVendida[vendedorNome] = valorVendedor + precoEncomenda;
                     }
                     else
                     {
-                        vendedoresQuantidadeVendida.Add(vendedor, precoEncomenda);
+                        vendedoresQuantidadeVendida.Add(vendedorNome, precoEncomenda);
                     }
 
                     kpis.ValorTotalVendas += precoEncomenda;
@@ -1472,6 +1432,7 @@ namespace PharmaCRM.Lib_Primavera
                 string docID = encomendas2_3M.Valor("id");
                 string cliente = encomendas2_3M.Valor("Entidade");
                 string vendedor = encomendas2_3M.Valor("Responsavel");
+                string vendedorNome = encomendas2_3M.Valor("Nome");
 
                 if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
                 {
@@ -1512,13 +1473,13 @@ namespace PharmaCRM.Lib_Primavera
                     }
 
                     double valorVendedor;
-                    if (vendedoresQuantidadeVendida.TryGetValue(vendedor, out valorVendedor))
+                    if (vendedoresQuantidadeVendida.TryGetValue(vendedorNome, out valorVendedor))
                     {
-                        vendedoresQuantidadeVendida[vendedor] = valorVendedor + precoEncomenda;
+                        vendedoresQuantidadeVendida[vendedorNome] = valorVendedor + precoEncomenda;
                     }
                     else
                     {
-                        vendedoresQuantidadeVendida.Add(vendedor, precoEncomenda);
+                        vendedoresQuantidadeVendida.Add(vendedorNome, precoEncomenda);
                     }
                 }
 
@@ -1587,6 +1548,34 @@ namespace PharmaCRM.Lib_Primavera
             StdBELista oportunidadesLista = PriEngine.Engine.Consulta("SELECT ID FROM CabecOportunidadesVenda WHERE" +
                 restricaoVendedor + " DataExpiracao < CURRENT_TIMESTAMP" + dataRestricao);
             return oportunidadesLista.NumLinhas();
+        }
+
+        public static double getVendedorVendasMes(string idVendedor)
+        {
+            // Encomendas último mês
+            StdBELista encomendas = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
+                + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -1, GETDATE()) AND Responsavel='" + idVendedor + "'");
+
+            double valorEncomendas = 0;
+            while (!encomendas.NoFim())
+            {
+                string docID = encomendas.Valor("id");
+
+                if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
+                {
+                    StdBELista linhasDoc = PriEngine.Engine.Consulta("SELECT PrecoLiquido FROM LinhasDoc WHERE IdCabecDoc='" + docID + "' ORDER BY NumLinha");
+
+                    while (!linhasDoc.NoFim())
+                    {
+                        double preco = linhasDoc.Valor("PrecoLiquido");
+                        valorEncomendas += preco;
+                        linhasDoc.Seguinte();
+                    }
+                }
+                encomendas.Seguinte();
+            }
+
+            return valorEncomendas;
         }
 
         #endregion

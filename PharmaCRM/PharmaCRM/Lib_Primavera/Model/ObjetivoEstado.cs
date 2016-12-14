@@ -5,15 +5,11 @@ using System.Web;
 
 namespace PharmaCRM.Lib_Primavera.Model
 {
-    public class Objetivo
+    public class ObjetivoEstado : Objetivo
     {
-        public string Vendedor
-        {
-            get;
-            set;
-        }
+        public ObjetivoEstado() : base() {}
 
-        public double Valor
+        public double ValorCumprido
         {
             get;
             set;

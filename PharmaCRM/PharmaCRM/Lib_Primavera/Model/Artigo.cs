@@ -66,5 +66,11 @@ namespace PharmaCRM.Lib_Primavera.Model
             get;
             set;
         }
+
+        public double desconto
+        {
+            get;
+            set;
+        }
     }
 }
