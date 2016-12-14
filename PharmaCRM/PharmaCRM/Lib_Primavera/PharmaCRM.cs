@@ -86,5 +86,31 @@ namespace PharmaCRM.Lib_Primavera
 
             return result;
         }
+
+        public static bool updateCreateObjetivo(Objetivo objetivo)
+        {
+            SqlConnection cnn = new SqlConnection(connectionString);
+            cnn.Open();
+
+            string queryString = "UPDATE ObjetivoVendedor SET Objetivo = " + objetivo.Valor + " WHERE VendedorID = '" + objetivo.Vendedor + "'";
+
+            SqlCommand command = new SqlCommand(queryString, cnn);
+
+            bool result = true;
+
+            if (command.ExecuteNonQuery() < 1)
+            {
+                queryString = "INSERT INTO ObjetivoVendedor VALUES ('" + objetivo.Vendedor + "', " + objetivo.Valor + ")";
+                command = new SqlCommand(queryString, cnn);
+                if (command.ExecuteNonQuery() < 1)
+                {
+                    result = false;
+                }
+            }
+
+            cnn.Close();
+
+            return result;
+        }
     }
 }
