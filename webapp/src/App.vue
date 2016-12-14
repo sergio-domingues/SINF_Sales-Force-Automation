@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <navbar v-show="auth"></navbar>
+    <navbar v-show="auth" v-on:loggedOut="loggedOut"></navbar>
     <sidebar v-show="auth" ></sidebar>
     <router-view v-show="auth"></router-view>
 
@@ -28,6 +28,9 @@ export default {
   methods:{
     loggedIn:function(){
       this.auth=true;
+    },
+    loggedOut:function(){
+      this.auth=false;
     }
   }
 }
