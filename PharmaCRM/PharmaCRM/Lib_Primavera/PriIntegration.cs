@@ -1347,12 +1347,12 @@ namespace PharmaCRM.Lib_Primavera
             }
 
             // Encomendas último mês
-            StdBELista encomendas1M = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
-                + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -1, GETDATE())" + restricaoVendedor);
+            StdBELista encomendas1M = PriEngine.Engine.Consulta("SELECT CabecDoc.id, CabecDoc.Entidade, CabecDoc.NumDoc, CabecDoc.Responsavel, Vendedores.Nome "
+                + "FROM CabecDoc INNER JOIN Vendedores ON Vendedores.Vendedor = CabecDoc.Responsavel WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -1, GETDATE())" + restricaoVendedor);
 
             // Encomendas dos 2 meses anteriores ao último
-            StdBELista encomendas2_3M = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel "
-                + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -3, GETDATE()) AND [Data] < DATEADD(MONTH, -1, GETDATE())" + restricaoVendedor);
+            StdBELista encomendas2_3M = PriEngine.Engine.Consulta("SELECT CabecDoc.id, CabecDoc.Entidade, CabecDoc.NumDoc, CabecDoc.Responsavel, Vendedores.Nome "
+                + "FROM CabecDoc INNER JOIN Vendedores ON Vendedores.Vendedor = CabecDoc.Responsavel WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -3, GETDATE()) AND [Data] < DATEADD(MONTH, -1, GETDATE())" + restricaoVendedor);
 
             Dictionary<string, double> produtosQuantidadeVendida = new Dictionary<string, double>();
             Dictionary<string, double> clientesValorComprado = new Dictionary<string, double>();
@@ -1363,6 +1363,7 @@ namespace PharmaCRM.Lib_Primavera
                 string docID = encomendas1M.Valor("id");
                 string cliente = encomendas1M.Valor("Entidade");
                 string vendedor = encomendas1M.Valor("Responsavel");
+                string vendedorNome = encomendas1M.Valor("Nome");
 
                 kpis.NumTotalVendas++;
 
@@ -1409,13 +1410,13 @@ namespace PharmaCRM.Lib_Primavera
                     }
 
                     double valorVendedor;
-                    if (vendedoresQuantidadeVendida.TryGetValue(vendedor, out valorVendedor))
+                    if (vendedoresQuantidadeVendida.TryGetValue(vendedorNome, out valorVendedor))
                     {
-                        vendedoresQuantidadeVendida[vendedor] = valorVendedor + precoEncomenda;
+                        vendedoresQuantidadeVendida[vendedorNome] = valorVendedor + precoEncomenda;
                     }
                     else
                     {
-                        vendedoresQuantidadeVendida.Add(vendedor, precoEncomenda);
+                        vendedoresQuantidadeVendida.Add(vendedorNome, precoEncomenda);
                     }
 
                     kpis.ValorTotalVendas += precoEncomenda;
@@ -1429,6 +1430,7 @@ namespace PharmaCRM.Lib_Primavera
                 string docID = encomendas2_3M.Valor("id");
                 string cliente = encomendas2_3M.Valor("Entidade");
                 string vendedor = encomendas2_3M.Valor("Responsavel");
+                string vendedorNome = encomendas2_3M.Valor("Nome");
 
                 if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
                 {
@@ -1469,13 +1471,13 @@ namespace PharmaCRM.Lib_Primavera
                     }
 
                     double valorVendedor;
-                    if (vendedoresQuantidadeVendida.TryGetValue(vendedor, out valorVendedor))
+                    if (vendedoresQuantidadeVendida.TryGetValue(vendedorNome, out valorVendedor))
                     {
-                        vendedoresQuantidadeVendida[vendedor] = valorVendedor + precoEncomenda;
+                        vendedoresQuantidadeVendida[vendedorNome] = valorVendedor + precoEncomenda;
                     }
                     else
                     {
-                        vendedoresQuantidadeVendida.Add(vendedor, precoEncomenda);
+                        vendedoresQuantidadeVendida.Add(vendedorNome, precoEncomenda);
                     }
                 }
 
