@@ -31,7 +31,7 @@ export default {
                   this.$emit('loggedIn');
               }else if(!isNaN(response.body.trim())){   //sales rep
                 this.$root.auth=true;
-                this.$root.vendedor.id=response;
+                this.$root.vendedor.id=parseInt(response.body.trim());
                 this.$emit('loggedIn');
               }else{
                 alert('Email/Password não estão correctas!');
