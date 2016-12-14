@@ -125,7 +125,6 @@
         .then((response)=>{
           if(response.status == 201){
             $('#create-activity-modal').modal('hide');
-          })
         }else{
           this.atividade.tipoEntidadePrincipal = "C";
           this.$http.post(config.host+'/api/atividades/', this.atividade)
@@ -140,8 +139,9 @@
               console.log(err)
           });
         }
-        
-      }
+
+      });
     }
   }
+}
   </script>
