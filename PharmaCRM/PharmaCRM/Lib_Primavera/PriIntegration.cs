@@ -771,7 +771,7 @@ namespace PharmaCRM.Lib_Primavera
             StdBELista objList;
 
             //checks if the saleOpportunity linked to the order is closed as won
-            string query = "SELECT id, IdOportunidade, EstadoVenda FROM CabecDoc where TipoDoc='ECL' and idOportunidade = " + idOportunidade;
+            string query = "SELECT id, EstadoVenda FROM CabecOportunidadesVenda where id = '" + idOportunidade + "'";
             objList = PriEngine.Engine.Consulta(query);
 
             return (objList.Valor("EstadoVenda") == 1) ? true: false;
