@@ -77,8 +77,8 @@
 				<div class="panel panel-blue">
 					<div class="panel-heading">Por Faturar</div>
 					<div class="panel-body" style="background-color:white">
-						<div v-show="loading.encomendas" class="spinner"></div>
-						<h3>12</h3>
+						<div v-show="loading.cliente" class="spinner"></div>
+						<h3>{{cliente.DetalhesFaturacao.ValorPorFaturar}}</h3>
 						</div>
 					</div>
 				</div>
@@ -87,8 +87,8 @@
 					<div class="panel panel-blue">
 						<div class="panel-heading">Faturado</div>
 						<div class="panel-body" style="background-color:white">
-							<div v-show="loading.encomendas" class="spinner"></div>
-								<h3>25</h3>
+							<div v-show="loading.cliente" class="spinner"></div>
+								<h3>{{cliente.DetalhesFaturacao.ValorFaturado}}</h3>
 							</div>
 						</div>
 					</div>
@@ -202,6 +202,7 @@
 			if(this.$route.params.id!=="new" ){
 				this.$http.get(encodeURI(config.host+'/api/clientes/'+this.$route.params.id))
 				.then((response)=>{
+					this.loading.cliente = false;
 					this.cliente=response.body;
 				})
 
