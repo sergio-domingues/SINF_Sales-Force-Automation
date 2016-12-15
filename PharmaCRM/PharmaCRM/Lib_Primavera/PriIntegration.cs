@@ -335,8 +335,10 @@ namespace PharmaCRM.Lib_Primavera
         {
             Model.FaturacaoCliente faturacaoCli = new FaturacaoCliente();
 
-            StdBELista encomendas = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel, IdOportunidade "
-               + "FROM CabecDoc WHERE TipoDoc='ECL' AND Entidade='" + idCliente + "'");
+            string query = "SELECT id, Entidade, NumDoc, Responsavel, IdOportunidade "
+               + "FROM CabecDoc WHERE TipoDoc='ECL' AND Entidade='" + idCliente + "'";
+
+            StdBELista encomendas = PriEngine.Engine.Consulta(query);
 
             double valorFaturado = 0, valorPorFaturar = 0;
             while (!encomendas.NoFim())
@@ -352,10 +354,13 @@ namespace PharmaCRM.Lib_Primavera
                     {
                         double preco = linhasDoc.Valor("PrecoLiquido");
 
+                        if (!(idOportunidade == null || idOportunidade == ""))
+                        {
                         if (EncomendaFaturada(idOportunidade))
                             valorFaturado += preco;
                         else
                             valorPorFaturar += preco;
+                        }
 
                         linhasDoc.Seguinte();
                     }
@@ -694,7 +699,7 @@ namespace PharmaCRM.Lib_Primavera
                 }
 
                 if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
-                    dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+                dv.Faturada = EncomendaFaturada(dv.idOportunidade);
 
                 listdv.Add(dv);
                 objListCab.Seguinte();
@@ -820,6 +825,9 @@ namespace PharmaCRM.Lib_Primavera
                 dv.Filial = objListCab.Valor("Filial");
 
                 dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
+
+                if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
+                    dv.Faturada = EncomendaFaturada(dv.idOportunidade);
 
                 /*listlindv = new List<Model.LinhaEncomenda>();
 
@@ -1386,7 +1394,7 @@ namespace PharmaCRM.Lib_Primavera
                     short estado = objOportunidade.get_EstadoVenda();
                     if (estado != oportunidade.estado && estado == 0) //0 -> em aberto
                     {   //1 = ganha
-                        if (oportunidade.estado == 1 && !CanCloseOpportunityAsWon(oportunidade.id))
+                        if (oportunidade.estado == 1 && !CanCloseOpportunityAsWon(oportunidade.id)) 
                         {
                             respostaErro.Erro = 1;
                             respostaErro.Descricao = "Não pode fechar uma oportunidade de venda como ganha se não existir nenhuma encomenda associada.";
@@ -1394,7 +1402,7 @@ namespace PharmaCRM.Lib_Primavera
                         }
 
                         objOportunidade.set_EstadoVenda(oportunidade.estado);
-                    }
+                    }                                     
 
                     PriEngine.Engine.CRM.OportunidadesVenda.Actualiza(objOportunidade);
 
@@ -1689,9 +1697,11 @@ namespace PharmaCRM.Lib_Primavera
                 string docID = encomendas.Valor("id"),
                     idOportunidade = encomendas.Valor("idOportunidade");
 
-                if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID)
-                    && EncomendaFaturada(idOportunidade))
+                if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
                 {
+                    if (!(idOportunidade == null || idOportunidade == "") && !EncomendaFaturada(idOportunidade))
+                        continue;
+
                     StdBELista linhasDoc = PriEngine.Engine.Consulta("SELECT PrecoLiquido FROM LinhasDoc WHERE IdCabecDoc='" + docID + "' ORDER BY NumLinha");
 
                     while (!linhasDoc.NoFim())
@@ -1706,7 +1716,7 @@ namespace PharmaCRM.Lib_Primavera
 
             return valorEncomendas;
         }
-
+        
         #endregion
     }
 }
