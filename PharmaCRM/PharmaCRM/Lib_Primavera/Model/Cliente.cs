@@ -7,6 +7,12 @@ namespace PharmaCRM.Lib_Primavera.Model
 {
     public class Cliente
     {
+        public FaturacaoCliente DetalhesFaturacao
+        {
+            get;
+            set;
+        }
+
         public string Morada
         {
             get;

@@ -293,6 +293,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Lib_Primavera\Model\AuthPair.cs" />
+    <Compile Include="Lib_Primavera\Model\FaturacaoCliente.cs" />
     <Compile Include="Lib_Primavera\Model\GlobalKPI.cs" />
     <Compile Include="Lib_Primavera\Model\KPI.cs" />
     <Compile Include="Lib_Primavera\Model\ObjetivoEstado.cs" />
