@@ -40,10 +40,12 @@
     </div>
 
     <div v-show="!this.$root.adminMode" class="row">
-      <div class="col-md-4">
+      <div class="col-xs-6 col-md-3">
         <div class="panel panel-default">
-          <div class="panel-heading">Calendário</div>
-          <div class="panel-body">
+          <div class="panel-body easypiechart-panel">
+            <h4>Objetivo</h4>
+            <div class="easypiechart" id="easypiechart-blue" :data-percent="goal"><span class="percent">{{goal}}%</span>
+            </div>
           </div>
         </div>
       </div>
@@ -69,8 +71,10 @@
     </div>
 
     <div class="row">
-      <div class="col-lg-12">
-        <h1 class="page-header">KPI</h1>
+      <div class="page-header  col-lg-12">
+        <h1 class="col-lg-6">KPI</h1>
+        <h4 class="col-lg-6 text-right clicable" data-toggle="modal" data-target="#edit-goal-modal">
+          <i class="fa fa-pencil pull-right" v-show="$root.adminMode" aria-hidden="true"></i> Editar Objetivos</h4>
       </div>
     </div>
 
@@ -180,11 +184,6 @@
       </div>
     </div>
 
-
-
-
-
-
     <!-- KPI for Admin-->
     <div v-show="this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-6">
       <div class="panel panel-blue panel-widget ">
@@ -216,7 +215,7 @@
         </div>
       </div>
     </div>
-
+    <edit-goal></edit-goal>
 
   </div>
   </div>
@@ -224,6 +223,7 @@
 
 <script>
 import config from '../assets/config.json'
+import EditGoal from './modal/Goal'
 
 function fillMap(atividades) {
   var uluru = {lat:41.1785734, lng:-8.5962233};
@@ -264,9 +264,11 @@ function fillMap(atividades) {
 export default {
   name: 'dashboard',
   data () {
-    return {atividades:[],oportunidades:[],loading:{atividades:true,oportunidades:true,kpi:true},kpi:{}}
+    return {atividades:[],oportunidades:[],loading:{atividades:true,oportunidades:true,kpi:true},kpi:{},goal:0}
   },
+  components:{EditGoal},
   mounted:function(){
+
     if(this.$root.adminMode){
       this.$http.get('http://localhost:49559/api/kpi/').then((response)=>{
         this.kpi=response.body;
@@ -284,6 +286,17 @@ export default {
       .then((response)=>{
         this.loading.oportunidades=false;
         this.oportunidades=response.body;
+      });
+
+      this.$http.get(config.host+'/api/objetivos/'+this.$root.vendedor.id)
+      .then((response)=>{
+        this.goal=Math.round(parseInt(response.body.ValorCumprido)/parseInt(response.body.Valor)*100);
+        this.$nextTick(()=>{
+          var element = document.querySelector('.easypiechart');
+          new EasyPieChart(element, {
+            barColor:'#30a5ff'
+          });
+        })
       });
 
       this.$http.get(config.host+'/api/kpi/'+this.$root.vendedor.id)
