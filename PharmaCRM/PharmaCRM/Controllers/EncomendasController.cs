@@ -17,12 +17,12 @@ namespace PharmaCRM.Controllers
             return Lib_Primavera.PriIntegration.GetEncomendas(false);
         }
 
-        // GET: api/Encomendas/5
-        [Route("api/encomendas/{numDoc}")]
+        // GET: api/Encomendas/15D3E72F-7A0A-11E6-A55F-080027184ECD
+        [Route("api/encomendas/{id}")]
         [HttpGet]
-        public Lib_Primavera.Model.Encomenda Get(int numDoc)
+        public Lib_Primavera.Model.Encomenda Get(string id)
         {
-            Lib_Primavera.Model.Encomenda enc = Lib_Primavera.PriIntegration.GetEncomenda(numDoc, true);
+            Lib_Primavera.Model.Encomenda enc = Lib_Primavera.PriIntegration.GetEncomenda(id, true);
 
             if (enc == null)
             {
@@ -82,9 +82,9 @@ namespace PharmaCRM.Controllers
         // DELETE: api/Encomendas/5
         [Route("api/encomendas/{numDoc}")]
         [HttpDelete]
-        public HttpResponseMessage Delete(int numDoc)
+        public HttpResponseMessage Delete(string id)
         {
-            Lib_Primavera.Model.RespostaErro erro = Lib_Primavera.PriIntegration.AnulaEncomenda(numDoc);
+            Lib_Primavera.Model.RespostaErro erro = Lib_Primavera.PriIntegration.AnulaEncomenda(id);
 
             if (erro.Erro != 0)
             {

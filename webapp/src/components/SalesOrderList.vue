@@ -25,7 +25,7 @@
 							</thead>
 							<tbody>
 								<div v-show="loading" class="spinner"></div>
-								<router-link tag="tr" class="clicable" :to="'/salesorders/'+encomenda.NumeroDocumento" v-for="encomenda in encomendas">
+								<router-link tag="tr" class="clicable" :to="'/salesorders/'+encomenda.idInterno" v-for="encomenda in encomendas">
 									<td>{{encomenda.Data}}</td>
 									<td>
 										<router-link :to="'/customers/'+encomenda.Entidade">{{encomenda.Entidade}}</router-link>
@@ -33,7 +33,7 @@
 									<td>{{encomenda.TotalMercadoria}} €</td>
 									<td>
 										<router-link to="">
-											<i v-show="!encomenda.Anulada" v-on:click="anularEncomenda(encomenda.NumeroDocumento)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+											<i v-show="!encomenda.Anulada" v-on:click="anularEncomenda(encomenda.idInterno)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
 										</router-link>
 										<label v-show="encomenda.Anulada">ANULADA</label>
 									</td>
