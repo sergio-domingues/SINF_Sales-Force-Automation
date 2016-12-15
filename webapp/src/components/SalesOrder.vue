@@ -12,12 +12,7 @@
     <div class="row">
       <div class="col-lg-8">
         <div class="panel panel-default">
-          <div class="panel-heading">Info
-            <div class="pull-right">
-              <i v-on:click="toggleEditing" v-bind:class="[editing ? 'fa-floppy-o' : 'fa-pencil', 'fa', 'fa-lg','clicable']" aria-hidden="true"></i>
-              <i v-show="editing" v-on:click="cancelEditing" class="fa fa-lg fa-times clicable" aria-hidden="true"></i>
-            </div>
-          </div>
+          <div class="panel-heading">Info</div>
           <div class="panel-body">
             <form class="form-horizontal">
               <div class="form-group">
@@ -88,7 +83,7 @@ export default {
     .then((response)=>{
       this.encomenda=response.body;
       let d = new Date(this.encomenda.Data);
-      this.encomenda.Data=d.getUTCFullYear()  +'-'+d.getUTCMonth() + '-' +d.getUTCDate();
+      this.encomenda.Data=d.getUTCFullYear()  +'-'+("0" + (d.getMonth() + 1)).slice(-2) + '-' + ("0" + d.getDate()).slice(-2);
       this.artigos=response.body.LinhasDocumento;
       if(this.encomenda.idOportunidade){
         this.$http.get(config.host+'/api/oportunidade/'+encomenda.idOportunidade)

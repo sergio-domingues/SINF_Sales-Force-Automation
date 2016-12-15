@@ -46,13 +46,23 @@
 							<div class="form-group">
 								<label for="dataExpiracao" class="col-sm-2 control-label">Data de Expiração</label>
 								<div class="col-sm-10">
-									<input type="date" class="form-control" id="dataExpiracao" placeholder="Data de Expiração" v-model="oportunidade.dataExpiracao" :disabled="!editing">
+									<input type="date" class="form-control" id="dataExpiracao" placeholder="Data de Expiração" v-model="oportunidade.dataExpiracao" disabled>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="descricao" class="col-sm-2 control-label">Descrição</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" id="descricao" placeholder="Descrição" v-model="oportunidade.descricao" :disabled="!editing">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="estado" class="col-sm-2 control-label">Estado</label>
+								<div class="col-sm-10">
+									<select class="form-control" id="estado" v-model="oportunidade.numEncomenda" :disabled="!editing">
+										<option v-for="estado in estadoOpotunidade" v-bind:value="estado.value">
+											{{ estado.text }}
+										</option>
+									</select>
 								</div>
 							</div>
 
@@ -101,7 +111,7 @@ var oportunidadeTemp;
 export default {
   name: 'Lead',
   data () {
-    return {editing:false,oportunidade:{},atividades:[],clientes:[]}
+    return {editing:false,oportunidade:{},atividades:[],clientes:[],estadoOpotunidade:[{'text':'ABERTA',value:'0'},{'text':'GANHA',value:'1'},{'text':'PERDIDA',value:'2'}]}
   },
   methods:{
 	  toggleEditing: function(){

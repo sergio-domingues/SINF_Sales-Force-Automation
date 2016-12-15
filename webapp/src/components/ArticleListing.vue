@@ -22,7 +22,9 @@
                 <td>{{artigo.DescricaoArtigo}}</td>
                 <td>{{artigo.Quantidade}}</td>
                 <td>{{artigo.Unidade}}</td>
-                <td>{{Math.round(artigo.PrecoUnitario*artigo.Quantidade*100)/100}}€ <span>{{artigo.Desconto}}</span></td>
+                <td>{{Math.round(artigo.PrecoUnitario*artigo.Quantidade*100)/100}}€ 
+                  <span  style="color:red">{{artigo.desconto}}%</span>
+                </td>
                 <td v-show="!lock"><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
                   <input type="number" v-show="artigo.Quantidade >1" class="quant-select" v-model="artigo.QuantSelec"><i class="fa fa-lg fa-minus clicable"
                     aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
@@ -145,7 +147,7 @@ export default {
         this.total = arredondarCentimos(this.total + this.artigos[indexArtigo].PrecoUnitario*artigo.QuantSelec);
       }else{
         this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:artigo.QuantSelec,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0],
-           Unidade:artigo.unidade, PrecoUltimo:artigo.PVPs[0], DescricaoUnidade:artigo.DescricaoUnidade,QuantSelec:1,Desconto:artigo.Desconto});
+           Unidade:artigo.unidade, PrecoUltimo:artigo.PVPs[0], DescricaoUnidade:artigo.DescricaoUnidade,QuantSelec:1,desconto:artigo.desconto});
         this.total = arredondarCentimos(this.artigos[this.artigos.length - 1].PrecoUnitario*artigo.QuantSelec);
       }
     },
