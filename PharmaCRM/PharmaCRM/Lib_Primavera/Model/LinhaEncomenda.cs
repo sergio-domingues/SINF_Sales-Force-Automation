@@ -61,5 +61,11 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
+        public double TotalIVA
+        {
+            get;
+            set;
+        }
+
     }
 }
