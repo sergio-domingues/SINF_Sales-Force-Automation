@@ -1304,7 +1304,7 @@ namespace PharmaCRM.Lib_Primavera
                     objOportunidade.set_NumEncomenda(oportunidade.numEncomenda);
                     objOportunidade.set_Entidade(oportunidade.entidade);
                     objOportunidade.set_TipoEntidade(oportunidade.tipoEntidade);
-                    objOportunidade.set_DataCriacao(DateTime.Now);
+                    objOportunidade.set_DataCriacao(oportunidade.dataCriacao);
                     objOportunidade.set_DataExpiracao(oportunidade.dataExpiracao);
                     objOportunidade.set_CicloVenda("CV_HW");
                     objOportunidade.set_Moeda("EUR");
