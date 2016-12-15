@@ -40,7 +40,7 @@
     </div>
 
     <div v-show="!this.$root.adminMode" class="row">
-      <div class="col-xs-6 col-md-4">
+      <div class="col-xs-6 col-md-3">
         <div class="panel panel-default">
           <div class="panel-body easypiechart-panel">
             <h4>Objetivo</h4>
@@ -128,8 +128,9 @@
           <ul class="todo-list">
             <router-link tag="li" :to="'/customers/'+key" class="todo-list-item clicable" v-for="(value, key) in kpi.MelhoresClientes">
               <div class="checkbox">
-                {{key + '=>' + value}}
+                {{key}}
               </div>
+              <div class="pull-right">{{value}} €</div>
             </router-link>
           </ul>
         </div>
@@ -143,11 +144,12 @@
         <div class="panel-body overflow-panel" style="background-color: white">
           <div v-show="loading.kpi" class="spinner"></div>
           <ul class="todo-list">
-            <router-link tag="li" :to="'/customers/'+key" class="todo-list-item" v-for="(value, key) in kpi.ProdutosMaisVendidos">
+            <li class="todo-list-item" v-for="(value, key) in kpi.ProdutosMaisVendidos">
               <div class="checkbox">
-                {{key + '=>' + value}}
+                {{key}}
               </div>
-            </router-link>
+             <div class="pull-right">{{value}}</div>
+            </li>
           </ul>
         </div>
       </div>

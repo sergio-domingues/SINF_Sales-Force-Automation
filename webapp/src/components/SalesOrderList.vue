@@ -25,7 +25,7 @@
 							</thead>
 							<tbody>
 								<div v-show="loading" class="spinner"></div>
-								<router-link tag="tr" class="clicable" :to="'/salesorders/'+encomenda.NumeroDocumento" v-for="encomenda in encomendas">
+								<router-link tag="tr" class="clicable" :to="'/salesorders/'+encomenda.idInterno" v-for="encomenda in encomendas">
 									<td>{{encomenda.Data|date}}</td>
 									<td>
 										<router-link :to="'/customers/'+encomenda.Entidade">{{encomenda.Entidade}}</router-link>
@@ -91,7 +91,7 @@ import config from '../assets/config.json'
 		},
 		methods:{
 				anularEncomenda:function(encomenda){
-					this.$http.delete(config.host+'/api/encomendas/'+encomenda.NumeroDocumento)
+					this.$http.delete(encodeURI(config.host+'/api/encomendas/'+encomenda.idInterno))
 					.then((response)=>{
 						encomenda.Anulada=true;
 					},(err)=>{
