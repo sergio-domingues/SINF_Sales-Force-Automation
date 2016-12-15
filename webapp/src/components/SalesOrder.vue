@@ -12,7 +12,11 @@
     <div class="row">
       <div class="col-lg-8">
         <div class="panel panel-default">
-          <div class="panel-heading">Info</div>
+          <div class="panel-heading">Info
+            <a :href='"http://localhost:49559/api/encomendas/" + encomenda.idInterno + "/pdf"' target="_blank">
+              <img class="pull-right" src="/static/images/pdf.png" height="100%" alt="Gerar PDF"/>
+            </a>
+          </div>
           <div class="panel-body">
             <form class="form-horizontal">
               <div class="form-group">
@@ -82,6 +86,7 @@ export default {
     this.$http.get(encodeURI(config.host+'/api/encomendas/'+this.$route.params.id))
     .then((response)=>{
       this.encomenda=response.body;
+      console.log(this.encomenda);
       let d = new Date(this.encomenda.Data);
       this.encomenda.Data=d.getUTCFullYear()  +'-'+("0" + (d.getMonth() + 1)).slice(-2) + '-' + ("0" + d.getDate()).slice(-2);
       this.artigos=response.body.LinhasDocumento;

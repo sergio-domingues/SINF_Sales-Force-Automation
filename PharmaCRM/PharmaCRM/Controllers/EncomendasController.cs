@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace PharmaCRM.Controllers
@@ -92,6 +93,28 @@ namespace PharmaCRM.Controllers
             }
 
             return Request.CreateResponse(HttpStatusCode.Accepted);
+        }
+
+        // GET api/encomendas/5/pdf
+        [Route("api/encomendas/{id}/pdf")]
+        [HttpGet]
+        public HttpResponseMessage GerarPDF(string id)
+        {
+            string path = "C:\\Users\\user\\Source\\Repos\\SINF_Sales-Force-Automation\\PharmaCRM\\PharmaCRM\\SalesOrders\\" + id + ".pdf";
+            if (!System.IO.File.Exists(path))
+            {
+                if (!Lib_Primavera.PriIntegration.GerarPDFEncomenda(id, path))
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Erro ao gerar PDF da encomenda.");
+                }
+            }
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(path);
+            response.Content = new ByteArrayContent(fileBytes);
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+            response.Content.Headers.ContentDisposition.FileName = id + ".pdf";
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            return response;
         }
     }
 }
