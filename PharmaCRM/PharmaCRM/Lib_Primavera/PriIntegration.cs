@@ -640,6 +640,8 @@ namespace PharmaCRM.Lib_Primavera
                     dv.LinhasDocumento = new List<Model.LinhaEncomenda>();
                 }
 
+                dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+
                 listdv.Add(dv);
                 objListCab.Seguinte();
             }
@@ -713,7 +715,20 @@ namespace PharmaCRM.Lib_Primavera
                 dv.LinhasDocumento = new List<Model.LinhaEncomenda>();
             }
 
+            dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+
             return dv;
+        }
+
+        public static bool EncomendaFaturada(string idOportunidade)
+        {
+            StdBELista objList;
+
+            //checks if the saleOpportunity linked to the order is closed as won
+            string query = "SELECT id, IdOportunidade, EstadoVenda FROM CabecDoc where TipoDoc='ECL' and idOportunidade = " + idOportunidade;
+            objList = PriEngine.Engine.Consulta(query);
+
+            return (objList.Valor("EstadoVenda") == 1) ? true: false;
         }
 
         public static List<Model.Encomenda> GetEncomendasVendedor(string idVendedor)
