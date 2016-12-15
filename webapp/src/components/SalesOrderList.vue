@@ -91,7 +91,7 @@ import config from '../assets/config.json'
 		},
 		methods:{
 				anularEncomenda:function(encomenda){
-					this.$http.delete(config.host+'/api/encomendas/'+encomenda.NumeroDocumento)
+					this.$http.delete(encodeURI(config.host+'/api/encomendas/'+encomenda.idInterno))
 					.then((response)=>{
 						encomenda.Anulada=true;
 					},(err)=>{

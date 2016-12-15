@@ -78,7 +78,8 @@
 					<div class="panel-heading">Por Faturar</div>
 					<div class="panel-body" style="background-color:white">
 						<div v-show="loading.cliente" class="spinner"></div>
-						<h3>{{cliente.DetalhesFaturacao.ValorPorFaturar}}</h3>
+						<h3 v-if="cliente.DetalhesFaturacao!=undefined">{{Math.round(cliente.DetalhesFaturacao.ValorPorFaturar)}} €</h3>
+						<h3 v-else>Não tem dados</h3>
 						</div>
 					</div>
 				</div>
@@ -88,7 +89,8 @@
 						<div class="panel-heading">Faturado</div>
 						<div class="panel-body" style="background-color:white">
 							<div v-show="loading.cliente" class="spinner"></div>
-								<h3>{{cliente.DetalhesFaturacao.ValorFaturado}}</h3>
+								<h3 v-if="cliente.DetalhesFaturacao!=undefined">{{Math.round(cliente.DetalhesFaturacao.ValorFaturado)}} €</h3>
+								<h3 v-else>Não tem dados</h3>
 							</div>
 						</div>
 					</div>
@@ -145,7 +147,7 @@
 								<div class="checkbox">
 									{{encomenda.Data|date}}
 								</div>
-								<div class="pull-right">{{encomenda.TotalMercadoria}}</dic>
+								<div class="pull-right">{{encomenda.TotalMercadoria}} €</dic>
 							</router-link>
 						</ul>
 						</div>

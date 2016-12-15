@@ -12,6 +12,7 @@
                 <th>Descrição</th>
                 <th>Quantidade</th>
                 <th>Unidade</th>
+                <th>IVA</th>
                 <th>Total</th>
                 <th v-show="!lock">Opções</th>
               </tr>
@@ -22,8 +23,9 @@
                 <td>{{artigo.DescricaoArtigo}}</td>
                 <td>{{artigo.Quantidade}}</td>
                 <td>{{artigo.Unidade}}</td>
+                <td>{{artigo.Iva || artigo.TotalIVA}} €</td>
                 <td>{{Math.round(artigo.PrecoUnitario*artigo.Quantidade*100)/100}}€ 
-                  <span  style="color:red">{{artigo.desconto}}%</span>
+                  <span v-show="artigo.desconto" style="color:red">{{artigo.desconto}}%</span>
                 </td>
                 <td v-show="!lock"><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
                   <input type="number" v-show="artigo.Quantidade >1" class="quant-select" v-model="artigo.QuantSelec"><i class="fa fa-lg fa-minus clicable"
@@ -35,6 +37,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td><strong>{{total2}}€</strong></td>
                 <td></td>
               </tr>
@@ -42,7 +45,8 @@
           </table>
 
           <div class="row" v-show="!lock">
-            <div class="col-lg-10 col-md-offset-1">
+            <div class="col-lg-12">
+              <h4>Adicionar Artigos</h4>
               <div class="input-group">
                 <span class="input-group-btn">
                   <button class="btn btn-default" type="button">
@@ -55,7 +59,7 @@
           </div>
 
           <div class="row" v-show="!lock">
-            <div class="col-lg-10 col-md-offset-1">
+            <div class="col-lg-12">
               <table class="table table-hover">
                 <thead>
                   <tr>
@@ -147,7 +151,7 @@ export default {
         this.total = arredondarCentimos(this.total + this.artigos[indexArtigo].PrecoUnitario*artigo.QuantSelec);
       }else{
         this.artigos.push({CodigoArtigo:artigo.Codigo,DescricaoArtigo:artigo.Descricao,Quantidade:artigo.QuantSelec,TotalLiquido:artigo.PrecoUltimo,PrecoUnitario:artigo.PVPs[0],
-           Unidade:artigo.unidade, PrecoUltimo:artigo.PVPs[0], DescricaoUnidade:artigo.DescricaoUnidade,QuantSelec:1,desconto:artigo.desconto});
+           Unidade:artigo.unidade, PrecoUltimo:artigo.PVPs[0], DescricaoUnidade:artigo.DescricaoUnidade,QuantSelec:1,desconto:artigo.desconto,Iva:artigo.Iva});
         this.total = arredondarCentimos(this.artigos[this.artigos.length - 1].PrecoUnitario*artigo.QuantSelec);
       }
     },
