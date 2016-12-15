@@ -643,7 +643,7 @@ namespace PharmaCRM.Lib_Primavera
             return listdv;
         }
 
-        public static Model.Encomenda GetEncomenda(int numdoc, bool incluirLinhas)
+        public static Model.Encomenda GetEncomenda(string id, bool incluirLinhas)
         {
             StdBELista objListCab;
             StdBELista objListLin;
@@ -651,7 +651,7 @@ namespace PharmaCRM.Lib_Primavera
             Model.LinhaEncomenda lindv = new Model.LinhaEncomenda();
             List<Model.LinhaEncomenda> listlindv = new List<Model.LinhaEncomenda>();
 
-            string st = "SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial FROM CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
+            string st = "SELECT Id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial FROM CabecDoc where TipoDoc='ECL' and Id='" + id + "'";
             objListCab = PriEngine.Engine.Consulta(st);
 
             if (objListCab.NoFim())
@@ -660,7 +660,7 @@ namespace PharmaCRM.Lib_Primavera
             }
 
             dv = new Model.Encomenda();
-            dv.idInterno = objListCab.Valor("id");
+            dv.idInterno = objListCab.Valor("Id");
             dv.Entidade = objListCab.Valor("Entidade");
             dv.idOportunidade = objListCab.Valor("IdOportunidade");
             dv.NumeroDocumento = objListCab.Valor("NumDoc");
@@ -843,12 +843,12 @@ namespace PharmaCRM.Lib_Primavera
             return listdv;
         }
 
-        public static Lib_Primavera.Model.RespostaErro AnulaEncomenda(int numDoc)
+        public static Lib_Primavera.Model.RespostaErro AnulaEncomenda(string id)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             try
             {
-                Model.Encomenda enc = GetEncomenda(numDoc, false);
+                Model.Encomenda enc = GetEncomenda(id, false);
                 if (enc == null)
                 {
                     erro.Erro = 1;
