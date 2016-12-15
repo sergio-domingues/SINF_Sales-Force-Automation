@@ -685,7 +685,8 @@ namespace PharmaCRM.Lib_Primavera
                     dv.LinhasDocumento = new List<Model.LinhaEncomenda>();
                 }
 
-                dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+                if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
+                    dv.Faturada = EncomendaFaturada(dv.idOportunidade);
 
                 listdv.Add(dv);
                 objListCab.Seguinte();
@@ -741,7 +742,7 @@ namespace PharmaCRM.Lib_Primavera
                     lindv.Desconto = objListLin.Valor("Desconto1");
                     lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                     lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                    
+
                     lindv.TotalLiquido = objListLin.Valor("PCM") * lindv.Quantidade;
                     listlindv.Add(lindv);
                     totalMerc += lindv.TotalLiquido;
@@ -761,7 +762,8 @@ namespace PharmaCRM.Lib_Primavera
                 dv.LinhasDocumento = new List<Model.LinhaEncomenda>();
             }
 
-            dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+            if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
+                dv.Faturada = EncomendaFaturada(dv.idOportunidade);
 
             return dv;
         }
@@ -771,10 +773,10 @@ namespace PharmaCRM.Lib_Primavera
             StdBELista objList;
 
             //checks if the saleOpportunity linked to the order is closed as won
-            string query = "SELECT id, IdOportunidade, EstadoVenda FROM CabecDoc where TipoDoc='ECL' and idOportunidade = " + idOportunidade;
+            string query = "SELECT ID, EstadoVenda FROM CabecOportunidadesVenda WHERE ID = '" + idOportunidade + "'";
             objList = PriEngine.Engine.Consulta(query);
 
-            return (objList.Valor("EstadoVenda") == 1) ? true: false;
+            return (objList.Valor("EstadoVenda") == 1) ? true : false;
         }
 
         public static List<Model.Encomenda> GetEncomendasVendedor(string idVendedor)
@@ -1361,7 +1363,7 @@ namespace PharmaCRM.Lib_Primavera
                     short estado = objOportunidade.get_EstadoVenda();
                     if (estado != oportunidade.estado && estado == 0) //0 -> em aberto
                     {   //1 = ganha
-                        if (oportunidade.estado == 1 && !CanCloseOpportunityAsWon(oportunidade.id)) 
+                        if (oportunidade.estado == 1 && !CanCloseOpportunityAsWon(oportunidade.id))
                         {
                             respostaErro.Erro = 1;
                             respostaErro.Descricao = "Não pode fechar uma oportunidade de venda como ganha se não existir nenhuma encomenda associada.";
@@ -1369,7 +1371,7 @@ namespace PharmaCRM.Lib_Primavera
                         }
 
                         objOportunidade.set_EstadoVenda(oportunidade.estado);
-                    }                                     
+                    }
 
                     PriEngine.Engine.CRM.OportunidadesVenda.Actualiza(objOportunidade);
 
@@ -1681,7 +1683,7 @@ namespace PharmaCRM.Lib_Primavera
 
             return valorEncomendas;
         }
-        
+
         #endregion
     }
 }
