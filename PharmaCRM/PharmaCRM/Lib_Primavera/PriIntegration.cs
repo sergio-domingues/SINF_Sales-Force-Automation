@@ -356,10 +356,10 @@ namespace PharmaCRM.Lib_Primavera
 
                         if (!(idOportunidade == null || idOportunidade == ""))
                         {
-                            if (EncomendaFaturada(idOportunidade))
-                                valorFaturado += preco;
-                            else
-                                valorPorFaturar += preco;
+                        if (EncomendaFaturada(idOportunidade))
+                            valorFaturado += preco;
+                        else
+                            valorPorFaturar += preco;
                         }
 
                         linhasDoc.Seguinte();
@@ -656,7 +656,7 @@ namespace PharmaCRM.Lib_Primavera
                 {
                     double totalMerc = 0;
 
-                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
+                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM, TotalIva, DescontoComercial "
                         + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                     while (!objListLin.NoFim())
@@ -667,10 +667,18 @@ namespace PharmaCRM.Lib_Primavera
                         lindv.DescricaoArtigo = objListLin.Valor("Descricao");
                         lindv.Quantidade = objListLin.Valor("Quantidade");
                         lindv.Unidade = objListLin.Valor("Unidade");
-                        lindv.Desconto = objListLin.Valor("Desconto1");
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                        lindv.TotalLiquido = objListLin.Valor("PCM") * lindv.Quantidade;
+                        lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                        if (lindv.TotalILiquido == 0)
+                        {
+                            lindv.Desconto = 0;
+                        }
+                        else
+                        {
+                            lindv.Desconto = objListLin.Valor("DescontoComercial") / lindv.TotalILiquido;
+                        }
+                        lindv.TotalIVA = objListLin.Valor("TotalIva");
                         totalMerc += lindv.TotalLiquido;
 
                         listlindv.Add(lindv);
@@ -689,9 +697,9 @@ namespace PharmaCRM.Lib_Primavera
                 {
                     dv.LinhasDocumento = new List<Model.LinhaEncomenda>();
                 }
-                
+
                 if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
-                    dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+                dv.Faturada = EncomendaFaturada(dv.idOportunidade);
 
                 listdv.Add(dv);
                 objListCab.Seguinte();
@@ -728,7 +736,7 @@ namespace PharmaCRM.Lib_Primavera
 
             dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
 
-            objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
+            objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM, TotalIva, DescontoComercial "
                 + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
             if (incluirLinhas)
@@ -744,11 +752,18 @@ namespace PharmaCRM.Lib_Primavera
                     lindv.DescricaoArtigo = objListLin.Valor("Descricao");
                     lindv.Quantidade = objListLin.Valor("Quantidade");
                     lindv.Unidade = objListLin.Valor("Unidade");
-                    lindv.Desconto = objListLin.Valor("Desconto1");
                     lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                     lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-
-                    lindv.TotalLiquido = objListLin.Valor("PCM") * lindv.Quantidade;
+                    lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                    if (lindv.TotalILiquido == 0)
+                    {
+                        lindv.Desconto = 0;
+                    }
+                    else
+                    {
+                        lindv.Desconto = objListLin.Valor("DescontoComercial") / lindv.TotalILiquido;
+                    }
+                    lindv.TotalIVA = objListLin.Valor("TotalIva");
                     listlindv.Add(lindv);
                     totalMerc += lindv.TotalLiquido;
                     objListLin.Seguinte();
@@ -778,7 +793,7 @@ namespace PharmaCRM.Lib_Primavera
             StdBELista objList;
 
             //checks if the saleOpportunity linked to the order is closed as won
-            string query = "SELECT ID, EstadoVenda FROM CabecOportunidadesVenda WHERE ID = '" + idOportunidade + "'";
+            string query = "SELECT id, EstadoVenda FROM CabecOportunidadesVenda WHERE id = '" + idOportunidade + "'";
             objList = PriEngine.Engine.Consulta(query);
 
             return (objList.Valor("EstadoVenda") == 1) ? true : false;
@@ -881,7 +896,7 @@ namespace PharmaCRM.Lib_Primavera
 
                 listlindv = new List<Model.LinhaEncomenda>();
 
-                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
+                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM, TotalIva, DescontoComercial "
                     + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                 double totalMerc = 0;
@@ -893,10 +908,18 @@ namespace PharmaCRM.Lib_Primavera
                     lindv.DescricaoArtigo = objListLin.Valor("Descricao");
                     lindv.Quantidade = objListLin.Valor("Quantidade");
                     lindv.Unidade = objListLin.Valor("Unidade");
-                    lindv.Desconto = objListLin.Valor("Desconto1");
                     lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                     lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                    lindv.TotalLiquido = objListLin.Valor("PCM") * lindv.Quantidade;
+                    lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                    if (lindv.TotalILiquido == 0)
+                    {
+                        lindv.Desconto = 0;
+                    }
+                    else
+                    {
+                        lindv.Desconto = objListLin.Valor("DescontoComercial") / lindv.TotalILiquido;
+                    }
+                    lindv.TotalIVA = objListLin.Valor("TotalIva");
                     totalMerc += lindv.TotalLiquido;
 
                     listlindv.Add(lindv);
@@ -1371,7 +1394,7 @@ namespace PharmaCRM.Lib_Primavera
                     short estado = objOportunidade.get_EstadoVenda();
                     if (estado != oportunidade.estado && estado == 0) //0 -> em aberto
                     {   //1 = ganha
-                        if (oportunidade.estado == 1 && !CanCloseOpportunityAsWon(oportunidade.id))
+                        if (oportunidade.estado == 1 && !CanCloseOpportunityAsWon(oportunidade.id)) 
                         {
                             respostaErro.Erro = 1;
                             respostaErro.Descricao = "Não pode fechar uma oportunidade de venda como ganha se não existir nenhuma encomenda associada.";
@@ -1379,7 +1402,7 @@ namespace PharmaCRM.Lib_Primavera
                         }
 
                         objOportunidade.set_EstadoVenda(oportunidade.estado);
-                    }
+                    }                                     
 
                     PriEngine.Engine.CRM.OportunidadesVenda.Actualiza(objOportunidade);
 
@@ -1693,7 +1716,7 @@ namespace PharmaCRM.Lib_Primavera
 
             return valorEncomendas;
         }
-
+        
         #endregion
     }
 }
