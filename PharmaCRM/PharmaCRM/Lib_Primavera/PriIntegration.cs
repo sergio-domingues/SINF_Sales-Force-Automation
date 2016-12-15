@@ -651,7 +651,7 @@ namespace PharmaCRM.Lib_Primavera
                 {
                     double totalMerc = 0;
 
-                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
+                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM, TotalIva "
                         + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                     while (!objListLin.NoFim())
@@ -662,10 +662,11 @@ namespace PharmaCRM.Lib_Primavera
                         lindv.DescricaoArtigo = objListLin.Valor("Descricao");
                         lindv.Quantidade = objListLin.Valor("Quantidade");
                         lindv.Unidade = objListLin.Valor("Unidade");
-                        lindv.Desconto = objListLin.Valor("Desconto1");
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                        lindv.TotalLiquido = objListLin.Valor("PCM") * lindv.Quantidade;
+                        lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                        lindv.Desconto = objListLin.Valor("DescontoComercial") / lindv.TotalILiquido;
+                        lindv.TotalIVA = objListLin.Valor("TotalIva");
                         totalMerc += lindv.TotalLiquido;
 
                         listlindv.Add(lindv);
@@ -722,7 +723,7 @@ namespace PharmaCRM.Lib_Primavera
 
             dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
 
-            objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
+            objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM, TotalIva "
                 + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
             if (incluirLinhas)
@@ -738,11 +739,11 @@ namespace PharmaCRM.Lib_Primavera
                     lindv.DescricaoArtigo = objListLin.Valor("Descricao");
                     lindv.Quantidade = objListLin.Valor("Quantidade");
                     lindv.Unidade = objListLin.Valor("Unidade");
-                    lindv.Desconto = objListLin.Valor("Desconto1");
                     lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                     lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                    
-                    lindv.TotalLiquido = objListLin.Valor("PCM") * lindv.Quantidade;
+                    lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                    lindv.Desconto = objListLin.Valor("DescontoComercial") / lindv.TotalILiquido;
+                    lindv.TotalIVA = objListLin.Valor("TotalIva");
                     listlindv.Add(lindv);
                     totalMerc += lindv.TotalLiquido;
                     objListLin.Seguinte();
@@ -871,7 +872,7 @@ namespace PharmaCRM.Lib_Primavera
 
                 listlindv = new List<Model.LinhaEncomenda>();
 
-                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM "
+                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, PCM, TotalIva "
                     + "FROM LinhasDoc where IdCabecDoc='" + dv.idInterno + "' order By NumLinha");
 
                 double totalMerc = 0;
@@ -883,10 +884,11 @@ namespace PharmaCRM.Lib_Primavera
                     lindv.DescricaoArtigo = objListLin.Valor("Descricao");
                     lindv.Quantidade = objListLin.Valor("Quantidade");
                     lindv.Unidade = objListLin.Valor("Unidade");
-                    lindv.Desconto = objListLin.Valor("Desconto1");
                     lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                     lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                    lindv.TotalLiquido = objListLin.Valor("PCM") * lindv.Quantidade;
+                    lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                    lindv.Desconto = objListLin.Valor("DescontoComercial") / lindv.TotalILiquido;
+                    lindv.TotalIVA = objListLin.Valor("TotalIva");
                     totalMerc += lindv.TotalLiquido;
 
                     listlindv.Add(lindv);
