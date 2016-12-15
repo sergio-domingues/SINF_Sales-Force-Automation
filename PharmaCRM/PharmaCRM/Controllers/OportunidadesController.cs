@@ -71,29 +71,6 @@ namespace PharmaCRM.Controllers
         }
 
         [Route("api/oportunidades/{id}")]
-        [HttpPut]
-        public HttpResponseMessage Close(string idOportunidade, Boolean won)
-        {
-            try
-            {
-                Lib_Primavera.Model.RespostaErro respostaErro = new Lib_Primavera.Model.RespostaErro();
-                respostaErro = Lib_Primavera.PriIntegration.CloseOportunidade(idOportunidade, won);
-                if (respostaErro.Erro == 0)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, respostaErro.Descricao);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, respostaErro.Descricao);
-                }
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.ToString());
-            }
-        }
-
-        [Route("api/oportunidades/{id}")]
         [HttpDelete]
         public HttpResponseMessage Delete(string id)
         {
