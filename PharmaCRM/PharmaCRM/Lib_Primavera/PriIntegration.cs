@@ -356,10 +356,14 @@ namespace PharmaCRM.Lib_Primavera
 
                         if (!(idOportunidade == null || idOportunidade == ""))
                         {
-                        if (EncomendaFaturada(idOportunidade))
-                            valorFaturado += preco;
+                            if (EncomendaFaturada(idOportunidade))
+                                valorFaturado += preco;
+                            else
+                                valorPorFaturar += preco; //corresponde a encomendas associadas a opVendas em aberto
+                        }
                         else
-                            valorPorFaturar += preco;
+                        {
+                            valorFaturado += preco;
                         }
 
                         linhasDoc.Seguinte();
@@ -699,7 +703,9 @@ namespace PharmaCRM.Lib_Primavera
                 }
 
                 if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
-                dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+                    dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+                else
+                    dv.Faturada = true;
 
                 listdv.Add(dv);
                 objListCab.Seguinte();
@@ -784,6 +790,8 @@ namespace PharmaCRM.Lib_Primavera
 
             if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
                 dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+            else
+                dv.Faturada = true; //qd nao esta associada a opVenda assume-se que já foi "faturado"
 
             return dv;
         }
@@ -828,6 +836,8 @@ namespace PharmaCRM.Lib_Primavera
 
                 if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
                     dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+                else
+                    dv.Faturada = true;
 
                 /*listlindv = new List<Model.LinhaEncomenda>();
 
@@ -936,6 +946,8 @@ namespace PharmaCRM.Lib_Primavera
 
                 if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
                     dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+                else
+                    dv.Faturada = true;
 
                 listdv.Add(dv);
                 objListCab.Seguinte();
@@ -1035,8 +1047,6 @@ namespace PharmaCRM.Lib_Primavera
                 return model_actividade;
             }
         }
-
-
 
         public static Lib_Primavera.Model.RespostaErro InsereObjAtividade(Model.Atividade actividade)
         {
@@ -1397,7 +1407,7 @@ namespace PharmaCRM.Lib_Primavera
                     short estado = objOportunidade.get_EstadoVenda();
                     if (estado != oportunidade.estado && estado == 0) //0 -> em aberto
                     {   //1 = ganha
-                        if (oportunidade.estado == 1 && !CanCloseOpportunityAsWon(oportunidade.id)) 
+                        if (oportunidade.estado == 1 && !CanCloseOpportunityAsWon(oportunidade.id))
                         {
                             respostaErro.Erro = 1;
                             respostaErro.Descricao = "Não pode fechar uma oportunidade de venda como ganha se não existir nenhuma encomenda associada.";
@@ -1405,7 +1415,7 @@ namespace PharmaCRM.Lib_Primavera
                         }
 
                         objOportunidade.set_EstadoVenda(oportunidade.estado);
-                    }                                     
+                    }
 
                     PriEngine.Engine.CRM.OportunidadesVenda.Actualiza(objOportunidade);
 
@@ -1719,7 +1729,7 @@ namespace PharmaCRM.Lib_Primavera
 
             return valorEncomendas;
         }
-        
+
         #endregion
     }
 }
