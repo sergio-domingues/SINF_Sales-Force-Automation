@@ -94,7 +94,7 @@ export default {
     }
   },
   mounted:function(){
-    this.$http.get(config.host+'/api/encomendas/'+this.$route.params.id)
+    this.$http.get(encodeURI(config.host+'/api/encomendas/'+this.$route.params.id))
     .then((response)=>{
       this.encomenda=response.body;
       this.artigos=response.body.LinhasDocumento;
