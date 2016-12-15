@@ -34,7 +34,7 @@
 
             <div class="form-group">
               <label for="Tipo">Cliente</label>
-              <select class="form-control selectpicker" id="estado" v-model="atividade.idContactoPrincipal" data-live-search="true" required>
+              <select class="form-control selectpicker" id="cliente" v-model="atividade.idContactoPrincipal" data-live-search="true" required>
                 <option v-for="cliente in clientes" v-bind:value="cliente.CodCliente">
                   {{ cliente.Nome }}
                 </option>
@@ -43,7 +43,7 @@
 
             <div class="form-group">
               <label for="Tipo">Oportunidade</label>
-              <select class="form-control selectpicker" id="estado" v-model="atividade.idCabecalhoOportunidadeVenda" data-live-search="true"
+              <select class="form-control selectpicker" id="oportunidade" v-model="atividade.idCabecalhoOportunidadeVenda" data-live-search="true"
                 required>
                 <option v-for="oportunidade in oportunidades" v-bind:value="oportunidade.id">
                   {{ oportunidade.descricao }}
@@ -121,7 +121,10 @@
         this.atividade.tipoEntidadePrincipal = "C";
         console.log('Infos antes de criar atividade');
         console.log(this.atividade);
-        this.$http.post(config.host+'/api/atividades/', this.atividade)
+        let atividade = JSON.parse(JSON.stringify(this.atividade));
+        atividade.idContactoPrincipal=$('#cliente').find("option:selected").val();
+        atividade.idCabecalhoOportunidadeVenda=$('#oportunidade').find("option:selected").val();
+        this.$http.post(config.host+'/api/atividades/', atividade)
         .then((response)=>{
           if(response.status == 201){
             $('#create-activity-modal').modal('hide');

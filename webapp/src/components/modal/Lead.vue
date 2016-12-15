@@ -71,7 +71,7 @@ export default {
             $('#create-modal').modal('hide');
           })
         }else{
-          this.$http.post(config.host+'/api/oportunidades/',{descricao:this.oportunidade.descricao,entidade:this.selected,
+          this.$http.post(config.host+'/api/oportunidades/',{descricao:this.oportunidade.descricao,entidade:$('#cliente').find("option:selected").val(),
             tipoEntidade:"C",vendedor:this.$root.vendedor.id,dataExpiracao:this.oportunidade.data,codigo:this.oportunidade.identificador})
             .then((response)=>{
               console.log(response);

@@ -85,7 +85,7 @@
 				this.$http.delete(URL).then((response)=>{
 					this.oportunidades.splice(findById(this.oportunidades,id,'id'),1);
 				},(err)=>{
-					console.log("erro ao eliminar da DB");
+					alert('Erro ao remover encomenda');
 				})
 			}
 		}

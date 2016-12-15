@@ -32,7 +32,7 @@
               </option>
             </select>
           </div>
-          <article-listing :artigos="artigos"></article-listing>
+          <article-listing :artigos="artigos" :lock="false"></article-listing>
           <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Confirmar</button>
         </div>
@@ -92,10 +92,11 @@ export default {
           const encomenda =
       {
         Data:this.encomenda.data,
-        Entidade:this.selected,
+        Entidade:$('#cliente').find("option:selected").val(),
         Filial:"000",
         LinhasDocumento:this.artigos,
         Serie:this.encomenda.serie,
+        idOportunidade:$('#oportunidade').find("option:selected").val(),
         idResponsavel:this.$root.vendedor.id
       }
       this.$http.post(config.host+'/api/encomendas/',encomenda)
