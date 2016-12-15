@@ -10,6 +10,13 @@ namespace PharmaCRM.Lib_Primavera.Model
         public Encomenda() {
             NumeroDocumento = -1;
             Anulada = false;
+            Faturada = false;
+        }
+
+        public Boolean Faturada
+        {
+            get;
+            set;
         }
 
         public string Entidade

@@ -71,6 +71,7 @@ namespace PharmaCRM.Lib_Primavera
             StdBELista objList;
 
             List<Model.Atividade> listAtividades = new List<Model.Atividade>();
+
             string query = "SELECT Tarefas.* FROM Tarefas, CabecOportunidadesVenda WHERE Vendedor = " + "\'" + vendedorID + "\'"
                     + " AND IdCabecOVenda = CabecOportunidadesVenda.ID";
             if (dataInicio != null)
@@ -92,7 +93,7 @@ namespace PharmaCRM.Lib_Primavera
                 atividade.dataInicio = objList.Valor("DataInicio");
                 atividade.dataFim = objList.Valor("DataFim");
                 atividade.local = objList.Valor("LocalRealizacao");
-                atividade.vendedor = vendedorID;
+                // atividade.vendedor = vendedorID;
                 atividade.idCabecalhoOportunidadeVenda = objList.Valor("IDCabecOVenda");
 
                 listAtividades.Add(atividade);
@@ -156,6 +157,8 @@ namespace PharmaCRM.Lib_Primavera
                 oportunidade.dataExpiracao = objList.Valor("DataExpiracao");
                 oportunidade.vendedor = objList.Valor("Vendedor");
                 oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
+                oportunidade.estado = objList.Valor("EstadoVenda");
+
                 oportunidades.Add(oportunidade);
                 objList.Seguinte();
             }
@@ -637,13 +640,15 @@ namespace PharmaCRM.Lib_Primavera
                     dv.LinhasDocumento = new List<Model.LinhaEncomenda>();
                 }
 
+                dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+
                 listdv.Add(dv);
                 objListCab.Seguinte();
             }
             return listdv;
         }
 
-        public static Model.Encomenda GetEncomenda(int numdoc, bool incluirLinhas)
+        public static Model.Encomenda GetEncomenda(string id, bool incluirLinhas)
         {
             StdBELista objListCab;
             StdBELista objListLin;
@@ -651,7 +656,7 @@ namespace PharmaCRM.Lib_Primavera
             Model.LinhaEncomenda lindv = new Model.LinhaEncomenda();
             List<Model.LinhaEncomenda> listlindv = new List<Model.LinhaEncomenda>();
 
-            string st = "SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial FROM CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
+            string st = "SELECT Id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial FROM CabecDoc where TipoDoc='ECL' and Id='" + id + "'";
             objListCab = PriEngine.Engine.Consulta(st);
 
             if (objListCab.NoFim())
@@ -660,7 +665,7 @@ namespace PharmaCRM.Lib_Primavera
             }
 
             dv = new Model.Encomenda();
-            dv.idInterno = objListCab.Valor("id");
+            dv.idInterno = objListCab.Valor("Id");
             dv.Entidade = objListCab.Valor("Entidade");
             dv.idOportunidade = objListCab.Valor("IdOportunidade");
             dv.NumeroDocumento = objListCab.Valor("NumDoc");
@@ -710,7 +715,20 @@ namespace PharmaCRM.Lib_Primavera
                 dv.LinhasDocumento = new List<Model.LinhaEncomenda>();
             }
 
+            dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+
             return dv;
+        }
+
+        public static bool EncomendaFaturada(string idOportunidade)
+        {
+            StdBELista objList;
+
+            //checks if the saleOpportunity linked to the order is closed as won
+            string query = "SELECT id, IdOportunidade, EstadoVenda FROM CabecDoc where TipoDoc='ECL' and idOportunidade = " + idOportunidade;
+            objList = PriEngine.Engine.Consulta(query);
+
+            return (objList.Valor("EstadoVenda") == 1) ? true: false;
         }
 
         public static List<Model.Encomenda> GetEncomendasVendedor(string idVendedor)
@@ -843,12 +861,12 @@ namespace PharmaCRM.Lib_Primavera
             return listdv;
         }
 
-        public static Lib_Primavera.Model.RespostaErro AnulaEncomenda(int numDoc)
+        public static Lib_Primavera.Model.RespostaErro AnulaEncomenda(string id)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             try
             {
-                Model.Encomenda enc = GetEncomenda(numDoc, false);
+                Model.Encomenda enc = GetEncomenda(id, false);
                 if (enc == null)
                 {
                     erro.Erro = 1;
@@ -879,6 +897,7 @@ namespace PharmaCRM.Lib_Primavera
         {
             StdBELista objList;
             List<Model.Atividade> listAtividades = new List<Model.Atividade>();
+
             objList = PriEngine.Engine.Consulta("SELECT * FROM Tarefas");
             while (!objList.NoFim())
             {
@@ -891,7 +910,7 @@ namespace PharmaCRM.Lib_Primavera
                 atividade.dataInicio = objList.Valor("DataInicio");
                 atividade.dataFim = objList.Valor("DataFim");
                 atividade.local = objList.Valor("LocalRealizacao");
-                atividade.vendedor = objList.Valor("Utilizador");
+                //atividade.vendedor = objList.Valor("Utilizador");
                 atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
                 atividade.entidadePrincipal = objList.Valor("EntidadePrincipal");
                 //atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
@@ -925,7 +944,7 @@ namespace PharmaCRM.Lib_Primavera
                 model_actividade.dataInicio = atividade.get_DataInicio();
                 model_actividade.dataFim = atividade.get_DataFim();
                 model_actividade.local = atividade.get_LocalRealizacao();
-                model_actividade.vendedor = atividade.get_Utilizador();
+                //model_actividade.vendedor = atividade.get_Utilizador();
                 model_actividade.tipoEntidadePrincipal = atividade.get_TipoEntidadePrincipal();
                 model_actividade.entidadePrincipal = atividade.get_EntidadePrincipal();
                 //model_actividade.idContactoPrincipal = atividade.get_IDContactoPrincipal();
@@ -934,6 +953,8 @@ namespace PharmaCRM.Lib_Primavera
                 return model_actividade;
             }
         }
+
+
 
         public static Lib_Primavera.Model.RespostaErro InsereObjAtividade(Model.Atividade actividade)
         {
@@ -952,7 +973,7 @@ namespace PharmaCRM.Lib_Primavera
                 objAtividade.set_DataInicio(actividade.dataInicio);
                 objAtividade.set_DataFim(actividade.dataFim);
                 objAtividade.set_LocalRealizacao(actividade.local);
-                objAtividade.set_CriadoPor(actividade.vendedor);
+                //objAtividade.set_CriadoPor(actividade.vendedor);
                 objAtividade.set_TipoEntidadePrincipal(actividade.tipoEntidadePrincipal);
                 objAtividade.set_EntidadePrincipal(actividade.entidadePrincipal);
                 //objAtividade.set_IDContactoPrincipal(actividade.idContactoPrincipal);
@@ -999,7 +1020,7 @@ namespace PharmaCRM.Lib_Primavera
                     objAtividade.set_DataInicio(atividade.dataInicio);
                     objAtividade.set_DataFim(atividade.dataFim);
                     objAtividade.set_LocalRealizacao(atividade.local);
-                    objAtividade.set_CriadoPor(atividade.vendedor);
+                    //objAtividade.set_CriadoPor(atividade.vendedor);
                     objAtividade.set_TipoEntidadePrincipal(atividade.tipoEntidadePrincipal);
                     objAtividade.set_EntidadePrincipal(atividade.entidadePrincipal);
                     //objAtividade.set_IDContactoPrincipal(atividade.idContactoPrincipal);
@@ -1113,7 +1134,7 @@ namespace PharmaCRM.Lib_Primavera
                     local = objListCab.Valor("LocalRealizacao"),
                     tipoEntidadePrincipal = objListCab.Valor("TipoEntidadePrincipal"),
                     entidadePrincipal = objListCab.Valor("EntidadePrincipal"),
-                    vendedor = objListCab.Valor("ResponsavelPor"),
+                    //vendedor = objListCab.Valor("ResponsavelPor"),
                     //idContactoPrincipal = objListCab.Valor("IdContactoPrincipal"),
                     idCabecalhoOportunidadeVenda = objListCab.Valor("IdCabecOVenda"),
                 };
@@ -1147,6 +1168,8 @@ namespace PharmaCRM.Lib_Primavera
                 oportunidade.dataExpiracao = objList.Valor("DataExpiracao");
                 oportunidade.vendedor = objList.Valor("Vendedor");
                 oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
+                oportunidade.estado = objList.Valor("EstadoVenda");
+
                 listLeads.Add(oportunidade);
                 objList.Seguinte();
             }
@@ -1167,6 +1190,7 @@ namespace PharmaCRM.Lib_Primavera
             oportunidade.dataExpiracao = objList.Valor("DataExpiracao");
             oportunidade.vendedor = objList.Valor("Vendedor");
             oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
+            oportunidade.estado = objList.Valor("EstadoVenda");
             return oportunidade;
         }
 
@@ -1188,7 +1212,7 @@ namespace PharmaCRM.Lib_Primavera
                 atividade.dataInicio = objList.Valor("DataInicio");
                 atividade.dataFim = objList.Valor("DataFim");
                 atividade.local = objList.Valor("LocalRealizacao");
-                atividade.vendedor = objList.Valor("Utilizador");
+                //atividade.vendedor = objList.Valor("Utilizador");
                 atividade.tipoEntidadePrincipal = objList.Valor("TipoEntidadePrincipal");
                 atividade.entidadePrincipal = objList.Valor("EntidadePrincipal");
                 //atividade.idContactoPrincipal = objList.Valor("IdContactoPrincipal");
@@ -1217,6 +1241,7 @@ namespace PharmaCRM.Lib_Primavera
                 oportunidadeVenda.set_Moeda("EUR");
                 oportunidadeVenda.set_Vendedor(oportunidade.vendedor);
                 oportunidadeVenda.set_ValorTotalOV(oportunidade.valorTotalOV);
+                oportunidadeVenda.set_EstadoVenda(oportunidade.estado);
 
                 PriEngine.Engine.CRM.OportunidadesVenda.Actualiza(oportunidadeVenda);
 
@@ -1285,6 +1310,21 @@ namespace PharmaCRM.Lib_Primavera
                     objOportunidade.set_Moeda("EUR");
                     objOportunidade.set_Vendedor(oportunidade.vendedor);
                     objOportunidade.set_ValorTotalOV(oportunidade.valorTotalOV);
+
+                    //apenas permite editar o estado se a oportunidade estiver em aberto
+                    short estado = objOportunidade.get_EstadoVenda();
+                    if (estado != oportunidade.estado && estado == 0) //0 -> em aberto
+                    {   //1 = ganha
+                        if (oportunidade.estado == 1 && !CanCloseOpportunityAsWon(oportunidade.id)) 
+                        {
+                            respostaErro.Erro = 1;
+                            respostaErro.Descricao = "Não pode fechar uma oportunidade de venda como ganha se não existir nenhuma encomenda associada.";
+                            return respostaErro;
+                        }
+
+                        objOportunidade.set_EstadoVenda(oportunidade.estado);
+                    }                                     
+
                     PriEngine.Engine.CRM.OportunidadesVenda.Actualiza(objOportunidade);
 
                     respostaErro.Erro = 0;
@@ -1299,6 +1339,19 @@ namespace PharmaCRM.Lib_Primavera
                 respostaErro.Descricao = ex.Message;
                 return respostaErro;
             }
+        }
+
+        public static Boolean CanCloseOpportunityAsWon(string idOportunidade)
+        {
+            StdBELista objList;
+
+            //checks if there is an order linked to this opportunity
+            string query = "SELECT id, IdOportunidade FROM CabecDoc where TipoDoc='ECL' and idOportunidade = " + idOportunidade;
+            objList = PriEngine.Engine.Consulta(query);
+
+            //TODO Testar com o metodo "PriEngine.Engine.CRM.OportunidadesVend.ExistemEncomendas"
+
+            return !objList.NoFim();
         }
 
         public static List<Model.Oportunidade> GetOportunidadesCliente(string idCliente)
@@ -1320,6 +1373,8 @@ namespace PharmaCRM.Lib_Primavera
                 oportunidade.dataExpiracao = objList.Valor("DataExpiracao");
                 oportunidade.vendedor = objList.Valor("Vendedor");
                 oportunidade.valorTotalOV = objList.Valor("ValorTotalOV");
+                oportunidade.estado = objList.Valor("EstadoVenda");
+
                 listLeads.Add(oportunidade);
                 objList.Seguinte();
             }
@@ -1488,7 +1543,7 @@ namespace PharmaCRM.Lib_Primavera
             }
 
             Dictionary<string, double> ordenado = produtosQuantidadeVendida.OrderByDescending(pair => pair.Value).Take(10).ToDictionary(pair => pair.Key, pair => pair.Value);
-            Dictionary<string, double> artigosQuantidadesVendidas = new Dictionary<string,double>();
+            Dictionary<string, double> artigosQuantidadesVendidas = new Dictionary<string, double>();
             foreach (KeyValuePair<string, double> entry in ordenado)
             {
                 artigosQuantidadesVendidas.Add(GetArtigo(entry.Key).Descricao, entry.Value);

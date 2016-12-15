@@ -68,5 +68,11 @@ namespace PharmaCRM.Lib_Primavera.Model
             get;
             set;
         }
+
+        public short estado  //0-em aberto 1-ganha 2-perdida
+        {
+            get;
+            set;
+        }
     }
 }

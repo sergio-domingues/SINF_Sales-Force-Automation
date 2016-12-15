@@ -122,7 +122,7 @@
 						<div v-show="loading.encomendas" class="spinner"></div>
 						<ul class="todo-list">
 							<div v-if="!encomendas.length && !loading.encomendas" class="error-msg-panel">Não existem encomendas associadas a este cliente</div>
-							<router-link tag="li" :to="'/salesorders/'+encomenda.NumeroDocumento" class="todo-list-item clicable" v-for="encomenda in encomendas">
+							<router-link tag="li" :to="'/salesorders/'+encomenda.idInterno" class="todo-list-item clicable" v-for="encomenda in encomendas">
 								<div class="checkbox">
 									{{encomenda.Data|date}}
 								</div>
