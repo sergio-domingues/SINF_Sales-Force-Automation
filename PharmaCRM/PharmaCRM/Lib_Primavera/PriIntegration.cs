@@ -335,8 +335,10 @@ namespace PharmaCRM.Lib_Primavera
         {
             Model.FaturacaoCliente faturacaoCli = new FaturacaoCliente();
 
-            StdBELista encomendas = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel, IdOportunidade "
-               + "FROM CabecDoc WHERE TipoDoc='ECL' AND Entidade='" + idCliente + "'");
+            string query = "SELECT id, Entidade, NumDoc, Responsavel, IdOportunidade "
+               + "FROM CabecDoc WHERE TipoDoc='ECL' AND Entidade='" + idCliente + "'";
+
+            StdBELista encomendas = PriEngine.Engine.Consulta(query);
 
             double valorFaturado = 0, valorPorFaturar = 0;
             while (!encomendas.NoFim())
@@ -804,6 +806,9 @@ namespace PharmaCRM.Lib_Primavera
                 dv.Filial = objListCab.Valor("Filial");
 
                 dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
+                
+                if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
+                    dv.Faturada = EncomendaFaturada(dv.idOportunidade);
 
                 /*listlindv = new List<Model.LinhaEncomenda>();
 
