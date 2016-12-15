@@ -73,7 +73,26 @@
 				</div>
 			</div>
 
-		</div>
+			<div class="col-lg-4">
+				<div class="panel panel-blue">
+					<div class="panel-heading">Por Faturar</div>
+					<div class="panel-body" style="background-color:white">
+						<div v-show="loading.encomendas" class="spinner"></div>
+						<h3>12</h3>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-4">
+					<div class="panel panel-blue">
+						<div class="panel-heading">Faturado</div>
+						<div class="panel-body" style="background-color:white">
+							<div v-show="loading.encomendas" class="spinner"></div>
+								<h3>25</h3>
+							</div>
+						</div>
+					</div>
+	</div>
 		<div class="row">
 			<div class="col-lg-4">
 				<div class="panel panel-blue">
@@ -215,7 +234,7 @@
 			}else{
 				this.$router.replace('/customers');
 			}
-	
+
 		}
 	}
 	</script>

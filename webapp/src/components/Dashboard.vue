@@ -133,7 +133,7 @@
     </div>
 
 
-    <div v-show="!this.$root.adminMode" class="col-md-6 col-lg-5">
+    <div v-show="!this.$root.adminMode" class="col-md-6 col-lg-4">
       <div class="panel panel-blue">
         <div class="panel-heading">Produtos Mais Vendidos</div>
         <div class="panel-body overflow-panel" style="background-color: white">
@@ -152,7 +152,7 @@
 
 
 
-    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-3">
+    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
@@ -166,7 +166,7 @@
       </div>
     </div>
 
-    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-3">
+    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
