@@ -69,11 +69,11 @@ namespace PharmaCRM.Lib_Primavera.Model
             set;
         }
 
-        public string vendedor
+        /*public string vendedor
         {
             get;
             set;
-        }
+        }*/
 
         public string local
         {
