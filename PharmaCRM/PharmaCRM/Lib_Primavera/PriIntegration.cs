@@ -934,6 +934,9 @@ namespace PharmaCRM.Lib_Primavera
                     dv.TotalMercadoria = totalMerc;
                 }
 
+                if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
+                    dv.Faturada = EncomendaFaturada(dv.idOportunidade);
+
                 listdv.Add(dv);
                 objListCab.Seguinte();
             }
