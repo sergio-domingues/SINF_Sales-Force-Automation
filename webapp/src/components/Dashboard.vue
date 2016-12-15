@@ -40,15 +40,15 @@
     </div>
 
     <div v-show="!this.$root.adminMode" class="row">
-       <div class="col-xs-6 col-md-3">
-				<div class="panel panel-default">
-					<div class="panel-body easypiechart-panel">
-						<h4>Objetivo</h4>
-						<div class="easypiechart" id="easypiechart-blue" :data-percent="goal"><span class="percent">{{goal}}%</span>
-						</div>
-					</div>
-				</div>
-			</div>
+      <div class="col-xs-6 col-md-3">
+        <div class="panel panel-default">
+          <div class="panel-body easypiechart-panel">
+            <h4>Objetivo</h4>
+            <div class="easypiechart" id="easypiechart-blue" :data-percent="goal"><span class="percent">{{goal}}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div v-show="!this.$root.adminMode" class="col-md-8">
         <div class="panel panel-default">
@@ -71,8 +71,10 @@
     </div>
 
     <div class="row">
-      <div class="col-lg-12">
-        <h1 class="page-header">KPI</h1>
+      <div class="page-header  col-lg-12">
+        <h1 class="col-lg-6">KPI</h1>
+        <h4 class="col-lg-6 text-right clicable" data-toggle="modal" data-target="#edit-goal-modal">
+          <i class="fa fa-pencil pull-right" v-show="$root.adminMode" aria-hidden="true"></i> Editar Objetivos</h4>
       </div>
     </div>
 
@@ -213,7 +215,7 @@
         </div>
       </div>
     </div>
-
+    <edit-goal></edit-goal>
 
   </div>
   </div>
@@ -221,6 +223,7 @@
 
 <script>
 import config from '../assets/config.json'
+import EditGoal from './modal/Goal'
 
 function fillMap(atividades) {
   var uluru = {lat:41.1785734, lng:-8.5962233};
@@ -263,6 +266,7 @@ export default {
   data () {
     return {atividades:[],oportunidades:[],loading:{atividades:true,oportunidades:true,kpi:true},kpi:{},goal:0}
   },
+  components:{EditGoal},
   mounted:function(){
 
     if(this.$root.adminMode){
@@ -286,7 +290,7 @@ export default {
 
       this.$http.get(config.host+'/api/objetivos/'+this.$root.vendedor.id)
       .then((response)=>{
-        this.goal=Math.round(parseInt(response.body.Valor)/parseInt(response.body.ValorCumprido)*100);
+        this.goal=Math.round(parseInt(response.body.ValorCumprido)/parseInt(response.body.Valor)*100);
         this.$nextTick(()=>{
           var element = document.querySelector('.easypiechart');
           new EasyPieChart(element, {
