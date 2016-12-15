@@ -26,7 +26,7 @@
 							<tbody>
 								<div v-show="loading" class="spinner"></div>
 								<router-link tag="tr" class="clicable" :to="'/salesorders/'+encomenda.NumeroDocumento" v-for="encomenda in encomendas">
-									<td>{{encomenda.Data}}</td>
+									<td>{{encomenda.Data|date}}</td>
 									<td>
 										<router-link :to="'/customers/'+encomenda.Entidade">{{encomenda.Entidade}}</router-link>
 									</td>
@@ -84,7 +84,12 @@ import config from '../assets/config.json'
 				});
 			}
 			},
-			methods:{
+			filters:{
+				date:function(data){
+					return new Date(data).toLocaleDateString();
+			}
+		},
+		methods:{
 				anularEncomenda:function(encNum){
 					this.$http.delete(config.host+'/api/encomendas/'+encNum)
 					.then((response)=>{

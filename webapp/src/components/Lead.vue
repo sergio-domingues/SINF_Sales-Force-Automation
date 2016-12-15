@@ -30,7 +30,11 @@
 							<div class="form-group">
 								<label for="cliente" class="col-sm-2 control-label">Cliente</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="cliente" placeholder="Cliente" v-model="oportunidade.entidade" :disabled="!editing">
+									<select class="form-control" id="cliente" v-model="oportunidade.entidade" :disabled="!editing">
+										<option v-for="cliente in clientes" v-bind:value="cliente.CodCliente">
+											{{ cliente.CodCliente }}
+										</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -97,19 +101,20 @@ var oportunidadeTemp;
 export default {
   name: 'Lead',
   data () {
-    return {editing:false,oportunidade:{},atividades:[]}
+    return {editing:false,oportunidade:{},atividades:[],clientes:[]}
   },
   methods:{
 	  toggleEditing: function(){
 			oportunidadeTemp=JSON.parse(JSON.stringify(this.oportunidade));
 		  if(this.editing){
+			  let oportunidade = JSON.parse(JSON.stringify(this.oportunidade));
+			  oportunidade.dataExpiracao = new Date(oportunidade.dataExpiracao);
 				const URL = encodeURI(config.host+'/api/oportunidades/'+this.oportunidade.id);
-				this.$http.put(URL,this.oportunidade)
+				this.$http.put(URL,oportunidade)
 				.then((response)=>{
 					this.editing = !this.editing;
-					this.oportunidade=response.body;
 				},(err)=>{
-					console.log(err)
+					alert(response.body);
 			})
 		  }else{
 					this.editing = !this.editing;
@@ -121,12 +126,19 @@ export default {
 	  }
   },
 	mounted: function(){
+		this.$http.get(config.host+'/api/clientes')
+		.then((response)=>{
+			this.clientes=response.body;
+		})
+		
 		var URL = encodeURI(config.host+'/api/oportunidades/'+this.$route.params.id);
 		this.$http.get(URL)
 		.then((response)=>{
 			this.oportunidade=response.body;
-			this.oportunidade.data=new Date(this.oportunidade.data);
+			let d=new Date(this.oportunidade.dataExpiracao);
+			this.oportunidade.dataExpiracao=d.getUTCFullYear()  +'-'+d.getUTCMonth() + '-' +d.getUTCDate();
 		})
+
 
 		URL=encodeURI(config.host+'/api/oportunidades/'+this.$route.params.id+'/atividades');
 		this.$http.get(URL).then((response)=>{

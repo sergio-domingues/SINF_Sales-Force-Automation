@@ -2,7 +2,7 @@
   <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <breadcrumb :current="''"></breadcrumb>
 
-    <div class="row">
+    <div v-show="!this.$root.adminMode" class="row">
       <div class="col-lg-12">
         <h1 class="page-header">Painel</h1>
       </div>
@@ -48,7 +48,7 @@
         </div>
       </div>
 
-      <div class="col-md-8">
+      <div v-show="!this.$root.adminMode" class="col-md-8">
         <div class="panel panel-default">
           <div class="panel-heading">Oportunidades</div>
           <div class="panel-body">
@@ -74,7 +74,7 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-md-6 col-lg-3">
+    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
@@ -88,7 +88,7 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-md-6 col-lg-3">
+    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
@@ -102,35 +102,7 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-md-6 col-lg-3">
-      <div class="panel panel-blue panel-widget ">
-        <div class="row no-padding">
-          <div class="col-sm-3 col-lg-5 widget-left">
-            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
-          </div>
-          <div class="col-sm-9 col-lg-7 widget-right">
-            <div class="large">{{kpi.NumOportunidadesPendentes}}</div>
-            <div class="text-muted">Oportunidades Pendentes</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xs-12 col-md-6 col-lg-3">
-      <div class="panel panel-blue panel-widget ">
-        <div class="row no-padding">
-          <div class="col-sm-3 col-lg-5 widget-left">
-            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
-          </div>
-          <div class="col-sm-9 col-lg-7 widget-right">
-            <div class="large">{{kpi.NovasOportunidades}}</div>
-            <div class="text-muted">Novas Oportunidades</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-xs-12 col-md-6 col-lg-3">
+    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
@@ -144,41 +116,109 @@
       </div>
     </div>
 
-    <div class="col-md-6 col-lg-6">
-        <div class="panel panel-blue">
-          <div class="panel-heading">Melhores Clientes</div>
-          <div class="panel-body overflow-panel" style="background-color: white">
-            <div v-show="loading.kpi" class="spinner"></div>
-            <ul class="todo-list">
-              <router-link tag="li" :to="'/customers/'+key" class="todo-list-item clicable" v-for="(value, key) in kpi.MelhoresClientes">
-                <div class="checkbox">
-                  {{key + '=>' + value}}
-                </div>
-              </router-link>
-            </ul>
-          </div>
+    <div v-show="!this.$root.adminMode" class="col-md-6 col-lg-4">
+      <div class="panel panel-blue">
+        <div class="panel-heading">Melhores Clientes</div>
+        <div class="panel-body overflow-panel" style="background-color: white">
+          <div v-show="loading.kpi" class="spinner"></div>
+          <ul class="todo-list">
+            <router-link tag="li" :to="'/customers/'+key" class="todo-list-item clicable" v-for="(value, key) in kpi.MelhoresClientes">
+              <div class="checkbox">
+                {{key + '=>' + value}}
+              </div>
+            </router-link>
+          </ul>
         </div>
       </div>
-
-    <div class="col-md-6 col-lg-6">
-        <div class="panel panel-blue">
-          <div class="panel-heading">Produtos Mais Vendidos</div>
-          <div class="panel-body overflow-panel" style="background-color: white">
-            <div v-show="loading.kpi" class="spinner"></div>
-            <ul class="todo-list">
-              <router-link tag="li" :to="'/customers/'+key" class="todo-list-item" v-for="(value, key) in kpi.ProdutosMaisVendidos">
-                <div class="checkbox">
-                  {{key + '=>' + value}}
-                </div>
-              </router-link>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      
-
     </div>
+
+
+    <div v-show="!this.$root.adminMode" class="col-md-6 col-lg-5">
+      <div class="panel panel-blue">
+        <div class="panel-heading">Produtos Mais Vendidos</div>
+        <div class="panel-body overflow-panel" style="background-color: white">
+          <div v-show="loading.kpi" class="spinner"></div>
+          <ul class="todo-list">
+            <router-link tag="li" :to="'/customers/'+key" class="todo-list-item" v-for="(value, key) in kpi.ProdutosMaisVendidos">
+              <div class="checkbox">
+                {{key + '=>' + value}}
+              </div>
+            </router-link>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-3">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.NumOportunidadesPendentes}}</div>
+            <div class="text-muted">Oportunidades Pendentes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-3">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.NovasOportunidades}}</div>
+            <div class="text-muted">Novas Oportunidades</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    <!-- KPI for Admin-->
+    <div v-show="this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-6">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.ValorMedioVendasPorVendedor}}</div>
+            <div class="text-muted">Valor Médio de Vendas por Vendedor</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div v-show="this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-6">
+      <div class="panel panel-blue">
+        <div class="panel-heading">Melhores Vendedores</div>
+        <div class="panel-body overflow-panel" style="background-color: white">
+          <div v-show="loading.kpi" class="spinner"></div>
+          <ul class="todo-list">
+            <li class="todo-list-item" v-for="(value, key) in kpi.MelhoresVendedores">
+              <div class="checkbox">
+                {{key + '=>' + value}}
+              </div>
+              </router-link>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
   </div>
 </template>
 
@@ -228,10 +268,10 @@ export default {
   },
   mounted:function(){
     if(this.$root.adminMode){
-      /*this.$http.get('http://localhost:49559/api/kpi/').then((response)=>{
+      this.$http.get('http://localhost:49559/api/kpi/').then((response)=>{
         this.kpi=response.body;
         this.loading.kpi=false;
-      });*/
+      });
     }else{
       this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15')
       .then((response)=>{

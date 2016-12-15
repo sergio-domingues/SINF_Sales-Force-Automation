@@ -30,7 +30,7 @@
               <div class="form-group">
                 <label for="data" class="col-sm-2 control-label">Data</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="data" placeholder="Data" v-model="encomenda.Data" :disabled="!editing">
+                  <input type="date" class="form-control" id="data" placeholder="Data" v-model="encomenda.Data" :disabled="!editing">
                 </div>
               </div>
 
@@ -97,6 +97,8 @@ export default {
     this.$http.get(config.host+'/api/encomendas/'+this.$route.params.id)
     .then((response)=>{
       this.encomenda=response.body;
+      let d = new Date(this.encomenda.Data);
+      this.encomenda.Data=d.getUTCFullYear()  +'-'+d.getUTCMonth() + '-' +d.getUTCDate();
       this.artigos=response.body.LinhasDocumento;
       if(this.encomenda.idOportunidade){
         this.$http.get(config.host+'/api/oportunidade/'+encomenda.idOportunidade)
