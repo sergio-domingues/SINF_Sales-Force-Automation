@@ -13,7 +13,7 @@
                 <th>Quantidade</th>
                 <th>Unidade</th>
                 <th>Total</th>
-                <th>Opções</th>
+                <th v-show="!lock">Opções</th>
               </tr>
             </thead>
             <tbody>
@@ -23,7 +23,7 @@
                 <td>{{artigo.Quantidade}}</td>
                 <td>{{artigo.Unidade}}</td>
                 <td>{{Math.round(artigo.PrecoUnitario*artigo.Quantidade*100)/100}}€ <span>{{artigo.Desconto}}</span></td>
-                <td><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
+                <td v-show="!lock"><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
                   <input type="number" v-show="artigo.Quantidade >1" class="quant-select" v-model="artigo.QuantSelec"><i class="fa fa-lg fa-minus clicable"
                     aria-hidden="true" v-show="artigo.Quantidade >1" v-on:click="diminuirQuantidade(artigo)"></i>
                 </td>
@@ -39,7 +39,7 @@
             </tbody>
           </table>
 
-          <div class="row">
+          <div class="row" v-show="!lock">
             <div class="col-lg-10 col-md-offset-1">
               <div class="input-group">
                 <span class="input-group-btn">
@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <div class="row" v-show="!lock">
             <div class="col-lg-10 col-md-offset-1">
               <table class="table table-hover">
                 <thead>
@@ -107,7 +107,7 @@ export default {
   data () {
     return {listaArtigos:[],pesquisa:'', pesquisaReturnada: [], total: 0}
   },
-  props:['artigos'],
+  props:['artigos','lock'],
   mounted:function(){
     this.$http.get(config.host+'/api/artigos/')
     .then((response)=>{

@@ -30,35 +30,35 @@
               <div class="form-group">
                 <label for="data" class="col-sm-2 control-label">Data</label>
                 <div class="col-sm-10">
-                  <input type="date" class="form-control" id="data" placeholder="Data" v-model="encomenda.Data" :disabled="!editing">
+                  <input type="date" class="form-control" id="data" placeholder="Data" v-model="encomenda.Data"  disabled>
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="cliente" class="col-sm-2 control-label">Cliente</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="cliente" placeholder="Cliente" v-model="encomenda.Entidade" :disabled="!editing">
+                  <input type="text" class="form-control" id="cliente" placeholder="Cliente" v-model="encomenda.Entidade"  disabled>
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="oportunidade" class="col-sm-2 control-label">Oportunidade</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="oportunidade" placeholder="Oportunidade" v-model="encomenda.oportunidade" :disabled="!editing">
+                  <input type="text" class="form-control" id="oportunidade" placeholder="Oportunidade" v-model="encomenda.oportunidade"  disabled>
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="serie" class="col-sm-2 control-label">Série</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="serie" placeholder="Série" v-model="encomenda.Serie" :disabled="!editing">
+                  <input type="text" class="form-control" id="serie" placeholder="Série" v-model="encomenda.Serie"  disabled>
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="valor" class="col-sm-2 control-label">Total Mercadoria</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="valor" placeholder="Valor" v-model="encomenda.TotalMercadoria" :disabled="!editing">
+                  <input type="text" class="form-control" id="valor" placeholder="Valor" v-model="encomenda.TotalMercadoria" disabled>
                 </div>
               </div>
             </form>
@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <article-listing :artigos="this.artigos"></article-listing>
+    <article-listing :artigos="this.artigos" :lock=true></article-listing>
   </div>
 </template>
 
@@ -82,16 +82,6 @@ export default {
   },
   components:{ArticleListing},
   methods:{
-    toggleEditing: function(){
-      if(this.editing){
-        console.log('Enviar pedido para editar')
-      }
-      this.editing = !this.editing;
-    },
-    cancelEditing:function(){
-      //TODO
-      this.editing = !this.editing;
-    }
   },
   mounted:function(){
     this.$http.get(config.host+'/api/encomendas/'+this.$route.params.id)
