@@ -40,13 +40,15 @@
     </div>
 
     <div v-show="!this.$root.adminMode" class="row">
-      <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-heading">Calendário</div>
-          <div class="panel-body">
-          </div>
-        </div>
-      </div>
+       <div class="col-xs-6 col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-body easypiechart-panel">
+						<h4>Objetivo</h4>
+						<div class="easypiechart" id="easypiechart-blue" :data-percent="goal"><span class="percent">{{goal}}%</span>
+						</div>
+					</div>
+				</div>
+			</div>
 
       <div v-show="!this.$root.adminMode" class="col-md-8">
         <div class="panel panel-default">
@@ -180,11 +182,6 @@
       </div>
     </div>
 
-
-
-
-
-
     <!-- KPI for Admin-->
     <div v-show="this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-6">
       <div class="panel panel-blue panel-widget ">
@@ -264,9 +261,10 @@ function fillMap(atividades) {
 export default {
   name: 'dashboard',
   data () {
-    return {atividades:[],oportunidades:[],loading:{atividades:true,oportunidades:true,kpi:true},kpi:{}}
+    return {atividades:[],oportunidades:[],loading:{atividades:true,oportunidades:true,kpi:true},kpi:{},goal:0}
   },
   mounted:function(){
+
     if(this.$root.adminMode){
       this.$http.get('http://localhost:49559/api/kpi/').then((response)=>{
         this.kpi=response.body;
@@ -284,6 +282,17 @@ export default {
       .then((response)=>{
         this.loading.oportunidades=false;
         this.oportunidades=response.body;
+      });
+
+      this.$http.get(config.host+'/api/objetivos/'+this.$root.vendedor.id)
+      .then((response)=>{
+        this.goal=Math.round(parseInt(response.body.Valor)/parseInt(response.body.ValorCumprido)*100);
+        this.$nextTick(()=>{
+          var element = document.querySelector('.easypiechart');
+          new EasyPieChart(element, {
+            barColor:'#30a5ff'
+          });
+        })
       });
 
       this.$http.get(config.host+'/api/kpi/'+this.$root.vendedor.id)
