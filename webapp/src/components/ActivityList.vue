@@ -27,7 +27,7 @@
 							<tbody>
 								<div v-show="loading" class="spinner"></div>
 								<router-link tag="tr" v-for="atividade in atividades" :to="'activities/'+ encodeURIComponent(atividade.id)" class="clicable">
-									<th scope="row">{{displayDate(atividade.dataInicio)}}</th>
+									<td>{{displayDate(atividade.dataInicio)}}</td>
 									<td>{{atividade.tipoAtividade}}</td>
 									<td>{{atividade.resumo}}</td>
 									<td v-if="atividade.estado == 0">INCOMPLETA</td>

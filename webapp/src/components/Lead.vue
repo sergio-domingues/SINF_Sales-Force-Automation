@@ -107,13 +107,14 @@ export default {
 	  toggleEditing: function(){
 			oportunidadeTemp=JSON.parse(JSON.stringify(this.oportunidade));
 		  if(this.editing){
+			  let oportunidade = JSON.parse(JSON.stringify(this.oportunidade));
+			  oportunidade.dataExpiracao = new Date(oportunidade.dataExpiracao);
 				const URL = encodeURI(config.host+'/api/oportunidades/'+this.oportunidade.id);
-				this.$http.put(URL,this.oportunidade)
+				this.$http.put(URL,oportunidade)
 				.then((response)=>{
 					this.editing = !this.editing;
-					this.oportunidade=response.body;
 				},(err)=>{
-					console.log(err)
+					alert(response.body);
 			})
 		  }else{
 					this.editing = !this.editing;
@@ -134,7 +135,8 @@ export default {
 		this.$http.get(URL)
 		.then((response)=>{
 			this.oportunidade=response.body;
-			this.oportunidade.data=new Date(this.oportunidade.data);
+			let d=new Date(this.oportunidade.dataExpiracao);
+			this.oportunidade.dataExpiracao=d.getUTCFullYear()  +'-'+d.getUTCMonth() + '-' +d.getUTCDate();
 		})
 
 

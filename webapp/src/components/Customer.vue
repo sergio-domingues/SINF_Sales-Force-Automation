@@ -124,7 +124,7 @@
 							<div v-if="!encomendas.length && !loading.encomendas" class="error-msg-panel">Não existem encomendas associadas a este cliente</div>
 							<router-link tag="li" :to="'/salesorders/'+encomenda.NumeroDocumento" class="todo-list-item clicable" v-for="encomenda in encomendas">
 								<div class="checkbox">
-									{{encomenda.Data}}
+									{{encomenda.Data|date}}
 								</div>
 								<div class="pull-right">{{encomenda.TotalMercadoria}}</dic>
 							</router-link>
@@ -175,6 +175,10 @@
 				this.editing = !this.editing;
 			}
 		},
+		filters:{
+				date:function(data){
+					return new Date(data).toLocaleDateString();
+			}},
 		mounted: function(){
 			if(this.$route.params.id!=="new" ){
 				this.$http.get(encodeURI(config.host+'/api/clientes/'+this.$route.params.id))

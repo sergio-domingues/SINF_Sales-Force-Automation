@@ -19,8 +19,8 @@
             </div>
             <div class="form-group">
               <label for="date">Data de Expiraçao</label>
-              <input type="date" class="form-control" id="date" v-model="oportunidade.data" placeholder="Data de Expiração">
-            </div>
+              <input type="date" class="form-control" id="date" v-model="oportunidade.data"  placeholder="Data de Expiração">
+              </div>
             <div class="form-group">
               <label for="cliente">Cliente</label>
               <select class="form-control selectpicker" id="cliente" data-live-search="true" v-model="selected" data-max-options="<10></10>" required>
