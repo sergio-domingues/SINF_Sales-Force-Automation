@@ -19,8 +19,8 @@
             </div>
             <div class="form-group">
               <label for="date">Data de Expiraçao</label>
-              <input type="date" class="form-control" id="date" v-model="oportunidade.data" placeholder="Data de Expiração">
-            </div>
+              <input type="date" class="form-control" id="date" v-model="oportunidade.data"  placeholder="Data de Expiração">
+              </div>
             <div class="form-group">
               <label for="cliente">Cliente</label>
               <select class="form-control selectpicker" id="cliente" data-live-search="true" v-model="selected" data-max-options="<10></10>" required>
@@ -71,7 +71,7 @@ export default {
             $('#create-modal').modal('hide');
           })
         }else{
-          this.$http.post(config.host+'/api/oportunidades/',{descricao:this.oportunidade.descricao,entidade:this.selected,
+          this.$http.post(config.host+'/api/oportunidades/',{descricao:this.oportunidade.descricao,entidade:$('#cliente').find("option:selected").val(),
             tipoEntidade:"C",vendedor:this.$root.vendedor.id,dataExpiracao:this.oportunidade.data,codigo:this.oportunidade.identificador})
             .then((response)=>{
               console.log(response);

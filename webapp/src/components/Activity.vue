@@ -41,10 +41,10 @@
 								<label for="tipo" class="col-sm-2 control-label">Tipo</label>
 								<div class="col-sm-10">
 									<select class="form-control" id="tipo" v-model="atividade.idTipoAtividade" :disabled="!editing">
-		                <option v-for="tipo in tipos" v-bind:value="tipo.value" :selected="atividade.idTipoAtividade==tipo.value">
-		                  {{ tipo.text }}
-		                </option>
-		              </select>
+										<option v-for="tipo in tipos" v-bind:value="tipo.value">
+											{{ tipo.text }}
+										</option>
+									</select>
 								</div>
 							</div>
 
@@ -55,21 +55,39 @@
 										<option v-for="option in options" v-bind:value="option.value">
 											{{ option.text }}
 										</option>
-            						</select>
+									</select>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="dataInicio" class="col-sm-2 control-label">Data de Inicio</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="dataInicio" placeholder="data inicio" v-model="atividade.dataInicio" :disabled="!editing">
+									<input type="datetime-local" class="form-control" id="dataInicio" placeholder="data inicio" v-model="atividade.dataInicio" :disabled="!editing">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="dataFim" class="col-sm-2 control-label">Data de Fim</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="dataFim" placeholder="data fim" v-model="atividade.dataFim" :value="atividade.dataFim" :disabled="!editing">
+									<input type="datetime-local" class="form-control" id="dataFim" placeholder="data fim" v-model="atividade.dataFim" :value="atividade.dataFim" :disabled="!editing">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="Tipo" class="col-sm-2 control-label">Oportunidade</label>
+								<div class="col-sm-10">
+									<select class="form-control" id="idCabecalhoOportunidadeVenda"  v-model="atividade.idCabecalhoOportunidadeVenda"  required :disabled="!editing">
+										<option v-for="oportunidade in oportunidades" :value="oportunidade.id">
+											{{ oportunidade.descricao}}
+										</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="local" class="col-sm-2 control-label">Local</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="local" v-model="atividade.local" placeholder="Local" :disabled="!editing">
 								</div>
 							</div>
 
@@ -103,37 +121,36 @@ function findById(array,id,idProp){
 }
 export default {
 	name: 'Activity',
-  data () {
-    return {
-		editing:false,
-		atividade : {},
-		options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}],
-		tipos: []
-	}
-  },
-  methods:{
-	  toggleEditing: function(){
-			  copy = (JSON.parse(JSON.stringify(this.atividade)));
-		  if(this.editing){
-				//TODO: idCabecalhoOportunidadeVenda e adicionar idContactoPrincipal
-				//TODO: DEPOIS TROCAR ISTO! 'http://localhost:49559/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15'
-	const URL = encodeURI(config.host+'/api/atividades/'+this.$route.params.id);
-	  this.$http.put(URL, this.atividade)
-		.then((response)=>{
-		console.log('response ' + response.body)
-	  },(err)=>{
-			console.log(err)
-		})
-		console.log('Enviar pedido para editar')
-	}
+	data () {
+		return {
+			editing:false,
+			atividade : {},
+			options:[{'text': 'FEITA',value:1}, {'text': 'INCOMPLETA',value:0}],
+			tipos: [],
+			oportunidades: [],
+			searchable: false
+		}
+	},
+	methods:{
+		toggleEditing: function(){
+			copy = (JSON.parse(JSON.stringify(this.atividade)));
+			if(this.editing){
+				const URL = encodeURI(config.host+'/api/atividades/'+this.$route.params.id);
+				this.$http.put(URL, this.atividade)
+				.then((response)=>{
+					console.log('response ' + response.body)
+				},(err)=>{
+					alert(response.body);
+				})
+			}
 
-		  this.editing = !this.editing;
-	  },
-	  cancelEditing:function(){
-		  this.atividade = (JSON.parse(JSON.stringify(copy)));
-		 this.editing = !this.editing;
-	  }
-  },
+			this.editing = !this.editing;
+		},
+		cancelEditing:function(){
+			this.atividade = (JSON.parse(JSON.stringify(copy)));
+			this.editing = !this.editing;
+		}
+	},
 	mounted: function(){
 
 		this.$http.get(config.host+'/api/atividades/tipos')
@@ -143,22 +160,29 @@ export default {
 			}
 		})
 
-	const URL = encodeURI(config.host+'/api/atividades/'+this.$route.params.id);
-	  this.$http.get(URL)
+		this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/oportunidades')
 		.then((response)=>{
+			this.oportunidades=response.body;
+		})
+
+		const URL = encodeURI(config.host+'/api/atividades/'+this.$route.params.id);
+		this.$http.get(URL)
+		.then((response)=>{
+			this.atividade=response.body;
 			const URL2 = encodeURI(config.host+'/api/atividades/tipos/'+response.body.idTipoAtividade);
-			  this.$http.get(URL2)
-				.then((tipo)=>{
-					this.atividade=response.body;
-					this.atividade.tipoAtividade = tipo.body.descricao;
-			  })
-			});
-		}
+			this.$http.get(URL2)
+			.then((tipo)=>{
+				this.atividade.tipoAtividade = tipo.body.descricao;
+			})
+
+
+		});
+	}
 }
 </script>
 
 <style>
-	textarea {
-		resize: vertical;
-	}
+textarea {
+	resize: vertical;
+}
 </style>

@@ -567,18 +567,21 @@ namespace PharmaCRM.Lib_Primavera
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             GcpBEDocumentoVenda myEnc = new GcpBEDocumentoVenda();
-
             try
             {
-                // Atribui valores ao cabecalho do doc
-                myEnc.set_DataDoc(dv.Data);
                 myEnc.set_Entidade(dv.Entidade);
-                myEnc.set_IdOportunidade(dv.idOportunidade);
-                myEnc.set_Serie(dv.Serie);
                 myEnc.set_Tipodoc("ECL");
                 myEnc.set_TipoEntidade("C");
+
+                PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc); // Utiliza os campos entidade, tipo de documento e tipo de entidade para preencher o cabeçalho com valores por defeito
+
+                // Preencher o resto dos campos
+                myEnc.set_DataDoc(dv.Data);
+                myEnc.set_IdOportunidade(dv.idOportunidade);
+                myEnc.set_Serie(dv.Serie);
                 myEnc.set_Responsavel(dv.idResponsavel);
                 myEnc.set_Filial(dv.Filial);
+                myEnc.set_CondPag("3");
 
                 if (dv.NumeroDocumento != -1)
                 {
@@ -589,7 +592,7 @@ namespace PharmaCRM.Lib_Primavera
 
                 // Linhas do documento para a lista de linhas
                 List<Model.LinhaEncomenda> lstlindv = dv.LinhasDocumento;
-                PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
+                //PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
                 foreach (Model.LinhaEncomenda lin in lstlindv)
                 {
                     PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodigoArtigo, lin.Quantidade, "", "", lin.PrecoUnitario, lin.Desconto);
@@ -1347,7 +1350,7 @@ namespace PharmaCRM.Lib_Primavera
                     objOportunidade.set_NumEncomenda(oportunidade.numEncomenda);
                     objOportunidade.set_Entidade(oportunidade.entidade);
                     objOportunidade.set_TipoEntidade(oportunidade.tipoEntidade);
-                    objOportunidade.set_DataCriacao(DateTime.Now);
+                    objOportunidade.set_DataCriacao(oportunidade.dataCriacao);
                     objOportunidade.set_DataExpiracao(oportunidade.dataExpiracao);
                     objOportunidade.set_CicloVenda("CV_HW");
                     objOportunidade.set_Moeda("EUR");

@@ -25,15 +25,15 @@
 							</thead>
 							<tbody>
 								<div v-show="loading" class="spinner"></div>
-								<router-link tag="tr" class="clicable" :to="'/salesorders/'+encomenda.idInterno" v-for="encomenda in encomendas">
-									<td>{{encomenda.Data}}</td>
+								<router-link tag="tr" class="clicable" :to="'/salesorders/'+encomenda.NumeroDocumento" v-for="encomenda in encomendas">
+									<td>{{encomenda.Data|date}}</td>
 									<td>
 										<router-link :to="'/customers/'+encomenda.Entidade">{{encomenda.Entidade}}</router-link>
 									</td>
 									<td>{{encomenda.TotalMercadoria}} €</td>
 									<td>
 										<router-link to="">
-											<i v-show="!encomenda.Anulada" v-on:click="anularEncomenda(encomenda.idInterno)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
+											<i v-show="!encomenda.Anulada" v-on:click="anularEncomenda(encomenda)" class="fa fa-lg fa-trash" aria-hidden="true"></i>
 										</router-link>
 										<label v-show="encomenda.Anulada">ANULADA</label>
 									</td>
@@ -84,12 +84,19 @@ import config from '../assets/config.json'
 				});
 			}
 			},
-			methods:{
-				anularEncomenda:function(encNum){
-					this.$http.delete(config.host+'/api/encomendas/'+encNum)
+			filters:{
+				date:function(data){
+					return new Date(data).toLocaleDateString();
+			}
+		},
+		methods:{
+				anularEncomenda:function(encomenda){
+					this.$http.delete(config.host+'/api/encomendas/'+encomenda.NumeroDocumento)
 					.then((response)=>{
-						this.encomendas.splice(findById(this.encomendas,'NumeroDocumento',encNum),1)
-					});
+						encomenda.Anulada=true;
+					},(err)=>{
+						alert('Erro ao anular encomenda');
+					})
 				}
 			}
 		}
