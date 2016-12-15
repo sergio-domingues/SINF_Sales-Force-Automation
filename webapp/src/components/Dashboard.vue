@@ -40,7 +40,7 @@
     </div>
 
     <div v-show="!this.$root.adminMode" class="row">
-      <div class="col-xs-6 col-md-3">
+      <div class="col-xs-6 col-md-4">
         <div class="panel panel-default">
           <div class="panel-body easypiechart-panel">
             <h4>Objetivo</h4>
@@ -73,8 +73,8 @@
     <div class="row">
       <div class="page-header  col-lg-12">
         <h1 class="col-lg-6">KPI</h1>
-        <h4 class="col-lg-6 text-right clicable" data-toggle="modal" data-target="#edit-goal-modal">
-          <i class="fa fa-pencil pull-right" v-show="$root.adminMode" aria-hidden="true"></i> Editar Objetivos</h4>
+        <h4 v-show="$root.adminMode" class="col-lg-6 text-right clicable" data-toggle="modal" data-target="#edit-goal-modal">
+          <i class="fa fa-pencil pull-right" aria-hidden="true"></i>Editar Objetivos</h4>
       </div>
     </div>
 
@@ -86,7 +86,7 @@
           </div>
           <div class="col-sm-9 col-lg-7 widget-right">
             <div class="large">{{kpi.NumTotalVendas}}</div>
-            <div class="text-muted">Vendas Totais</div>
+            <div class="text-muted">Nº Vendas Totais</div>
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@
           </div>
           <div class="col-sm-9 col-lg-7 widget-right">
             <div class="large">{{kpi.NumVendasCompletas}}</div>
-            <div class="text-muted">Valor Vendas</div>
+            <div class="text-muted">Nª Vendas Completas</div>
           </div>
         </div>
       </div>
@@ -153,6 +153,20 @@
       </div>
     </div>
 
+    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
+      <div class="panel panel-blue panel-widget ">
+        <div class="row no-padding">
+          <div class="col-sm-3 col-lg-5 widget-left">
+            <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-9 col-lg-7 widget-right">
+            <div class="large">{{kpi.ValorTotalVendas}} €</div>
+            <div class="text-muted">Valor Total de Vendas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
 
 
@@ -192,7 +206,7 @@
             <i class="fa fa-shopping-bag fa-3x" aria-hidden="true"></i>
           </div>
           <div class="col-sm-9 col-lg-7 widget-right">
-            <div class="large">{{kpi.ValorMedioVendasPorVendedor}}</div>
+            <div class="large">{{kpi.ValorMedioVendasPorVendedor}} €</div>
             <div class="text-muted">Valor Médio de Vendas por Vendedor</div>
           </div>
         </div>
@@ -215,7 +229,7 @@
         </div>
       </div>
     </div>
-    <edit-goal></edit-goal>
+    <edit-goal v-show="$root.adminMode"></edit-goal>
 
   </div>
   </div>
