@@ -80,7 +80,7 @@ namespace PharmaCRM.Controllers
         }
 
         // DELETE: api/Encomendas/5
-        [Route("api/encomendas/{numDoc}")]
+        [Route("api/encomendas/{id}")]
         [HttpDelete]
         public HttpResponseMessage Delete(string id)
         {
