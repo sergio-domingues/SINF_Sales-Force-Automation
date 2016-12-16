@@ -580,6 +580,7 @@ namespace PharmaCRM.Lib_Primavera
             GcpBEDocumentoVenda myEnc = new GcpBEDocumentoVenda();
             try
             {
+                System.Diagnostics.Debug.WriteLine(myEnc.get_Linhas().NumItens);
                 myEnc.set_Entidade(dv.Entidade);
                 myEnc.set_Tipodoc("ECL");
                 myEnc.set_TipoEntidade("C");
@@ -594,19 +595,21 @@ namespace PharmaCRM.Lib_Primavera
                 myEnc.set_Filial(dv.Filial);
                 myEnc.set_CondPag("3");
 
-                if (dv.NumeroDocumento != -1)
-                {
-                    // EDIÇÃO
-                    myEnc.set_NumDoc(dv.NumeroDocumento);
-                    myEnc.set_ID(dv.idInterno);
-                }
-
                 // Linhas do documento para a lista de linhas
                 List<Model.LinhaEncomenda> lstlindv = dv.LinhasDocumento;
                 //PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
+                System.Diagnostics.Debug.WriteLine(myEnc.get_Linhas().NumItens);
                 foreach (Model.LinhaEncomenda lin in lstlindv)
                 {
+                    int oldSize = myEnc.get_Linhas().NumItens;
                     PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodigoArtigo, lin.Quantidade, "", "", lin.PrecoUnitario, lin.Desconto);
+
+                    // As próximas linhas servem para resolver um bug do Primavera, que causa a adição de artigos para além do indicado.
+                    GcpBELinhasDocumentoVenda linhas = myEnc.get_Linhas();
+                    for (int newSize = linhas.NumItens; newSize > oldSize + 1; newSize--)
+                    {
+                        linhas.Remove(linhas.NumItens - 1);
+                    }
                 }
 
                 PriEngine.Engine.IniciaTransaccao();

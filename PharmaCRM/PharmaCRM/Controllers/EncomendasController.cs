@@ -53,19 +53,6 @@ namespace PharmaCRM.Controllers
         [HttpPost]
         public HttpResponseMessage Post([FromBody]Lib_Primavera.Model.Encomenda encomenda)
         {
-            return editaCriaEncomenda(encomenda);
-        }
-
-        // PUT: api/Encomendas/5
-        [Route("api/encomendas/{id}")]
-        [HttpPut]
-        public HttpResponseMessage Put(int id, [FromBody]Lib_Primavera.Model.Encomenda encomenda)
-        {
-            return editaCriaEncomenda(encomenda);
-        }
-
-        private HttpResponseMessage editaCriaEncomenda(Lib_Primavera.Model.Encomenda encomenda)
-        {
             Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
             erro = Lib_Primavera.PriIntegration.CreateEncomenda(encomenda);
 
