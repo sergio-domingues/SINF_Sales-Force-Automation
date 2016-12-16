@@ -4,7 +4,9 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header" >Lista de Clientes <router-link v-show="!$root.adminMode" tag="i" class="fa fa-plus pull-right clicable" :to="'/customers/new'"></router-link></h1>
+				<h1 class="page-header" >Lista de Clientes
+					<router-link v-show="!$root.adminMode" tag="i" class="fa fa-plus pull-right clicable" :to="'/customers/new'"></router-link>
+					<i class="fa fa-refresh pull-right clicable" v-show="!$root.adminMode" v-on:click="refresh" aria-hidden="true"></i></h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -52,6 +54,14 @@ export default {
 		clientes:[],
 		loading:true
 	}
+  },methods:{
+	  refresh:function(){
+		this.$http.get(config.host+'/api/clientes/')
+		.then((response)=>{
+			this.loading=false;
+			this.clientes=response.body;
+	  });
+	  }
   },
   mounted: function(){
 	  this.$http.get(config.host+'/api/clientes/')

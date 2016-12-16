@@ -148,7 +148,7 @@
               <div class="checkbox">
                 {{key}}
               </div>
-             <div class="pull-right">{{value}}</div>
+             <div class="pull-right">{{value}} UN</div>
             </li>
           </ul>
         </div>

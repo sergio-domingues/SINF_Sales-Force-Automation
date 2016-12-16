@@ -74,9 +74,12 @@ export default {
           this.$http.post(config.host+'/api/oportunidades/',{descricao:this.oportunidade.descricao,entidade:$('#cliente').find("option:selected").val(),
             tipoEntidade:"C",vendedor:this.$root.vendedor.id,dataExpiracao:this.oportunidade.data,codigo:this.oportunidade.identificador})
             .then((response)=>{
+              this.$nextTick(()=>{
+                $('#create-modal').modal('hide');
+              })
               console.log(response);
             },(err)=>{
-              console.log(err)
+              alert('Erro ao criar oportunidade');
 			      });
         }
       

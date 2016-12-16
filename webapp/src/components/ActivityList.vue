@@ -5,7 +5,8 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header">Lista de Atividades <i class="fa fa-plus pull-right clicable" v-show="!$root.adminMode" data-toggle="modal" data-target="#create-activity-modal"
-						aria-hidden="true"></i></h1>
+						aria-hidden="true"></i>
+						<i class="fa fa-refresh pull-right clicable" v-show="!$root.adminMode" v-on:click="refresh" aria-hidden="true"></i></h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -118,6 +119,17 @@ export default {
 			(err) => {
 				console.log('error')
 			});
+		},
+		refresh:function(){
+				this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2017-11-15')
+				.then((response)=>{
+					for(let i = 0; i < response.body.length; i++){
+						this.atividades=response.body;
+						var index =	findById(this.tipos, this.atividades[i].idTipoAtividade,'id')
+						this.atividades[i].tipoAtividade = this.tipos[index].descricao;
+						this.loading=false;
+					}
+				});
 		}
 	}
 }
