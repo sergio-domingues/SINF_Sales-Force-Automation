@@ -819,27 +819,28 @@ namespace PharmaCRM.Lib_Primavera
             List<Model.LinhaEncomenda> listlindv = new
             List<Model.LinhaEncomenda>();
 
-            objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Responsavel='"
+            //objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, IdOportunidade, Data, NumDoc, TotalMerc, Serie, Responsavel, Filial From CabecDoc where TipoDoc='ECL' AND Responsavel='"
+            objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, TotalMerc From CabecDoc where TipoDoc='ECL' AND Responsavel='"
                 + idVendedor + "' ORDER BY Data DESC");
             while (!objListCab.NoFim())
             {
                 dv = new Model.Encomenda();
                 dv.idInterno = objListCab.Valor("id");
                 dv.Entidade = objListCab.Valor("Entidade");
-                dv.idOportunidade = objListCab.Valor("IdOportunidade");
-                dv.NumeroDocumento = objListCab.Valor("NumDoc");
+                //dv.idOportunidade = objListCab.Valor("IdOportunidade");
+                //dv.NumeroDocumento = objListCab.Valor("NumDoc");
                 dv.Data = objListCab.Valor("Data");
                 dv.TotalMercadoria = objListCab.Valor("TotalMerc");
-                dv.Serie = objListCab.Valor("Serie");
-                dv.idResponsavel = objListCab.Valor("Responsavel");
-                dv.Filial = objListCab.Valor("Filial");
-
+                //dv.Serie = objListCab.Valor("Serie");
+                //dv.idResponsavel = objListCab.Valor("Responsavel");
+                //dv.Filial = objListCab.Valor("Filial");
+                /*
                 dv.Anulada = PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(dv.idInterno);
 
                 if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
                     dv.Faturada = EncomendaFaturada(dv.idOportunidade);
                 else
-                    dv.Faturada = true;
+                    dv.Faturada = true;*
 
                 /*listlindv = new List<Model.LinhaEncomenda>();
 
