@@ -190,7 +190,7 @@ namespace PharmaCRM.Lib_Primavera
                     Localidade = objList.Valor("Fac_Local"),
                     Notas = objList.Valor("Notas"),
                     Telefone = objList.Valor("Fac_Tel"),
-                    DetalhesFaturacao = getClienteFaturacao(objList.Valor("Cliente"))
+                    //DetalhesFaturacao = getClienteFaturacao(objList.Valor("Cliente"))
                 });
                 objList.Seguinte();
 
