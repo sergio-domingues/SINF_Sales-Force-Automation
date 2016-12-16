@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <breadcrumb :current="''"></breadcrumb>
 
@@ -291,7 +291,7 @@ export default {
         this.loading.kpi=false;
       });
     }else{
-      this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2016-11-15')
+      this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/atividades?dataInicio=2010-11-15&dataFim=2017-11-15')
       .then((response)=>{
         this.atividades=response.body;
         this.loading.atividades=false;

@@ -101,11 +101,14 @@ export default {
       }
       this.$http.post(config.host+'/api/encomendas/',encomenda)
         .then((response)=>{
+          console.log(response);
           this.$nextTick(()=>{
             $('#create-salesorder-modall').modal('hide');
           })
+          swal("Sucesso", "Encomenda criada com sucesso.", "success");
         },(err)=>{
-          alert('Erro ao criar encomenda');
+          console.log(err);
+          swal("Erro", err.body, "error");
 			});
         }
     }
