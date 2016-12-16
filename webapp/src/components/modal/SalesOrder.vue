@@ -102,8 +102,10 @@ export default {
       this.$http.post(config.host+'/api/encomendas/',encomenda)
         .then((response)=>{
           console.log(response);
+          swal("Sucesso", "Encomenda criada com sucesso.", "success");
         },(err)=>{
-          console.log(err)
+          console.log(err);
+          swal("Erro", err.body, "error");
 			});
         }
     }
