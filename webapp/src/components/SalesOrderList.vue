@@ -5,7 +5,8 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header">Lista de Encomendas <i class="fa fa-plus pull-right clicable" v-show="!$root.adminMode" data-toggle="modal" data-target="#create-salesorder-modal"
-						aria-hidden="true"></i></h1>
+						aria-hidden="true"></i>
+						<i class="fa fa-refresh pull-right clicable" v-show="!$root.adminMode" v-on:click="refresh" aria-hidden="true"></i></h1>
 			</div>
 		</div>
 		<!--/.row-->
@@ -97,6 +98,13 @@ import config from '../assets/config.json'
 					},(err)=>{
 						alert('Erro ao anular encomenda');
 					})
+				},
+				refresh:function(){
+					this.$http.get(config.host+'/api/encomendas/')
+					.then((response)=>{
+						this.encomendas=response.body;
+						this.loading=false;
+				})
 				}
 			}
 		}

@@ -4,7 +4,8 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Lista de Oportunidades <i class="fa fa-plus pull-right clicable" v-show="!$root.adminMode" data-toggle="modal" data-target="#create-modal" aria-hidden="true"></i></h1>
+				<h1 class="page-header">Lista de Oportunidades <i class="fa fa-plus pull-right clicable" v-show="!$root.adminMode" data-toggle="modal" data-target="#create-modal" aria-hidden="true"></i>
+				<i class="fa fa-refresh pull-right clicable" v-show="!$root.adminMode" v-on:click="refresh" aria-hidden="true"></i></h1>
 
 			</div>
 		</div>
@@ -87,6 +88,13 @@
 				},(err)=>{
 					alert('Erro ao remover encomenda');
 				})
+			},
+			refresh:function(){
+			this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/oportunidades')
+			.then((response)=>{
+				this.loading=false;
+				this.oportunidades=response.body;
+			});
 			}
 		}
 	}

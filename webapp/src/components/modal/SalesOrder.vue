@@ -102,6 +102,9 @@ export default {
       this.$http.post(config.host+'/api/encomendas/',encomenda)
         .then((response)=>{
           console.log(response);
+          this.$nextTick(()=>{
+            $('#create-salesorder-modall').modal('hide');
+          })
           swal("Sucesso", "Encomenda criada com sucesso.", "success");
         },(err)=>{
           console.log(err);
