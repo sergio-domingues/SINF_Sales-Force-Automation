@@ -2,19 +2,19 @@
   <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <breadcrumb :current="''"></breadcrumb>
 
-    <div v-show="!this.$root.adminMode" class="row">
+    <div v-if="!this.$root.adminMode" class="row">
       <div class="col-lg-12">
         <h1 class="page-header">Painel</h1>
       </div>
     </div>
     <!--/.row-->
 
-    <div v-show="!this.$root.adminMode" class="row">
+    <div v-if="!this.$root.adminMode" class="row">
       <div class="col-lg-4">
         <div class="panel panel-default">
           <div class="panel-heading">Atividades</div>
           <div class="panel-body">
-            <div v-show="loading.atividades" class="spinner"></div>
+            <div v-if="loading.atividades" class="spinner"></div>
             <ul class="todo-list">
               <router-link tag="li" :to="'/activities/'+atividade.id" class="todo-list-item clicable" v-for="atividade in atividades">
                 <div class="checkbox">
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div v-show="!this.$root.adminMode" class="row">
+    <div v-if="!this.$root.adminMode" class="row">
       <div class="col-xs-6 col-md-4">
         <div class="panel panel-default">
           <div class="panel-body easypiechart-panel">
@@ -51,11 +51,11 @@
         </div>
       </div>
 
-      <div v-show="!this.$root.adminMode" class="col-md-8">
+      <div v-if="!this.$root.adminMode" class="col-md-8">
         <div class="panel panel-default">
           <div class="panel-heading">Oportunidades</div>
           <div class="panel-body">
-            <div v-show="loading.oportunidades" class="spinner"></div>
+            <div v-if="loading.oportunidades" class="spinner"></div>
             <ul class="todo-list">
               <router-link tag="li" :to="'/leads/'+oportunidade.id" class="todo-list-item clicable" v-for="oportunidade in oportunidades">
                 <div class="checkbox">
@@ -74,12 +74,12 @@
     <div class="row">
       <div class="page-header  col-lg-12">
         <h1 class="col-lg-6">KPI</h1>
-        <h4 v-show="$root.adminMode" class="col-lg-6 text-right clicable" data-toggle="modal" data-target="#edit-goal-modal">
+        <h4 v-if="$root.adminMode" class="col-lg-6 text-right clicable change-color" data-toggle="modal" data-target="#edit-goal-modal">
           <i class="fa fa-pencil pull-right" aria-hidden="true"></i>Editar Objetivos</h4>
       </div>
     </div>
 
-    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
+    <div class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
@@ -93,7 +93,7 @@
       </div>
     </div>
 
-    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
+    <div class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
@@ -107,7 +107,7 @@
       </div>
     </div>
 
-    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
+    <div class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
@@ -121,17 +121,17 @@
       </div>
     </div>
 
-    <div v-show="!this.$root.adminMode" class="col-md-6 col-lg-4">
+    <div class="col-md-6 col-lg-4">
       <div class="panel panel-blue">
         <div class="panel-heading">Melhores Clientes</div>
         <div class="panel-body overflow-panel" style="background-color: white">
-          <div v-show="loading.kpi" class="spinner"></div>
+          <div v-if="loading.kpi" class="spinner"></div>
           <ul class="todo-list">
             <router-link tag="li" :to="'/customers/'+key" class="todo-list-item clicable" v-for="(value, key) in kpi.MelhoresClientes">
               <div class="checkbox">
                 {{key}}
               </div>
-              <div class="pull-right">{{value}} €</div>
+              <div class="pull-right">{{Math.round(value)}} €</div>
             </router-link>
           </ul>
         </div>
@@ -139,24 +139,24 @@
     </div>
 
 
-    <div v-show="!this.$root.adminMode" class="col-md-6 col-lg-4">
+    <div class="col-md-6 col-lg-4">
       <div class="panel panel-blue">
         <div class="panel-heading">Produtos Mais Vendidos</div>
         <div class="panel-body overflow-panel" style="background-color: white">
-          <div v-show="loading.kpi" class="spinner"></div>
+          <div v-if="loading.kpi" class="spinner"></div>
           <ul class="todo-list">
             <li class="todo-list-item" v-for="(value, key) in kpi.ProdutosMaisVendidos">
               <div class="checkbox">
                 {{key}}
               </div>
-             <div class="pull-right">{{value}} UN</div>
+              <div class="pull-right">{{value}} UN</div>
             </li>
           </ul>
         </div>
       </div>
     </div>
 
-    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
+    <div class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
@@ -173,7 +173,7 @@
 
 
 
-    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
+    <div class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
@@ -187,7 +187,7 @@
       </div>
     </div>
 
-    <div v-show="!this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
+    <div class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
@@ -202,7 +202,25 @@
     </div>
 
     <!-- KPI for Admin-->
-    <div v-show="this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-6">
+  
+    <div v-if="this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-8">
+      <div class="panel panel-blue">
+        <div class="panel-heading">Melhores Vendedores</div>
+        <div class="panel-body overflow-panel" style="background-color: white">
+          <div v-if="loading.kpi" class="spinner"></div>
+          <ul class="todo-list">
+            <li class="todo-list-item" v-for="(value, key) in kpi.MelhoresVendedores">
+              <div class="checkbox">
+                {{key}}
+              </div>
+              <div class="pull-right">{{Math.round(value)}} €</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-4">
       <div class="panel panel-blue panel-widget ">
         <div class="row no-padding">
           <div class="col-sm-3 col-lg-5 widget-left">
@@ -216,23 +234,7 @@
       </div>
     </div>
 
-
-    <div v-show="this.$root.adminMode" class="col-xs-12 col-md-6 col-lg-6">
-      <div class="panel panel-blue">
-        <div class="panel-heading">Melhores Vendedores</div>
-        <div class="panel-body overflow-panel" style="background-color: white">
-          <div v-show="loading.kpi" class="spinner"></div>
-          <ul class="todo-list">
-            <li class="todo-list-item" v-for="(value, key) in kpi.MelhoresVendedores">
-              <div class="checkbox">
-                {{key + '=>' + value}}
-              </div>
-              </router-link>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <edit-goal v-show="$root.adminMode"></edit-goal>
+    <edit-goal v-if="$root.adminMode"></edit-goal>
 
   </div>
   </div>
@@ -296,7 +298,9 @@ export default {
       .then((response)=>{
         this.atividades=response.body;
         this.loading.atividades=false;
-        fillMap(this.atividades);
+        this.$nextTick(()=>{
+          fillMap(this.atividades);
+        })
       });
 
       this.$http.get(config.host+'/api/vendedores/'+this.$root.vendedor.id+'/oportunidades/')

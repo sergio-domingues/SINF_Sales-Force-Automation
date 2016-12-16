@@ -5,8 +5,8 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header" >Lista de Clientes
-					<router-link v-show="!$root.adminMode" tag="i" class="fa fa-plus pull-right clicable" :to="'/customers/new'"></router-link>
-					<i class="fa fa-refresh pull-right clicable" v-show="!$root.adminMode" v-on:click="refresh" aria-hidden="true"></i></h1>
+					<router-link v-show="!$root.adminMode" tag="i" class="fa fa-plus pull-right clicable change-color" :to="'/customers/new'"></router-link>
+					<i class="fa fa-refresh pull-right clicable change-color" v-show="!$root.adminMode" v-on:click="refresh" aria-hidden="true"></i></h1>
 			</div>
 		</div>
 		<!--/.row-->

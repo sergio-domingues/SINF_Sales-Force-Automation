@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <navbar v-show="auth" v-on:loggedOut="loggedOut"></navbar>
-    <sidebar v-show="auth" ></sidebar>
-    <router-view v-show="auth"></router-view>
+    <navbar v-if="auth" v-on:loggedOut="loggedOut"></navbar>
+    <sidebar v-if="auth" ></sidebar>
+    <router-view v-if="auth"></router-view>
 
-    <login v-on:loggedIn="loggedIn" v-show="!auth"></login>
+    <login v-on:loggedIn="loggedIn" v-if="!auth"></login>
   </div>
 </template>
 <script>
