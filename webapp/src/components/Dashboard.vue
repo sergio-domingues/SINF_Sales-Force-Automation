@@ -43,7 +43,7 @@
       <div class="col-xs-6 col-md-3">
         <div class="panel panel-default">
           <div class="panel-body easypiechart-panel">
-            <h4>Objetivo</h4>
+            <h4>Objetivo Mensal</h4>
             <div class="easypiechart" id="easypiechart-blue" :data-percent="goal"><span class="percent">{{goal}}%</span>
             </div>
           </div>
