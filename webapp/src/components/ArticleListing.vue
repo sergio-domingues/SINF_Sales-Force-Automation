@@ -24,7 +24,7 @@
                 <td>{{artigo.Quantidade}}</td>
                 <td>{{artigo.Unidade}}</td>
                 <td>{{artigo.Iva || artigo.TotalIVA}} €</td>
-                <td>{{Math.round(artigo.PrecoUnitario*artigo.Quantidade*100)/100}}€ 
+                <td>{{Math.round(artigo.PrecoUnitario*artigo.Quantidade*100)/100}}€
                   <span v-show="artigo.desconto" style="color:red">{{artigo.desconto}}%</span>
                 </td>
                 <td v-show="!lock"><i class="fa fa-lg fa-trash clicable" aria-hidden="true" v-on:click="removerArtigo(artigo)"></i>
@@ -78,7 +78,7 @@
                     <td v-if="artigo.StockAtual <= 0">INDISPONIVEL</td>
                     <td v-else>{{artigo.StockAtual}} </td>
                     <td>{{artigo.unidade}}</td>
-                    <td>{{artigo.PrecoMedio}}€</td>
+                    <td>{{artigo.PVPs[0]}}€</td>
                     <td><input type="number" class="quant-select" v-model="artigo.QuantSelec"><i class="fa fa-lg fa-plus clicable"
                         aria-hidden="true" v-show="artigo.StockAtual >0 && artigo.PrecoMedio >0" v-on:click="adicionarArtigo(artigo)"></i></td>
                   </tr>

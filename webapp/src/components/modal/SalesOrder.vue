@@ -83,7 +83,7 @@ export default {
   },
   methods:{
     createSalesOrder: function(e){
-        
+
          if(this.$root.adminMode){
           this.$nextTick(()=>{
             $('#create-salesorder-modall').modal('hide');
@@ -103,7 +103,7 @@ export default {
         .then((response)=>{
           console.log(response);
           this.$nextTick(()=>{
-            $('#create-salesorder-modall').modal('hide');
+            $('#create-salesorder-modal').modal('hide');
           })
           swal("Sucesso", "Encomenda criada com sucesso.", "success");
         },(err)=>{
