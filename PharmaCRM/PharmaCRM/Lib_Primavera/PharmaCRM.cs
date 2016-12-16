@@ -93,7 +93,6 @@ namespace PharmaCRM.Lib_Primavera
         {
             SqlConnection cnn = new SqlConnection(connectionString);
             cnn.Open();
-
             string queryString = "UPDATE ObjetivoVendedor SET Objetivo = " + objetivo.Valor + " WHERE VendedorID = '" + objetivo.Vendedor + "'";
 
             SqlCommand command = new SqlCommand(queryString, cnn);

@@ -37,21 +37,10 @@ namespace PharmaCRM.Controllers
             return obj;
         }
 
-        // POST: api/Objetivos
-        [Route("api/objetivos")]
-        [HttpPost]
-        public void Post([FromBody]Lib_Primavera.Model.Objetivo objetivo)
-        {
-            if (!Lib_Primavera.PharmaCRM.updateCreateObjetivo(objetivo))
-            {
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
-            }
-        }
-
         // PUT: api/Objetivos/5
         [Route("api/objetivos/{id}")]
         [HttpPut]
-        public void Put(string id, [FromBody]double value)
+        public HttpResponseMessage Put(string id, [FromBody]double value)
         {
             Lib_Primavera.Model.Objetivo obj = new Lib_Primavera.Model.Objetivo();
             obj.Vendedor = id;
@@ -60,6 +49,7 @@ namespace PharmaCRM.Controllers
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
             }
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         // DELETE: api/Objetivos/5
