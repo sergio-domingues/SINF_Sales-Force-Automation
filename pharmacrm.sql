@@ -268,3 +268,5 @@ UPDATE [PRIDEMOSINF].[dbo].[Artigo] SET [Descricao] = 'Fusídico' WHERE [Artigo]
 UPDATE [PRIDEMOSINF].[dbo].[Artigo] SET [Descricao] = 'Gaba' WHERE [Artigo] = 'X0001';
 UPDATE [PRIDEMOSINF].[dbo].[Artigo] SET [Descricao] = 'Estradiol' WHERE [Artigo] = 'X0009';
 UPDATE [PRIDEMOSINF].[dbo].[Artigo] SET [Descricao] = 'Efavirenz' WHERE [Artigo] = 'XM001';
+
+UPDATE [PRIDEMOSINF].[dbo].[SeriesVendas] SET Config = 'GCPVLS06' WHERE TipoDoc = 'ECL'
