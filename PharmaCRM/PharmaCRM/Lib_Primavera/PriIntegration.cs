@@ -10,6 +10,7 @@ using Interop.CrmBE900;
 using ADODB;
 using PharmaCRM.Lib_Primavera.Model;
 using Interop.IGcpBS900;
+using System.Threading;
 
 namespace PharmaCRM.Lib_Primavera
 {
@@ -989,7 +990,7 @@ namespace PharmaCRM.Lib_Primavera
             Model.Encomenda encomenda = GetEncomenda(id, false);
             if (encomenda == null)
                 return false;
-            return PriEngine.Engine.Comercial.Vendas.ImprimeDocumento("ECL", encomenda.Serie, encomenda.NumeroDocumento, encomenda.Filial, 0, "GcpVls02", false, path, 0);
+            return PriEngine.Engine.Comercial.Vendas.ImprimeDocumento("ECL", encomenda.Serie, encomenda.NumeroDocumento, encomenda.Filial, 1, "GCPVLS06", false, path, 0);
         }
 
         #endregion Encomenda
