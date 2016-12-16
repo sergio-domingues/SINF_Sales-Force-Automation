@@ -40,12 +40,13 @@
     </div>
 
     <div v-show="!this.$root.adminMode" class="row">
-      <div class="col-xs-6 col-md-3">
+      <div class="col-xs-6 col-md-4">
         <div class="panel panel-default">
           <div class="panel-body easypiechart-panel">
             <h4>Objetivo Mensal</h4>
             <div class="easypiechart" id="easypiechart-blue" :data-percent="goal"><span class="percent">{{goal}}%</span>
             </div>
+            <h4>Objetivo: {{valorObjetivo}} €</h4>
           </div>
         </div>
       </div>
@@ -258,7 +259,7 @@ function fillMap(atividades) {
 		if (position.length > 0) {
 			var infowindow = new google.maps.InfoWindow({
 			    content: "<p><a href=\"#/activities/" + atividade.id + "\">" + atividade.resumo + "</a></p>" +
-			    	"<p>" + atividade.dataInicio + " - " + atividade.dataFim + "</p>"
+			    	"<p>" + new Date(atividade.dataInicio).toLocaleString() + " - " + new Date(atividade.dataFim).toLocaleString() + "</p>"
 			  });
 		  var marker = new google.maps.Marker({
 		    position: position[0].geometry.location,
@@ -280,7 +281,7 @@ function fillMap(atividades) {
 export default {
   name: 'dashboard',
   data () {
-    return {atividades:[],oportunidades:[],loading:{atividades:true,oportunidades:true,kpi:true},kpi:{},goal:0}
+    return {atividades:[],oportunidades:[],loading:{atividades:true,oportunidades:true,kpi:true},kpi:{},goal:0,valorObjetivo:0}
   },
   components:{EditGoal},
   mounted:function(){
@@ -307,6 +308,7 @@ export default {
       this.$http.get(config.host+'/api/objetivos/'+this.$root.vendedor.id)
       .then((response)=>{
         this.goal=Math.round(parseInt(response.body.ValorCumprido)/parseInt(response.body.Valor)*100);
+        this.valorObjetivo=response.body.Valor;
         this.$nextTick(()=>{
           var element = document.querySelector('.easypiechart');
           new EasyPieChart(element, {
