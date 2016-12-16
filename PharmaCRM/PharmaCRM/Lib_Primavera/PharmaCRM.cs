@@ -47,7 +47,6 @@ namespace PharmaCRM.Lib_Primavera
 
             SqlDataReader reader = command.ExecuteReader();
             ObjetivoEstado obj = null;
-
             if (reader.Read())
             {
                 obj = new ObjetivoEstado();
@@ -55,7 +54,6 @@ namespace PharmaCRM.Lib_Primavera
                 obj.Valor = reader.GetFloat(0);
                 obj.ValorCumprido = PriIntegration.getVendedorVendasMes(idVendedor);
             }
-
             reader.Close();
             cnn.Close();
 
@@ -85,6 +83,7 @@ namespace PharmaCRM.Lib_Primavera
 
             reader.Close();
             cnn.Close();
+            System.Diagnostics.Debug.WriteLine("END: " + Environment.TickCount);
 
             return result;
         }
@@ -93,7 +92,6 @@ namespace PharmaCRM.Lib_Primavera
         {
             SqlConnection cnn = new SqlConnection(connectionString);
             cnn.Open();
-
             string queryString = "UPDATE ObjetivoVendedor SET Objetivo = " + objetivo.Valor + " WHERE VendedorID = '" + objetivo.Vendedor + "'";
 
             SqlCommand command = new SqlCommand(queryString, cnn);

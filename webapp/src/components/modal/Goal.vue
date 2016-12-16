@@ -57,9 +57,10 @@
       editGoal: function(e){
         this.$http.put(config.host+'/api/objetivos/'+this.goalId,parseInt(this.valor))
         .then((response)=>{
-        console.log("successo");
+        	console.log("successo");
+        	swal("Sucesso", "O objetivo foi definido com sucesso.", "success");
         },()=>{
-          alert('Erro ao editar o goal');
+          swal("Erro", response.body, "error");
         })
     }
   }

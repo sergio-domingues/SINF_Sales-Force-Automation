@@ -1714,6 +1714,7 @@ namespace PharmaCRM.Lib_Primavera
 
         public static double getVendedorVendasMes(string idVendedor)
         {
+            System.Diagnostics.Debug.WriteLine("START: " + Environment.TickCount);
             // Encomendas último mês
             StdBELista encomendas = PriEngine.Engine.Consulta("SELECT id, Entidade, NumDoc, Responsavel, IdOportunidade "
                 + "FROM CabecDoc WHERE TipoDoc='ECL' AND Data >= DATEADD(MONTH, -1, GETDATE()) AND Responsavel='" + idVendedor + "'");
@@ -1721,13 +1722,17 @@ namespace PharmaCRM.Lib_Primavera
             double valorEncomendas = 0;
             while (!encomendas.NoFim())
             {
+                System.Diagnostics.Debug.WriteLine("START: " + Environment.TickCount);
                 string docID = encomendas.Valor("id"),
                     idOportunidade = encomendas.Valor("idOportunidade");
 
                 if (!PriEngine.Engine.Comercial.Vendas.DocumentoAnuladoID(docID))
                 {
                     if (!(idOportunidade == null || idOportunidade == "") && !EncomendaFaturada(idOportunidade))
+                    {
+                        encomendas.Seguinte();
                         continue;
+                    }
 
                     StdBELista linhasDoc = PriEngine.Engine.Consulta("SELECT PrecoLiquido FROM LinhasDoc WHERE IdCabecDoc='" + docID + "' ORDER BY NumLinha");
 
@@ -1740,7 +1745,7 @@ namespace PharmaCRM.Lib_Primavera
                 }
                 encomendas.Seguinte();
             }
-
+            System.Diagnostics.Debug.WriteLine("END: " + Environment.TickCount);
             return valorEncomendas;
         }
 
