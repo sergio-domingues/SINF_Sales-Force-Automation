@@ -87,7 +87,7 @@ namespace PharmaCRM.Controllers
         [HttpGet]
         public HttpResponseMessage GerarPDF(string id)
         {
-            string path = "C:\\Users\\user\\Source\\Repos\\SINF_Sales-Force-Automation\\PharmaCRM\\PharmaCRM\\SalesOrders\\" + id + ".pdf";
+            string path = "C:\\Users\\user\\Downloads\\" + id + ".pdf";
             if (!System.IO.File.Exists(path))
             {
                 if (!Lib_Primavera.PriIntegration.GerarPDFEncomenda(id, path))
