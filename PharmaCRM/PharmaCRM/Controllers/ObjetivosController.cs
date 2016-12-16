@@ -22,11 +22,12 @@ namespace PharmaCRM.Controllers
 
             return objs;
         }
-
+        
         [Route("api/objetivos/{idVendedor}")]
         [HttpGet]
         public Lib_Primavera.Model.Objetivo Get(string idVendedor)
         {
+
             Lib_Primavera.Model.Objetivo obj = Lib_Primavera.PharmaCRM.getObjetivoVendedor(idVendedor);
 
             if (obj == null)
@@ -36,7 +37,7 @@ namespace PharmaCRM.Controllers
 
             return obj;
         }
-
+        
         // PUT: api/Objetivos/5
         [Route("api/objetivos/{id}")]
         [HttpPut]
