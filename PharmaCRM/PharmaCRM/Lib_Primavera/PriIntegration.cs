@@ -191,7 +191,7 @@ namespace PharmaCRM.Lib_Primavera
                     Localidade = objList.Valor("Fac_Local"),
                     Notas = objList.Valor("Notas"),
                     Telefone = objList.Valor("Fac_Tel"),
-                    //DetalhesFaturacao = getClienteFaturacao(objList.Valor("Cliente"))
+                    DetalhesFaturacao = getClienteFaturacao(objList.Valor("Cliente"))
                 });
                 objList.Seguinte();
 
@@ -840,7 +840,7 @@ namespace PharmaCRM.Lib_Primavera
                 if (!(dv.idOportunidade == null || dv.idOportunidade == ""))
                     dv.Faturada = EncomendaFaturada(dv.idOportunidade);
                 else
-                    dv.Faturada = true;*
+                    dv.Faturada = true;*/
 
                 /*listlindv = new List<Model.LinhaEncomenda>();
 
